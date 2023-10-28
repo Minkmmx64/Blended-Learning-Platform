@@ -4,23 +4,21 @@ import { Request, Response } from "express";
 
 @Controller("/common")
 export class CommonController {
-    constructor(private readonly CommonService: CommonService){}
-    @Get("/sms")
-    public getSmsCode(
-        @Req() req: Request,
-        @Res({ passthrough: true }) res: Response,
-        @Session() session: Record<string , any>,
-    ){
-        
-        return this.CommonService.getSmsCode(req, res, session);
-    }
 
-    @Post("/vsms")
-    public vSmsCode(
-        @Req() req: Request,
-        @Body("code") code : string,
-        @Session() session: Record<string, any>
-    ){
-        return this.CommonService.vSmsCode(req, code, session);
-    } 
+  constructor(private readonly CommonService: CommonService) { }
+
+  @Get("/sms")
+  public getSmsCode(@Session() session: Record<string, any>) {
+    return this.CommonService.getSmsCode(session);
+  }
+
+  @Post("/sms")
+  public vSmsCode(
+    @Body("code") code: string,
+    @Session() session: Record<string, any>
+  ) {
+    // 验证验证码正确
+    const verify = this.CommonService.vSmsCode(code, session);
+    
+  }
 }

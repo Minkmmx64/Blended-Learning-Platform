@@ -2,7 +2,7 @@ import * as sms from "svg-captcha";
 
 export const svgCode = (config?: sms.ConfigObject) => {
     const defaultConfig = {
-        noise: 10,
+        noise: 5,
         size: 5,
         color: true,
         background: "#fff",

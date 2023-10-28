@@ -14,7 +14,7 @@ export class CommonApi extends AxiosApi<any> {
   }
 
   public vSms(code: string){
-    return this.post("/vsms", { code });
+    return this.post("/sms", { code });
   }
 }
 

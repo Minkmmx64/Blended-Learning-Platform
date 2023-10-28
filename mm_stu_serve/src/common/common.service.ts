@@ -1,22 +1,22 @@
-import { Injectable } from "@nestjs/common";
-import { Response, Request } from "express";
+import { HttpStatus, Injectable } from "@nestjs/common";
+import { HttpResponse } from "src/response/response";
 import { svgCode } from "src/utils/sms";
 
 @Injectable()
 export class CommonService {
 
-    public getSmsCode(req: Request, res: Response, session: Record<string , any>){
-        const svg = svgCode({
-            height: 40
-        });
-        res.cookie("sessionId", req.sessionID);
-        session.sms = svg.text;
-        return svg.data;
-    }
+  public getSmsCode(session: Record<string, any>) : string {
+    const svg = svgCode({ height: 40 });
+    session.sms = svg.text;
+    return svg.data;
+  }
 
-    public vSmsCode(req: Request, code : string, session: Record<string , any>) {
-        console.log(session);
-        //const sms = req.sessionStore.sessions[req.cookies["sessionId"]];
-        return code;
+  public vSmsCode(code: string, session: Record<string, any>) : boolean {
+    try {
+      const sms = session.sms as string;
+      return code.toLowerCase() === sms.toLowerCase();
+    } catch (error) {
+      return false;
     }
+  }
 }
