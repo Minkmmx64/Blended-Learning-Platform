@@ -6,11 +6,7 @@ export class CommonApi extends AxiosApi<any> {
   }
 
   public Sms(){
-    return this.get("/sms", null ,  {
-      headers: {
-        "auth" : "nomjw"
-      }
-    })
+    return this.get("/sms", null)
   }
 
   public vSms(code: string){
