@@ -4,22 +4,19 @@
       <IconFont :icon="Props.icon" />
     </div>
     <input autocomplete="off" maxlength="20" :type="Props.type ?? 'text'" v-model="value" :placeholder="Props.placeholder" class="w-full h-full border-none transparent" />
-    <template v-if="Props.showSms">
-      <ShowSMSCode />
-    </template>
+    <slot></slot>
   </div>
 </template>
   
 <script setup lang="ts">
 import { ref,  watch, onMounted } from "vue";
 import IconFont from "../icon/IconFont.vue";
-import ShowSMSCode from "./ShowSMSCode.vue";
+
 interface IProps {
   placeholder ?: string;
   icon?: string;
   modelValue : any;
   type?: string;
-  showSms?: boolean
 }
 interface IEmits { (event: "update:modelValue", value: any) : void; }
 
@@ -28,7 +25,6 @@ const Props = withDefaults(
   {
     placeholder: "Please username",
     icon: "user-filling",
-    showSms: false
   }
 )
 

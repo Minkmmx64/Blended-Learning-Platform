@@ -4,6 +4,11 @@
 
 import { HttpStatus } from "@nestjs/common";
 
+export const HttpMessage = {
+  [HttpStatus.NO_CONTENT] : "success, No data",
+  [HttpStatus.FORBIDDEN] : "refuse, Authentication failed"
+}
+
 // 服务端统一返回格式
 export type ServerData<T> = {
   data: T;
@@ -13,11 +18,10 @@ export type ServerData<T> = {
 
 export class HttpResponse<T> {
 
-  public message: string;
   public code : HttpStatus;
   public data: T;
 
-  constructor(code: HttpStatus, data : T) {
+  constructor(code: HttpStatus, data? : T) {
     this.code = code;
     this.data = data;
   }
@@ -25,7 +29,7 @@ export class HttpResponse<T> {
   public send() : ServerData<T> {
     return {
       data: this.data, 
-      message: this.message,
+      message: HttpMessage[this.code] ?? "unknow status code",
       code: this.code
     }
   }

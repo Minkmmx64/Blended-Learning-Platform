@@ -1,6 +1,7 @@
-import Axios from "axios";
+import Axios, { AxiosInterceptorManager, AxiosResponse } from "axios";
 import { baseURL } from "./env.http";
 import { ElMessage } from "element-plus";
+import { ServerData } from "./AxiosApis";
 
 const instance = Axios.create({
   baseURL: baseURL.Api.uri + ":" + baseURL.Api.port,
@@ -16,8 +17,12 @@ instance.interceptors.request.use( config => {
   return config;
 }, error => ElMessage.error(error));
 
-instance.interceptors.response.use( response => {
-  console.log(response);
+instance.interceptors.response.use( (response :  AxiosResponse<ServerData<any>>) => {
+  const { data } = response;
+  if(data.code >= 400){
+    ElMessage.error(data.message);
+    return Promise.reject(data);
+  }
   return response;
 }, error => ElMessage.error(error));
 

@@ -15,7 +15,14 @@
         <span class="login-layout-lg-tit font-22 select-none w-full mt-20 pb-10 fangzheng"> Login......</span>
         <div class="login-layout-lg-container pt-10 h-full flex-column flex-alg">
           <template v-for="(item, index) in LoginFromData" :key="index">
-            <InputLayout v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" :showSms="item.showSms"/>
+            <template v-if="item.showSms">
+              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" >
+                <ShowSMSCode :code="sms" @refresh="getSmsCode" />
+              </InputLayout>
+            </template>
+            <template v-else>
+              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type"/>
+            </template>
           </template>
           <div class="w-full select-none  flex-row flex-between flex-alg">
             <el-checkbox v-model="RemberMe" label="记住我......" size="large" />
@@ -46,7 +53,14 @@
         <span class="login-layout-lg-tit font-22 select-none w-full mt-20 pb-10 fangzheng"> Register......</span>
         <div class="login-layout-lg-container pt-10 h-full flex-column flex-alg">
           <template v-for="(item, index) in RegisterFromData" :key="index">
-            <InputLayout v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" :showSms="item.showSms" />
+            <template v-if="item.showSms">
+              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" >
+                <ShowSMSCode :code="sms" @refresh="getSmsCode" />
+              </InputLayout>
+            </template>
+            <template v-else>
+              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type"/>
+            </template>
           </template>
           <div class="w-full flex-row flex-alg mt-10 flex-around">
             <el-button @click="register" type="success">注册</el-button>
@@ -61,7 +75,14 @@
         <span class="login-layout-lg-tit font-22 select-none w-full mt-20 pb-10 fangzheng"> Forget......</span>
         <div class="login-layout-lg-container pt-10 h-full flex-column flex-alg">
           <template v-for="(item, index) in ForgetFromData" :key="index">
-            <InputLayout v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" :showSms="item.showSms"/>
+            <template v-if="item.showSms">
+              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" >
+                <ShowSMSCode :code="sms" @refresh="getSmsCode" />
+              </InputLayout>
+            </template>
+            <template v-else>
+              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type"/>
+            </template>
           </template>
           <div class="w-full flex-row flex-alg mt-10 flex-around">
             <el-button @click="forget" type="success">提交</el-button>
@@ -75,23 +96,53 @@
 </template>
   
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import Qrcode from "qrcode";
 import ImageLayout from "@/components/display/img/ImageLayout.vue";
+import ShowSMSCode from "@/components/display/from//ShowSMSCode.vue";
 import InputLayout from "../display/from/InputLayout.vue";
 import { User } from "./LoginLayout.type";
 import IconFont from "../display/icon/IconFont.vue";
 import { FromModel } from "./model";
+import Common from "@/Request/Modules/common";
+import { ElMessage } from "element-plus";
+
 interface IEmits {
   (event: "login", FromData: Record<keyof User.LoginProps, string>): void;
   (event: "register", FromData: Record<keyof User.RegisterProps, string>): void;
   (event: "forget", FromData: Record<keyof User.ForgetProps, string>): void;
+}
+interface IProps {
+  LoginFails: boolean;
+}
+
+const Props = withDefaults(
+  defineProps<IProps>(),
+  { LoginFails: false }
+)
+
+watchEffect(() => {
+  if(Props.LoginFails){
+    getSmsCode();
+  }
+});
+
+//验证码
+const sms = ref("");
+const getSmsCode = async () => {
+  try {
+    const { data } = await Common.Sms();
+    sms.value = data.data;
+  } catch (error : any) {
+    ElMessage.error(error);
+  }
 }
 const GenerateQRcode = async (str: string): Promise<string> => await Qrcode.toDataURL(
   document.createElement("canvas"),
   str,
   { width: 200, type: "image/png" }
 );
+
 //二维码
 const code = "4423rfergrehrtjyu4423rfergreh";
 const emit = defineEmits<IEmits>();
@@ -113,7 +164,6 @@ const forget = () => emit("forget", ForgetData());
 onMounted(() => {
   GenerateQRcode(code).then(ret => src.value = ret);
 });
-
 </script>
   
 <style lang="scss" scoped>

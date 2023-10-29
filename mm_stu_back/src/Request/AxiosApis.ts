@@ -2,7 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 import HttpRequest from "./Request";
 
 // 服务端统一返回格式
-type ServerData<T> = {
+export type ServerData<T> = {
   data: T;
   message: string;
   code: number

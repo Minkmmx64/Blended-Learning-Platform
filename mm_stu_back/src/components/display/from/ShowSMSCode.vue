@@ -1,26 +1,24 @@
 <template>
-  <div @click="tap" class="h-full" style="width: 150px;" v-html="code"></div>
+  <div @click="emit('refresh')" class="h-full" style="width: 150px;" v-html="Props.code"></div>
 </template>
   
 <script setup lang="ts">
-import Common from "@/Request/Modules/common";
-import { ElMessage } from "element-plus";
+
+
 import { onMounted, ref } from "vue";
-
-const code = ref();
-
-const tap = async () => {
-  try {
-    const { data } = await Common.Sms();
-    code.value = data;
-  } catch (error : any) {
-    ElMessage.error(error);
-  }
+interface IProps {
+  code : string;
 }
+interface IEmits {
+  (event: "refresh") : void;
+}
+const emit = defineEmits<IEmits>();
+const Props = withDefaults(
+  defineProps<IProps>(),
+  { code: "" }
+);
 
-onMounted( async () => {
-  tap();
-})
+onMounted(() => emit("refresh"))
 </script>
   
 <style lang="scss" scoped>
