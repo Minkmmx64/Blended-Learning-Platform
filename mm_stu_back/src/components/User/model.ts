@@ -6,8 +6,8 @@ const Icon:
     User.AnyFrom,
     InputFromType
   > = {
-  //配置每个表单属性对应的图标和表单基础属性(表单类型, 是否显示验证码)
-  username: { icon: "user-filling" },
+  //配置每个表单属性对应的图标和表单基础属性(表单类型, 是否显示验证码, 对应正则表达式)
+  username: { icon: "user-filling", regex : /a/ },
   password: { icon: "port-set", type: "password" },
   sms: { icon: "dynamic-filling", showSms: true },
   bpassword: { icon: "port-set", type: "password" },

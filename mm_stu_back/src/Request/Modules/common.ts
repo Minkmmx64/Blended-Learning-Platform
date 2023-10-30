@@ -1,6 +1,6 @@
 import { AxiosApi } from "../AxiosApis";
 
-export class CommonApi extends AxiosApi<any> {
+export class CommonApi extends AxiosApi {
   constructor(){
     super("/api/common");
   }

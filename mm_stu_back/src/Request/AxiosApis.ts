@@ -9,26 +9,26 @@ export type ServerData<T> = {
 }
 
 // 服务端返回的数据data
-export class AxiosApi<T> {
-  public prefix?: string;
+export class AxiosApi {
+  protected prefix?: string;
   constructor(pre: string){
     this.prefix = pre;
   }
 
-  public get(url: string, params?: any, config?: AxiosRequestConfig<any>): Promise<AxiosResponse<ServerData<T>, any>> {
+  protected get<D = any, T = any>(url: string, params?: D, config?: AxiosRequestConfig<any>): Promise<AxiosResponse<ServerData<T>, any>> {
     config = config ?? {};
     return HttpRequest().get(this.prefix + url, Object.assign(config, { params : params }));
   }
 
-  public post(url: string, data?: any, config?: AxiosRequestConfig<any>): Promise<AxiosResponse<ServerData<T>, any>> {
+  protected post<D = any, T = any>(url: string, data?: D, config?: AxiosRequestConfig<any>): Promise<AxiosResponse<ServerData<T>, any>> {
     return HttpRequest().post(this.prefix + url, data, config);
   }
 
-  public put(url: string, data?: any, config?: AxiosRequestConfig<any>): Promise<AxiosResponse<ServerData<T>, any>> {
+  protected put<D = any, T = any>(url: string, data?: D, config?: AxiosRequestConfig<any>): Promise<AxiosResponse<ServerData<T>, any>> {
     return HttpRequest().put(this.prefix + url, data, config);
   }
 
-  public delete(url: string, params?: any, config?: AxiosRequestConfig<any>): Promise<AxiosResponse<ServerData<T>, any>> {
+  protected delete<D = any, T = any>(url: string, params?: D, config?: AxiosRequestConfig<any>): Promise<AxiosResponse<ServerData<T>, any>> {
     config = config ?? {};
     return HttpRequest().delete(this.prefix + url, Object.assign(config, { params : params }));
   }

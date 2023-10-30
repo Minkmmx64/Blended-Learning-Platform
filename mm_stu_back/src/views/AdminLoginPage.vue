@@ -11,6 +11,7 @@ import { User } from "@/components/User/LoginLayout.type";
 import LoginLayout from "@/components/User/LoginLayout.vue";
 import { useRouter } from "vue-router";
 import Common from "@/Request/Modules/common";
+import Root from "@/Request/Modules/root";
 import { ref } from "vue";
 
 const AdminLogin = useRouter();
@@ -31,8 +32,19 @@ const login = async (e: Record<keyof User.LoginProps, string>) => {
 }
 
 // !--------------------------点击注册按钮将要发生的事情...--------------------------! //
-const register = (e: Record<keyof User.RegisterProps, string>) => {
-  alert(JSON.stringify(e));
+const register = async (e: Record<keyof User.RegisterProps, string>) => {
+  try {
+    await Common.vSms(e.sms);
+    const { data } = await Root.regist({
+      username: e.username,
+      password: e.password,
+      bpassword: e.bpassword,
+      phone: e.mobilephone
+    });
+    console.log(data);
+  } catch (error) {
+    
+  }
 }
 
 // !--------------------------点击忘记密码将要发生的事情...--------------------------! //

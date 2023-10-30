@@ -16,6 +16,8 @@ export interface InputFromType {
   type?: string,
   //是否显示图形验证码
   showSms?: boolean
+  //正则表达式
+  regex?: RegExp;
 }
 
 export type IFrom<T> = keyof T;
