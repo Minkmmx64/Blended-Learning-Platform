@@ -3,20 +3,23 @@
     @login="login"
     @forget="forget"
     @register="register" 
+    :RegistFails="RegistFails"
     :LoginFails="LoginFails"/>
 </template>
   
 <script setup lang="ts">
-import { User } from "@/components/User/LoginLayout.type";
+import { InputFromType, User } from "@/components/User/LoginLayout.type";
 import LoginLayout from "@/components/User/LoginLayout.vue";
 import { useRouter } from "vue-router";
 import Common from "@/Request/Modules/common";
 import Root from "@/Request/Modules/root";
 import { ref } from "vue";
-
+import { ElMessage } from "element-plus";
+import { Icon } from "@/components/User/model";
 const AdminLogin = useRouter();
 
 const LoginFails = ref(false);
+const RegistFails = ref(false);
 
 // !--------------------------点击登录按钮将要发生的事情...--------------------------! //
 const login = async (e: Record<keyof User.LoginProps, string>) => {
@@ -33,17 +36,24 @@ const login = async (e: Record<keyof User.LoginProps, string>) => {
 
 // !--------------------------点击注册按钮将要发生的事情...--------------------------! //
 const register = async (e: Record<keyof User.RegisterProps, string>) => {
+  RegistFails.value = false;
   try {
     await Common.vSms(e.sms);
+    if(e.bpassword !== e.password) {
+      RegistFails.value = true;
+      return ElMessage.error("2次密码不一致");
+    }
     const { data } = await Root.regist({
       username: e.username,
       password: e.password,
       bpassword: e.bpassword,
       phone: e.mobilephone
     });
-    console.log(data);
-  } catch (error) {
-    
+  } catch (error : any) {
+    RegistFails.value = true;
+    const msg = error.data as any;
+    if(msg)
+      ElMessage.error(msg);
   }
 }
 

@@ -1,4 +1,4 @@
-export interface RootRegistDTO {
+export class RootRegistDTO {
   username : string;
   password: string;
   bpassword: string;

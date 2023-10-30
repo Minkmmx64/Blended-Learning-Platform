@@ -16,12 +16,12 @@
         <div class="login-layout-lg-container pt-10 h-full flex-column flex-alg">
           <template v-for="(item, index) in LoginFromData" :key="index">
             <template v-if="item.showSms">
-              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" >
+              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type">
                 <ShowSMSCode :code="sms" @refresh="getSmsCode" />
               </InputLayout>
             </template>
             <template v-else>
-              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type"/>
+              <InputLayout v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type"/>
             </template>
           </template>
           <div class="w-full select-none  flex-row flex-between flex-alg">
@@ -54,12 +54,12 @@
         <div class="login-layout-lg-container pt-10 h-full flex-column flex-alg">
           <template v-for="(item, index) in RegisterFromData" :key="index">
             <template v-if="item.showSms">
-              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" >
+              <InputLayout v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" :regex="item.regex" >
                 <ShowSMSCode :code="sms" @refresh="getSmsCode" />
               </InputLayout>
             </template>
             <template v-else>
-              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type"/>
+              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" :regex="item.regex"/>
             </template>
           </template>
           <div class="w-full flex-row flex-alg mt-10 flex-around">
@@ -76,12 +76,12 @@
         <div class="login-layout-lg-container pt-10 h-full flex-column flex-alg">
           <template v-for="(item, index) in ForgetFromData" :key="index">
             <template v-if="item.showSms">
-              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" >
+              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" :regex="item.regex" >
                 <ShowSMSCode :code="sms" @refresh="getSmsCode" />
               </InputLayout>
             </template>
             <template v-else>
-              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type"/>
+              <InputLayout  v-model="item.bindvalue" :icon="item.icon" :placeholder="item.placeholder" :type="item.type" :regex="item.regex"/>
             </template>
           </template>
           <div class="w-full flex-row flex-alg mt-10 flex-around">
@@ -98,7 +98,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watchEffect } from "vue";
 import Qrcode from "qrcode";
-import ImageLayout from "@/components/display/img/ImageLayout.vue";
 import ShowSMSCode from "@/components/display/from//ShowSMSCode.vue";
 import InputLayout from "../display/from/InputLayout.vue";
 import { User } from "./LoginLayout.type";
@@ -114,15 +113,19 @@ interface IEmits {
 }
 interface IProps {
   LoginFails: boolean;
+  RegistFails: boolean;
 }
 
 const Props = withDefaults(
   defineProps<IProps>(),
-  { LoginFails: false }
+  { LoginFails: false, RegistFails: false }
 )
 
 watchEffect(() => {
   if(Props.LoginFails){
+    getSmsCode();
+  }
+  if(Props.RegistFails){
     getSmsCode();
   }
 });

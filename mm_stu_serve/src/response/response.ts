@@ -6,7 +6,8 @@ import { HttpStatus } from "@nestjs/common";
 
 export const HttpMessage = {
   [HttpStatus.NO_CONTENT] : "success, No data",
-  [HttpStatus.FORBIDDEN] : "refuse, Authentication failed"
+  [HttpStatus.FORBIDDEN] : "refuse, Authentication failed",
+  [HttpStatus.BAD_REQUEST] : "Bad Request"
 }
 
 // 服务端统一返回格式
