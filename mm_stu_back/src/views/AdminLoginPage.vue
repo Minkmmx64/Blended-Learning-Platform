@@ -16,6 +16,7 @@ import Root from "@/Request/Modules/root";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import { Icon } from "@/components/User/model";
+
 const AdminLogin = useRouter();
 
 const LoginFails = ref(false);
@@ -24,13 +25,12 @@ const RegistFails = ref(false);
 // !--------------------------点击登录按钮将要发生的事情...--------------------------! //
 const login = async (e: Record<keyof User.LoginProps, string>) => {
   LoginFails.value = false;
-  // 登录
   try {
-    const { data } = await Common.vSms(e.sms);
+    await Common.vSms(e.sms);
   } catch (error) {
     LoginFails.value = true;
+    ElMessage.error("验证码错误");
   }
-  //alert(JSON.stringify(e));
   //AdminLogin.push({name: 'system'})
 }
 
@@ -38,32 +38,22 @@ const login = async (e: Record<keyof User.LoginProps, string>) => {
 const register = async (e: Record<keyof User.RegisterProps, string>) => {
   RegistFails.value = false;
   try {
-    await Common.vSms(e.sms);
-    if(e.bpassword !== e.password) {
-      RegistFails.value = true;
-      return ElMessage.error("2次密码不一致");
+    const ok = await Common.vSms(e.sms);
+    if(ok) {
+      await Root.regist({
+        username: e.username,
+        password: e.password,
+        bpassword: e.bpassword,
+        phone: e.mobilephone
+      });
     }
-    const { data } = await Root.regist({
-      username: e.username,
-      password: e.password,
-      bpassword: e.bpassword,
-      phone: e.mobilephone
-    });
   } catch (error : any) {
+    ElMessage.error("验证码错误")
     RegistFails.value = true;
-    const msg = error.data as any;
-    if(msg)
-      ElMessage.error(msg);
   }
 }
-
 // !--------------------------点击忘记密码将要发生的事情...--------------------------! //
 const forget = (e: Record<keyof User.ForgetProps, string>) => {
   alert(JSON.stringify(e));
 }
-
 </script>
-  
-<style lang="scss" scoped>
-  
-</style>

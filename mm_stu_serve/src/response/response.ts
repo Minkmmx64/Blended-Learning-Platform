@@ -7,7 +7,8 @@ import { HttpStatus } from "@nestjs/common";
 export const HttpMessage = {
   [HttpStatus.NO_CONTENT] : "success, No data",
   [HttpStatus.FORBIDDEN] : "refuse, Authentication failed",
-  [HttpStatus.BAD_REQUEST] : "Bad Request"
+  [HttpStatus.BAD_REQUEST] : "Bad Request",
+  [HttpStatus.CREATED] : "createdd success"
 }
 
 // 服务端统一返回格式
@@ -21,16 +22,18 @@ export class HttpResponse<T> {
 
   public code : HttpStatus;
   public data: T;
+  public message: string;
 
-  constructor(code: HttpStatus, data? : T) {
+  constructor(code: HttpStatus, data? : T, message ?: string) {
     this.code = code;
     this.data = data;
+    this.message = message;
   }
 
   public send() : ServerData<T> {
     return {
       data: this.data, 
-      message: HttpMessage[this.code] ?? "unknow status code",
+      message: this.message ?? HttpMessage[this.code] ?? "unknow status code",
       code: this.code
     }
   }

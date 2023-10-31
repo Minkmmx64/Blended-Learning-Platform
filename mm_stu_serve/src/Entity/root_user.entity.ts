@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryColumn } from 'typeorm';
 import { BaseAttrColumn } from './BaseAttrColumn';
 import { RootRole } from './root_role.entity';
 
@@ -14,10 +14,10 @@ export class RootUser extends BaseAttrColumn {
   @Column({ type: "char", length: 255, comment: "手机号"})
   phone: string;
 
-  @Column({ type: "char", length: 255, comment: "标签"})
+  @Column({ type: "char", length: 255, comment: "标签", nullable: true})
   label: string;
 
-  @Column({ type: "char", comment: "头像" })
+  @Column({ type: "char", comment: "头像", nullable: true })
   avatar: string;
 
   @ManyToOne( type => RootRole, role => role.users )

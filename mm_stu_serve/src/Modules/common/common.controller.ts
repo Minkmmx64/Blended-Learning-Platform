@@ -1,7 +1,10 @@
-import { Controller, Get, Session, Res, Post, Body, Req, HttpStatus } from "@nestjs/common";
+import { Controller, Get, Session, Res, Post, Body, Req, HttpStatus, UsePipes } from "@nestjs/common";
 import { CommonService } from "./common.service";
 import { Request, Response } from "express";
 import { HttpResponse } from "src/response/response";
+import { ValidationPipe } from "src/utils/pipes";
+import { CommonValid } from "./common.valid";
+import { SmsDTO } from "./common.dto";
 
 @Controller("/common")
 export class CommonController {
@@ -15,12 +18,13 @@ export class CommonController {
   }
 
   @Post("/sms")
+  @UsePipes(new ValidationPipe(CommonValid))
   public vSmsCode(
-    @Body("code") code: string,
+    @Body() body: SmsDTO,
     @Session() session: Record<string, any>
   ) {
     // 验证验证码正确
-    const verify = this.CommonService.vSmsCode(code, session);
+    const verify = this.CommonService.vSmsCode(body.code, session);
     if(verify) {
       return new HttpResponse<null>(HttpStatus.NO_CONTENT).send();
     } else {

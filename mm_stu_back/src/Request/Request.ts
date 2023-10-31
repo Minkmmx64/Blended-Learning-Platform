@@ -1,4 +1,4 @@
-import Axios, { AxiosInterceptorManager, AxiosResponse } from "axios";
+import Axios, { AxiosError, AxiosResponse } from "axios";
 import { baseURL } from "./env.http";
 import { ElMessage } from "element-plus";
 import { ServerData } from "./AxiosApis";
@@ -22,8 +22,11 @@ instance.interceptors.response.use( (response :  AxiosResponse<ServerData<any>>)
     return Promise.reject(data);
   }
   return response;
-}, error => {
-  ElMessage.error(error)
+}, (error) => {
+  if(error.response.data.message)
+    ElMessage.error(error.response.data.message)
+  else ElMessage.error("服务器错误" + JSON.stringify(error));
+  return Promise.resolve();
 });
 
 export default function HttpRequest() {

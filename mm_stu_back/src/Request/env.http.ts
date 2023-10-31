@@ -4,7 +4,7 @@ const URL = {
     port : 3000
   }, 
   local: {
-    uri : " http://192.168.59.185",
+    uri : "http://localhost",
     port: 8080
   }
 }

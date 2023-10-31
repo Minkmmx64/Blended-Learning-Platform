@@ -1,3 +1,4 @@
+import { ElMessage } from "element-plus";
 import { AxiosApi } from "../AxiosApis";
 
 export class CommonApi extends AxiosApi {
