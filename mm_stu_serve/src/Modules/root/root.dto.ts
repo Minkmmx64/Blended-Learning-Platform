@@ -4,3 +4,8 @@ export class RootRegistDTO {
   bpassword: string;
   phone: string;
 }
+
+export class RootLoginDTO {
+  username : string;
+  password : string;
+}

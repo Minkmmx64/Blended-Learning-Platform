@@ -1,8 +1,8 @@
 import { BadRequestException, Body, Controller, HttpStatus, Post, UsePipes } from "@nestjs/common";
 import { RootService } from "./root.service";
-import { RootRegistDTO } from "./root.dto";
+import { RootRegistDTO , RootLoginDTO } from "./root.dto";
 import { ValidationPipe } from "src/utils/pipes";
-import { RootRegistSchema } from "./root.valid";
+import { RootRegistSchema, RootLoginSchema } from "./root.valid";
 import { HttpResponse } from "src/response/response";
 import { InsertResult } from "typeorm";
 
@@ -19,4 +19,15 @@ export class RootController {
         throw new BadRequestException(new HttpResponse<any>(HttpStatus.BAD_REQUEST, null,  error).send());
       } else return new HttpResponse<InsertResult>(HttpStatus.CREATED, insert).send();
     }
+
+  @Post("/login")
+  @UsePipes(new ValidationPipe(RootLoginSchema))
+  public async RootLogin (
+    @Body() body : RootLoginDTO
+  ) {
+    const [ error, user ] = await this.RootService.RootLogin(body);
+    if(error){
+      throw new BadRequestException(new HttpResponse<any>(HttpStatus.BAD_REQUEST, null,  error).send());
+    } else return new HttpResponse<InsertResult>(HttpStatus.ACCEPTED, user).send();
+  }
 }

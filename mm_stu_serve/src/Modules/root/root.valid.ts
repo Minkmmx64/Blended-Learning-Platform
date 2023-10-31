@@ -1,5 +1,5 @@
 import * as Joi from "joi";
-import { RootRegistDTO } from "./root.dto";
+import { RootLoginDTO, RootRegistDTO } from "./root.dto";
 import { Rules } from "src/utils/regex";
 import { NotAcceptableException } from "@nestjs/common";
 
@@ -9,4 +9,11 @@ export const RootRegistSchema = Joi.object<RootRegistDTO>({
   password : Joi.string().required().regex(Rules.password.rule).error(new NotAcceptableException(Rules.password.msg)),
   phone : Joi.string().required().regex(Rules.phone.rule).error(new NotAcceptableException(Rules.phone.msg)),
   bpassword : Joi.string().equal(Joi.ref("password")).error(new NotAcceptableException("两次密码不一致"))
+})
+
+
+//登录验证
+export const RootLoginSchema = Joi.object<RootLoginDTO>({
+  username: Joi.string().required().error(new NotAcceptableException("用户名不能为空")),
+  password : Joi.string().required().error(new NotAcceptableException("密码不能为空")),
 })

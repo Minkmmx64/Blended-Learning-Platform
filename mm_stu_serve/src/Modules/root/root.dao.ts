@@ -9,9 +9,16 @@ export class RootServiceDAO {
 
   constructor(protected DataSource : DataSource){};
 
-  protected async findRootByName(username: string) : Promise<RootUser> {
+  protected async findRootByName(username: string): Promise<RootUser> {
     return await this.RootUserRepository.findOne({where: {
       username: username
     }});
   }
+
+  protected async findRootByPhone(phone: string): Promise<RootUser> {
+    return await this.RootUserRepository.findOne({where: {
+      phone: phone
+    }});
+  }
+
 }

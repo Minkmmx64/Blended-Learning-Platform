@@ -7,6 +7,12 @@ interface RootRegistDTO {
   phone: string;
 }
 
+
+interface RootLoginDTO {
+  username : string;
+  password : string;
+}
+
 export class root extends AxiosApi {
   constructor(){
     super("/api/root");
@@ -14,6 +20,10 @@ export class root extends AxiosApi {
 
   public regist(data : RootRegistDTO){
     return this.post("/regist", data);
+  }
+
+  public login(data : RootLoginDTO) {
+    return this.post("/login", data);
   }
 }
 
