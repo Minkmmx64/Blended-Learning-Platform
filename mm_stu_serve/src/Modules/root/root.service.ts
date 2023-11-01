@@ -25,7 +25,10 @@ export class RootService extends RootServiceDAO {
                             create_time: getDate(),
                             password: encryption(root.password),
                             update_time: getDate(),
-                            phone: root.phone
+                            phone: root.phone,
+                            role: {
+                              id: 1
+                            }
                           })
                           .execute();
         await queryRunner.commitTransaction();
@@ -43,7 +46,7 @@ export class RootService extends RootServiceDAO {
     try {
       const user = await this.findRootByName(body.username);
       if(user === null) throw "用户不存在";
-      const verify = await encryption(body.password);
+      const verify = encryption(body.password);
       if(verify !== user.password) throw "密码错误";
       const token = JWT.genToken({
         username: user.username,

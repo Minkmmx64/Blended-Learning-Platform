@@ -13,6 +13,10 @@ export class CommonApi extends AxiosApi {
   public vSms(code: string){
     return this.post("/sms", { code });
   }
+
+  public vToken(token: string) {
+    return this.post("/vtoken", { token });
+  }
 }
 
 export default new CommonApi();

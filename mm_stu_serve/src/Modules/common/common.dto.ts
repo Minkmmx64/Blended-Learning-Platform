@@ -7,3 +7,7 @@ export class TokenDTO {
   skey: string;
   password: string;
 }
+
+export class vTokenDTO {
+  token: string;
+}

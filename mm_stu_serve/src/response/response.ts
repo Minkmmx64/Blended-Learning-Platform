@@ -9,7 +9,8 @@ export const HttpMessage = {
   [HttpStatus.FORBIDDEN] : "refuse, Authentication failed",
   [HttpStatus.BAD_REQUEST] : "Bad Request",
   [HttpStatus.CREATED] : "createdd success",
-  [HttpStatus.ACCEPTED] : "accept"
+  [HttpStatus.ACCEPTED] : "accept",
+  [HttpStatus.UNAUTHORIZED] : "Authorized failed"
 }
 
 // 服务端统一返回格式

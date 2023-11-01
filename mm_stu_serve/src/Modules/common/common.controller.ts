@@ -1,10 +1,10 @@
 import { Controller, Get, Session, Res, Post, Body, Req, HttpStatus, UsePipes } from "@nestjs/common";
 import { CommonService } from "./common.service";
-import { Request, Response } from "express";
 import { HttpResponse } from "src/response/response";
 import { ValidationPipe } from "src/utils/pipes";
-import { CommonValid } from "./common.valid";
-import { SmsDTO } from "./common.dto";
+import { CommonSmsValid, CommonTokenValid } from "./common.valid";
+import { SmsDTO, vTokenDTO } from "./common.dto";
+import { JwtPayload } from "jsonwebtoken";
 
 @Controller("/common")
 export class CommonController {
@@ -18,7 +18,7 @@ export class CommonController {
   }
 
   @Post("/sms")
-  @UsePipes(new ValidationPipe(CommonValid))
+  @UsePipes(new ValidationPipe(CommonSmsValid))
   public vSmsCode(
     @Body() body: SmsDTO,
     @Session() session: Record<string, any>
@@ -30,5 +30,19 @@ export class CommonController {
     } else {
       return new HttpResponse<null>(HttpStatus.FORBIDDEN).send();
     }
+  }
+
+  @Post("/vtoken")
+  @UsePipes(new ValidationPipe(CommonTokenValid))
+  public vToken(
+    @Body() body: vTokenDTO
+  ) {
+    const ok = this.CommonService.vToken(body.token);
+    if(!ok) {
+      return new HttpResponse<string | JwtPayload>(HttpStatus.UNAUTHORIZED).send();
+    } else {
+      return new HttpResponse<string | JwtPayload>(HttpStatus.ACCEPTED).send();
+    }
+    
   }
 }

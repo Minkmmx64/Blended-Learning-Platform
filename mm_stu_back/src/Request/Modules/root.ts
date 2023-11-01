@@ -13,6 +13,17 @@ interface RootLoginDTO {
   password : string;
 }
 
+export interface UserInfo {
+  username: string,
+  avatar: string,
+  label: string
+}
+
+interface LoginResponseData {
+  token: string;
+  user: UserInfo
+}
+
 export class root extends AxiosApi {
   constructor(){
     super("/api/root");
@@ -23,7 +34,7 @@ export class root extends AxiosApi {
   }
 
   public login(data : RootLoginDTO) {
-    return this.post("/login", data);
+    return this.post<RootLoginDTO,LoginResponseData>("/login", data);
   }
 }
 

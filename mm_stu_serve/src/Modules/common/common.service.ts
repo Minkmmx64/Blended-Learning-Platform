@@ -1,5 +1,5 @@
-import { HttpStatus, Injectable } from "@nestjs/common";
-import { HttpResponse } from "src/response/response";
+import { Injectable } from "@nestjs/common";
+import { JWT } from "src/utils/crypto";
 import { svgCode } from "src/utils/sms";
 
 @Injectable()
@@ -15,6 +15,15 @@ export class CommonService {
     try {
       const sms = session.sms as string;
       return code.toLowerCase() === sms.toLowerCase();
+    } catch (error) {
+      return false;
+    }
+  }
+
+  public vToken(token: string) : boolean {
+    try {
+      const result = JWT.verify(token);
+      return true;
     } catch (error) {
       return false;
     }
