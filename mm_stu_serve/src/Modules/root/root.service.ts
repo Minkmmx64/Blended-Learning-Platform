@@ -23,7 +23,7 @@ export class RootService extends RootServiceDAO {
                           .values({
                             username: root.username,
                             create_time: getDate(),
-                            password: await encryption(root.password),
+                            password: encryption(root.password),
                             update_time: getDate(),
                             phone: root.phone
                           })

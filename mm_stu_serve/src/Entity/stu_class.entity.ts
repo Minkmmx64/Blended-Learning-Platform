@@ -9,6 +9,6 @@ export class StuClass extends BaseAttrColumn {
   name: string;
 
   //班级属于哪个学院
-  @ManyToOne( type => StuCollege, college => college.classes )  
+  @ManyToOne( type => StuCollege, college => college.classes, { nullable : false })  
   college: StuCollege;
 }

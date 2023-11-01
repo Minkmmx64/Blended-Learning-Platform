@@ -23,10 +23,10 @@ export class StuInfo extends BaseAttrColumn {
   year: number;
 
   //学生属于一个学院
-  @ManyToOne( type => StuCollege )
+  @ManyToOne( type => StuCollege , { nullable: false })
   college: StuCollege;
 
   //学生班级属于一个学院的某个班级
-  @ManyToOne( type => StuClass)
+  @ManyToOne( type => StuClass , { nullable : false })
   class: StuClass;
 }
