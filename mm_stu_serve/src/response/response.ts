@@ -5,12 +5,13 @@
 import { HttpStatus } from "@nestjs/common";
 
 export const HttpMessage = {
-  [HttpStatus.NO_CONTENT] : "success, No data",
-  [HttpStatus.FORBIDDEN] : "refuse, Authentication failed",
-  [HttpStatus.BAD_REQUEST] : "Bad Request",
-  [HttpStatus.CREATED] : "createdd success",
-  [HttpStatus.ACCEPTED] : "accept",
-  [HttpStatus.UNAUTHORIZED] : "Authorized failed"
+  [HttpStatus.NO_CONTENT] : "success, No data",             //无返回值请求成功
+  [HttpStatus.FORBIDDEN] : "refuse, Authentication failed", //用户无认证
+  [HttpStatus.BAD_REQUEST] : "Bad Request",                 //请求错误
+  [HttpStatus.CREATED] : "createdd success",                //创建资源成功
+  [HttpStatus.ACCEPTED] : "accept",                         //有返回值请求成功
+  [HttpStatus.UNAUTHORIZED] : "Authorized failed",          //用户认证失败
+  [HttpStatus.CONFLICT] : "Authorized expired"              //用户认证过时      
 }
 
 // 服务端统一返回格式

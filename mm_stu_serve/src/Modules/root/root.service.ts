@@ -4,6 +4,7 @@ import { InsertResult } from "typeorm";
 import { getDate } from "src/utils/date";
 import { RootServiceDAO } from "./root.dao";
 import { JWT, encryption } from "src/utils/crypto";
+import { randomUUID } from "crypto";
 
 export class RootService extends RootServiceDAO {
   public async RootRegist(root: RootRegistDTO) : Promise<[any, InsertResult | null]> {
@@ -49,8 +50,7 @@ export class RootService extends RootServiceDAO {
       const verify = encryption(body.password);
       if(verify !== user.password) throw "密码错误";
       const token = JWT.genToken({
-        username: user.username,
-        password: user.password,
+        uuid: randomUUID(),
         skey: JWT.secret
       });
       return [

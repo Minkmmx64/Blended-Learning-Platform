@@ -38,6 +38,8 @@ export const uncryption = (data : string) : string => {
 //Token处理
 export const JWT = {
   secret: "mjw",
-  genToken: (data : TokenDTO) => jwt.sign(data, JWT.secret),
+  genToken: (data : TokenDTO, expires?: string) => jwt.sign(data, JWT.secret, {
+    expiresIn: expires ?? "1h"
+  }),
   verify: (token : string) => jwt.verify(token, JWT.secret)
 }

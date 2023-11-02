@@ -20,12 +20,12 @@ export class CommonService {
     }
   }
 
-  public vToken(token: string) : boolean {
+  public vToken(token: string) {
     try {
       const result = JWT.verify(token);
-      return true;
+      return [ null, result ];
     } catch (error) {
-      return false;
+      return [ new Error(error).message, null ];
     }
   }
 }

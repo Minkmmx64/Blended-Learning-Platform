@@ -37,12 +37,11 @@ export class CommonController {
   public vToken(
     @Body() body: vTokenDTO
   ) {
-    const ok = this.CommonService.vToken(body.token);
-    if(!ok) {
-      return new HttpResponse<string | JwtPayload>(HttpStatus.UNAUTHORIZED).send();
+    const [ error, ok ] = this.CommonService.vToken(body.token);
+    if(error) {
+      return new HttpResponse<string | JwtPayload>(HttpStatus.UNAUTHORIZED, error).send();
     } else {
-      return new HttpResponse<string | JwtPayload>(HttpStatus.ACCEPTED).send();
+      return new HttpResponse<string | JwtPayload>(HttpStatus.ACCEPTED, ok).send();
     }
-    
   }
 }

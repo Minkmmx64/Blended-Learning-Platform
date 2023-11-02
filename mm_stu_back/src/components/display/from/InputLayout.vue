@@ -3,7 +3,8 @@
     <div class="flex-row flex-center text-center" style="width: 40px; height: 40px;line-height: 40px;">
       <IconFont class="mg-2" style="width: 40px;" :icon="Props.icon" />
     </div>
-    <input
+    <form class="w-full h-full border-none transparent" >
+      <input
       @blur="blur"
       @focus="focus"
       autocomplete="off" 
@@ -12,6 +13,7 @@
       v-model="value" 
       :placeholder="Props.placeholder" 
       class="w-full h-full border-none transparent" />
+    </form>
     <slot></slot>
   </div>
 </template>

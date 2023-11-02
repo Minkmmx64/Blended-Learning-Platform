@@ -27,7 +27,11 @@ export class RootController {
   ) {
     const [ error, user ] = await this.RootService.RootLogin(body);
     if(error){
-      throw new BadRequestException(new HttpResponse<any>(HttpStatus.BAD_REQUEST, null,  error).send());
+      if(error === "TokenExpiredError: jwt expired") {
+        throw new BadRequestException(new HttpResponse<any>(HttpStatus.CONFLICT, null,  error).send());
+      } else {
+        throw new BadRequestException(new HttpResponse<any>(HttpStatus.BAD_REQUEST, null,  error).send());
+      }
     } else return new HttpResponse<InsertResult>(HttpStatus.ACCEPTED, user).send();
   }
 }

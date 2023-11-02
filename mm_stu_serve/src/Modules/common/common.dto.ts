@@ -3,9 +3,8 @@ export class SmsDTO {
 }
 
 export class TokenDTO {
-  username: string;
+  uuid: string;
   skey: string;
-  password: string;
 }
 
 export class vTokenDTO {

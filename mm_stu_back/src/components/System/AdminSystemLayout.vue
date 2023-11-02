@@ -77,7 +77,6 @@ onMounted(() => {
     try {
       const { currentMenu: CM, BreadNavPath: BNP } = JSON.parse(Data);
       currentMenu.value = CM, BreadNavPath.value = BNP;
-      console.log(CM, BNP);
     } catch (error) { console.log("???"); }
   }
 });

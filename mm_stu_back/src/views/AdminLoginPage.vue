@@ -15,7 +15,7 @@ import Common from "@/Request/Modules/common";
 import Root from "@/Request/Modules/root";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
-import { useUserStore } from "@/store";
+import { useUserStore } from "@/store/index";
 
 const AdminLogin = useRouter();
 const LoginFails = ref(false);
@@ -33,13 +33,10 @@ const login = async (e: Record<keyof User.LoginProps, string>) => {
       if(login){
         const { token, user } = login.data.data;
         const useUser = useUserStore();
-        ElMessage.success("登录成功");
-
         useUser.setUser(user);
-        useUser.setTokenToLocal(token);
-        console.log(useUser.getUser);
+        useUser.setToken(token);
+        ElMessage.success("登录成功");
         
-
         AdminLogin.push({name: 'system'});
       }
     }
