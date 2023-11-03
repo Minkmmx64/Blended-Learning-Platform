@@ -39,7 +39,7 @@ export const uncryption = (data : string) : string => {
 export const JWT = {
   secret: "mjw",
   genToken: (data : TokenDTO, expires?: string) => jwt.sign(data, JWT.secret, {
-    expiresIn: expires ?? "2000"
+    expiresIn: expires ?? "1h"
   }),
   verify: (token : string): [ string | null , string | jwt.JwtPayload] => {
     try {
