@@ -1,11 +1,11 @@
-import { Controller, Get, Session, Res, Post, Body, Req, HttpStatus, UsePipes, BadRequestException, ConflictException, UseGuards } from "@nestjs/common";
+import { Controller, Get, Session, Post, Body, HttpStatus, UsePipes, BadRequestException, UseGuards, GoneException, Headers, ConflictException, UseInterceptors } from "@nestjs/common";
 import { CommonService } from "./common.service";
 import { HttpResponse } from "src/response/response";
 import { ValidationPipe } from "src/utils/pipes";
 import { CommonSmsValid, CommonTokenValid } from "./common.valid";
 import { SmsDTO, vTokenDTO } from "./common.dto";
 import { JwtPayload } from "jsonwebtoken";
-import { AuthGuard } from "src/guard/auth.guard";
+import { TokenExpireInterceptor } from "src/guard/token.interceptor";
 
 @Controller("/common")
 export class CommonController {
@@ -40,10 +40,11 @@ export class CommonController {
   ) {
     const [ error, ok ] = this.CommonService.vToken(body.token);
     if(error) {
+      //token超过失效
       if(error === "TokenExpiredError: jwt expired") {
-        throw new ConflictException(new HttpResponse<any>(HttpStatus.CONFLICT, null,  error).send());
+        throw new GoneException(new HttpResponse<any>(HttpStatus.GONE, null,  error).send());
       } else {
-        throw new BadRequestException(new HttpResponse<string | JwtPayload>(HttpStatus.BAD_REQUEST, null, error.toString() ).send());
+        throw new ConflictException(new HttpResponse<string | JwtPayload>(HttpStatus.CONFLICT, null, error.toString() ).send());
       }
     } else {
       return new HttpResponse<string | JwtPayload>(HttpStatus.ACCEPTED, "ok").send();
@@ -51,11 +52,21 @@ export class CommonController {
   }
 
   @Get("/rtoken")
-  @UseGuards(AuthGuard)
-  public rToken() {
-    const Token = this.CommonService.rToken();
+  public rToken(
+    @Headers("Authorization") Authorization: string
+  ) {
+    const [ error, Token ] = this.CommonService.rToken(Authorization);
+    if(error){
+      throw new ConflictException(new HttpResponse<any>(HttpStatus.CONFLICT, null,  error).send());
+    }
     return  new HttpResponse<{ token : string }>(HttpStatus.ACCEPTED, {
       token: Token
     }).send();
+  }
+
+  @Get("/test")
+  @UseInterceptors(new TokenExpireInterceptor())
+  public test(){
+    return new HttpResponse<string>(HttpStatus.ACCEPTED, "ok").send();
   }
 }

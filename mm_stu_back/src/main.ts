@@ -12,8 +12,8 @@ pinia.use(piniaPluginPersist);
 const app = createApp(App);
 
 app
-.use(pinia as any)
 .use(router)
+.use(pinia as any)
 .use(ElementPlus)
 
 app.mount('#app');

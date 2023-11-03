@@ -17,7 +17,7 @@ export const useUserStore = defineStore("User",{
   actions: {
     setUser(User: UserInfo){ this.User = User; },
     setToken(Token: string){ this.Token = Token; },
-    clearInfo() { this.User = nullUser; }
+    clearInfo() { this.User = nullUser; this.Token = ""; }
   },
   persist: { enabled: true }
 }

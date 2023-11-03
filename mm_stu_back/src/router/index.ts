@@ -53,12 +53,7 @@ router.beforeEach(async (to, from, next) => {
   } else {
     // 需要验证登录
     if (to.meta.isAuth) {
-      // Common.vToken(getToken).then( res => {
-      //   console.log(res);
-      // }).catch(error => {
-      //   console.log(error);
-      // })
-      // 验证Token有效性
+      //验证Token有效性
       if (getToken) next();
       else {
         ElMessage.error("请登录");

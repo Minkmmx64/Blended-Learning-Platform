@@ -22,19 +22,19 @@ export class CommonService {
   }
 
   public vToken(token: string) {
-    try {
-      const result = JWT.verify(token);
-      return [ null, result ];
-    } catch (error) {
-      return [ new Error(error).message, null ];
-    }
+    return JWT.verify(token);
   }
 
-  public rToken() {
-    const token = JWT.genToken({
-      uuid: randomUUID(),
-      skey: JWT.secret
-    });
-    return token;
+  public rToken(Authorization: string) : [any, string] {
+    const [ error, verify ] = JWT.verify(Authorization);
+    if(error) {
+      if(error === "TokenExpiredError: jwt expired") {
+        const token = JWT.genToken({
+          uuid: randomUUID(),
+          skey: JWT.secret
+        });
+        return [null, token];
+      } else return [ "用户信息无效", null ];
+    }
   }
 }

@@ -1,4 +1,3 @@
-import { ElMessage } from "element-plus";
 import { AxiosApi } from "../AxiosApis";
 
 export class CommonApi extends AxiosApi {
@@ -17,8 +16,13 @@ export class CommonApi extends AxiosApi {
   public vToken(token: string) {
     return this.post("/vtoken", { token });
   }
+
   public rToken() {
     return this.get<null, { token: string }>("/rtoken");
+  }
+
+  public test(){
+    return this.get("/test", { date: new Date().getTime()});
   }
 }
 
