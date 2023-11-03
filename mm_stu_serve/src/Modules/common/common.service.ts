@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { randomUUID } from "crypto";
 import { JWT } from "src/utils/crypto";
 import { svgCode } from "src/utils/sms";
 
@@ -27,5 +28,13 @@ export class CommonService {
     } catch (error) {
       return [ new Error(error).message, null ];
     }
+  }
+
+  public rToken() {
+    const token = JWT.genToken({
+      uuid: randomUUID(),
+      skey: JWT.secret
+    });
+    return token;
   }
 }

@@ -137,7 +137,9 @@ const getSmsCode = async () => {
     const { data } = await Common.Sms();
     sms.value = data.data;
   } catch (error : any) {
-    ElMessage.error(error);
+    if(error){
+      ElMessage.error("获取验证码错误" + error);
+    }
   }
 }
 const GenerateQRcode = async (str: string): Promise<string> => await Qrcode.toDataURL(

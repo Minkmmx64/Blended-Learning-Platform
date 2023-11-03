@@ -4,8 +4,7 @@
 
 <script lang="ts" setup>
 import { useUserStore } from './store';
-const u = useUserStore();
-console.log(u.getUser);
+
 </script>
 
 <style lang="scss">

@@ -1,10 +1,11 @@
-import { Controller, Get, Session, Res, Post, Body, Req, HttpStatus, UsePipes } from "@nestjs/common";
+import { Controller, Get, Session, Res, Post, Body, Req, HttpStatus, UsePipes, BadRequestException, ConflictException, UseGuards } from "@nestjs/common";
 import { CommonService } from "./common.service";
 import { HttpResponse } from "src/response/response";
 import { ValidationPipe } from "src/utils/pipes";
 import { CommonSmsValid, CommonTokenValid } from "./common.valid";
 import { SmsDTO, vTokenDTO } from "./common.dto";
 import { JwtPayload } from "jsonwebtoken";
+import { AuthGuard } from "src/guard/auth.guard";
 
 @Controller("/common")
 export class CommonController {
@@ -39,9 +40,22 @@ export class CommonController {
   ) {
     const [ error, ok ] = this.CommonService.vToken(body.token);
     if(error) {
-      return new HttpResponse<string | JwtPayload>(HttpStatus.UNAUTHORIZED, error).send();
+      if(error === "TokenExpiredError: jwt expired") {
+        throw new ConflictException(new HttpResponse<any>(HttpStatus.CONFLICT, null,  error).send());
+      } else {
+        throw new BadRequestException(new HttpResponse<string | JwtPayload>(HttpStatus.BAD_REQUEST, null, error.toString() ).send());
+      }
     } else {
-      return new HttpResponse<string | JwtPayload>(HttpStatus.ACCEPTED, ok).send();
+      return new HttpResponse<string | JwtPayload>(HttpStatus.ACCEPTED, "ok").send();
     }
+  }
+
+  @Get("/rtoken")
+  @UseGuards(AuthGuard)
+  public rToken() {
+    const Token = this.CommonService.rToken();
+    return  new HttpResponse<{ token : string }>(HttpStatus.ACCEPTED, {
+      token: Token
+    }).send();
   }
 }

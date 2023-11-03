@@ -13,8 +13,8 @@
       :collapse="collapse"
       :style="{ width: `${MenuWidth}px` , height: '100vh' }">
       <div class="text-center text-white fangzheng select-none flex-row flex-center mt-5 font-20 mb-5">
-        <IconFont icon="setting-filling" class="mr-2" />
-        <span v-if="!collapse">{{ title }}</span>
+        <!-- <IconFont icon="setting-filling" class="mr-2" /> -->
+        <span v-if="!collapse" style="font-size: 16px;">{{ title }}</span>
       </div>
       <MainSystemMenu :data="SystemMenus" />
       <el-button @click="MenuGoBack" class="w-full" type="primary">Back -</el-button>
@@ -71,7 +71,6 @@ const reFresh = () => {
 
 onMounted(() => {
   window.addEventListener("beforeunload", reFresh);
-
   const Data = localStorage.getItem("Data");
   if(Data != null) {
     try {
@@ -80,7 +79,6 @@ onMounted(() => {
     } catch (error) { console.log("???"); }
   }
 });
-
 onUnmounted(() => { window.removeEventListener("beforeunload", reFresh); })
 
 </script>

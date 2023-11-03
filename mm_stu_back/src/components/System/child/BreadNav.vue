@@ -101,7 +101,6 @@ onMounted(() => {
     color: #000;
   }
   .Bread-Nav-close-btn:hover{ background-color: rgba(148, 148, 148, 0.8); color: #fff; }
-
   @keyframes list {
     0% {
       transform: translateX(-20px);

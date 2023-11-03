@@ -15,21 +15,21 @@ const config = {
  */
 const SystemMenus: ISystemMenus[] = [
   {
-    name: "admin",
+    name: "管理首页",
     route: "admin",
     key: "admin",
-    icon: "port-set"
+    icon: "setting-filling"
   },
   {
-    name: "TestGroup",
-    key: "TestGroup",
-    icon: "port-set",
+    name: "学生管理",
+    key: "student",
+    icon: "user-filling",
     subMenu: [
       {
-        name: "AnimTest",
-        route: "AnimTest",
-        key: "AnimTest",
-        icon: "port-set"
+        name: "学籍管理",
+        route: "info",
+        key: "info",
+        icon: "file-common"
       }
     ]
   }
