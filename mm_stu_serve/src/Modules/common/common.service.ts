@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { randomUUID } from "crypto";
 import { JWT } from "src/utils/crypto";
 import { svgCode } from "src/utils/sms";
+import { TokenDTO } from "./common.dto";
 
 @Injectable()
 export class CommonService {
@@ -29,9 +30,12 @@ export class CommonService {
     const [ error, verify ] = JWT.verify(Authorization);
     if(error) {
       if(error === "TokenExpiredError: jwt expired") {
+        const deToken = JWT.decode(Authorization) as TokenDTO;
+        //过期了先解包里面的用户数据，如权限id
         const token = JWT.genToken({
           uuid: randomUUID(),
-          skey: JWT.secret
+          skey: JWT.secret,
+          role: deToken.role
         });
         return [null, token];
       } else return [ "用户信息无效", null ];

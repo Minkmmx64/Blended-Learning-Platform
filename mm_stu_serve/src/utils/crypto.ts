@@ -49,5 +49,8 @@ export const JWT = {
       const message = new Error(error).message;
       return [ message, null ];
     }
+  },
+  decode: (token: string) => {
+    return jwt.decode(token);
   }
 }

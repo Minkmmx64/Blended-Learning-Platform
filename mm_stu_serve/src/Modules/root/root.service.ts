@@ -51,7 +51,8 @@ export class RootService extends RootServiceDAO {
       if(verify !== user.password) throw "密码错误";
       const token = JWT.genToken({
         uuid: randomUUID(),
-        skey: JWT.secret
+        skey: JWT.secret,
+        role: user.role.id
       });
       return [
         null, {

@@ -5,6 +5,8 @@ export class SmsDTO {
 export class TokenDTO {
   uuid: string;
   skey: string;
+  //用户权限
+  role: number;
 }
 
 export class vTokenDTO {
