@@ -4,7 +4,7 @@ import { ElMessage } from "element-plus";
 import { ServerData } from "./AxiosApis";
 import Common from "./Modules/common";
 import { useUserStore } from "@/store";
-import { useRouter } from "vue-router";
+import router from "@/router";
 
 // 路由白名单不需要认证
 const RequestWhitePath = [
@@ -49,12 +49,14 @@ instance.interceptors.response.use((response: AxiosResponse<ServerData<any>>) =>
       }).catch(error => {
         ElMessage.error("登录失效" + error);
         // 清除用户信息
-        User.clearInfo();    
+        User.clearInfo();   
+        router.replace("/home") 
       });
       return Promise.resolve(error.response);
     } else if (code === 409) {
       ElMessage.error("用户信息无效，重新登录");
       User.clearInfo();
+      router.replace("/home");
       return Promise.reject("用户信息无效，重新登录");
     } else {
       ElMessage.error(message)

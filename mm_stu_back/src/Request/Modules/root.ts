@@ -7,16 +7,22 @@ interface RootRegistDTO {
   phone: string;
 }
 
-
-interface RootLoginDTO {
+export interface RootLoginDTO {
   username : string;
   password : string;
+}
+
+interface RootRole {
+  id: number;
+  name: string;
+  routers: any[] | any;
 }
 
 export interface UserInfo {
   username: string,
   avatar: string,
-  label: string
+  label: string,
+  role: RootRole
 }
 
 interface LoginResponseData {

@@ -64,8 +64,9 @@ export class CommonController {
     }).send();
   }
 
+  
   @Get("/test")
-  @UseInterceptors(new TokenExpireInterceptor())
+  @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
   public test(){
     return new HttpResponse<string>(HttpStatus.ACCEPTED, "ok").send();
   }

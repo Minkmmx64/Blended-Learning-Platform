@@ -59,7 +59,8 @@ export class RootService extends RootServiceDAO {
           user : {
             username: user.username,
             avatar: user.avatar,
-            label: user.label
+            label: user.label,
+            role: user.role
           }
         }
     ];

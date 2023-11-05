@@ -1,7 +1,15 @@
-import { UserInfo } from '@/Request/Modules/root';
 import { defineStore } from 'pinia';
+import { ElMessage } from 'element-plus';
+import { useRouter } from "vue-router";
+import Root, { UserInfo, RootLoginDTO } from '@/Request/Modules/root';
 
-const nullUser = { username: "未登录", avatar: "", label: "" };
+const nullUser: UserInfo = { username: "未登录", avatar: "", label: "",
+  role: {
+    id: -1,
+    name: "未登录",
+    routers: "",
+  }
+};
 
 export const useUserStore = defineStore("User",{
   state: () => {
