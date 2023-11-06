@@ -17,7 +17,7 @@
         <span v-if="!collapse" style="font-size: 16px;">{{ title }}</span>
       </div>
       <MainSystemMenu :data="SystemMenus" />
-      <el-button @click="MenuGoBack" class="w-full" type="primary">Back -</el-button>
+      <!-- <el-button @click="MenuGoBack" class="w-full" type="primary">Back -</el-button> -->
     </el-menu>
     <div
       v-show="!collapse"
@@ -48,7 +48,6 @@
 
 <script setup lang="ts">
 import { toRefs, Directive, onUnmounted, onMounted } from 'vue';
-import IconFont from '../display/icon/IconFont.vue';
 import { SystemMenus, config } from "./AdminSystemLayout";
 import MainSystemMenu from './child/MainSystemMenu.vue';
 import BreadNav from "./child/BreadNav.vue";
@@ -58,7 +57,7 @@ interface IProps { title: string; }
 const Props = withDefaults(defineProps<IProps>(), { title: "" } )
 
 const { title } = toRefs(Props);
-const { MenuWidth, MenuDrag, MenuGoBack } = useMenu();
+const { MenuWidth, MenuDrag } = useMenu();
 const { BreadNavPath, selectMenu, togglecollapse, collapse, currentMenu, togglemenu } = useBreadNav(MenuWidth);
 const MenuSelect = (index: string, indexPath: string[], item : string) =>  selectMenu(indexPath, index);
 

@@ -1,6 +1,6 @@
 import { AxiosApi } from "../AxiosApis";
 
-interface RootRegistDTO {
+export interface RootRegistDTO {
   username : string;
   password: string;
   bpassword: string;
@@ -12,7 +12,7 @@ export interface RootLoginDTO {
   password : string;
 }
 
-interface RootRole {
+export interface RootRole {
   id: number;
   name: string;
   routers: any[] | any;
@@ -25,9 +25,15 @@ export interface UserInfo {
   role: RootRole
 }
 
-interface LoginResponseData {
+export interface LoginResponseData {
   token: string;
   user: UserInfo
+}
+
+export interface RootInfoEdit {
+  avatar: string;
+  label: string;
+  username: string;
 }
 
 export class root extends AxiosApi {

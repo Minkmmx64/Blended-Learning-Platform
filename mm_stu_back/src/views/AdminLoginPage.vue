@@ -32,7 +32,7 @@ const login = async (e: Record<keyof User.LoginProps, string>) => {
           useUser.setUser(user);
           useUser.setToken(token);
           ElMessage.success("登录成功");
-          AdminLogin.push({ name: 'system' });
+          AdminLogin.push({ name: 'System' });
         }
       } catch (error) {
         console.log(error);

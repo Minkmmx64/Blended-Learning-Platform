@@ -2,28 +2,34 @@ import { useUserStore } from '@/store'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { ElMessage } from 'element-plus';
 import { RootRouterPath } from './root';
-import Common from "@/Request/Modules/common";
+
 //都可以显示的路由
 const routes: Array<RouteRecordRaw> = [
-  { path: "/", redirect: "/home" },
+  { path: "/", redirect: "/Home" },
   {
-    path: '/home',
-    name: 'home',
+    path: '/Home',
+    name: 'Home',
     component: () => import("@/views/AdminLoginPage.vue")
   },
   {
-    path: '/system',
-    name: 'system',
-    redirect: '/admin',
+    path: '/System',
+    name: 'System',
+    redirect: '/Admin',
     meta: { isAuth: true },
     component: () => import("@/views/admin/AdminSystem.vue"),
     children: [
       {
-        path: "/admin",
-        name: "admin",
+        path: "/Admin",
+        name: "Admin",
         meta: { isAuth: true },
-        component: () => import("@/views/admin/components/WelComeView.vue")
+        component: () => import("@/views/admin/WelComeView.vue")
       },
+      {
+        path: "/PersonalInfo",
+        name: "PersonalInfo",
+        meta: { isAuth: true },
+        component: () => import("@/views/admin/personal/PersonalInfo.vue")
+      }
     ]
   },
   {
@@ -39,16 +45,16 @@ const router = createRouter({
 });
 
 //当前是管理员
-router.addRoute("system", RootRouterPath["student.info"])
+router.addRoute("System", RootRouterPath["student.info"])
 
 
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
   const { getToken } = useUserStore();
-  if (to.name === "home") {
+  if (to.name === "Home") {
     if(getToken) {
       ElMessage.info("已经登录了");
-      next("/system")
+      next("/System")
     } else next();
   } else {
     // 需要验证登录
@@ -57,7 +63,7 @@ router.beforeEach(async (to, from, next) => {
       if (getToken) next();
       else {
         ElMessage.error("请登录");
-        next("/home");
+        next("/Home");
       }
     } else next();
   }

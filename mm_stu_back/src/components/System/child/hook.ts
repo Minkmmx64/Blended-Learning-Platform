@@ -15,7 +15,6 @@ interface IuseBreadNav {
 interface IuseMenu {
   MenuWidth: Ref<number>,
   MenuDrag: (el: HTMLElement) => void;
-  MenuGoBack : () => void;
 }
 
 const useMenu = (): IuseMenu => {
@@ -30,13 +29,10 @@ const useMenu = (): IuseMenu => {
     });
     document.addEventListener("mouseup", () =>  document.removeEventListener("mousemove", mousemove) )
   }
-  const MenuGoBack = () => {
-    Router.push({ name : "home" });
-  }
+
   return {
     MenuWidth,
     MenuDrag,
-    MenuGoBack
   }
 }
 

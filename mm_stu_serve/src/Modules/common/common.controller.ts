@@ -1,4 +1,4 @@
-import { Controller, Get, Session, Post, Body, HttpStatus, UsePipes, BadRequestException, UseGuards, GoneException, Headers, ConflictException, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Session, Post, Body, HttpStatus, UsePipes, GoneException, Headers, ConflictException, UseInterceptors } from "@nestjs/common";
 import { CommonService } from "./common.service";
 import { HttpResponse } from "src/response/response";
 import { ValidationPipe } from "src/utils/pipes";
@@ -64,7 +64,6 @@ export class CommonController {
     }).send();
   }
 
-  
   @Get("/test")
   @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
   public test(){

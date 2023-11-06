@@ -9,3 +9,9 @@ export class RootLoginDTO {
   username : string;
   password : string;
 }
+
+export class RootInfoDTO {
+  username: string;
+  label: string;
+  avatar: string;
+}

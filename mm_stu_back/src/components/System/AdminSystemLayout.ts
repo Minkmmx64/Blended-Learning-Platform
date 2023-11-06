@@ -3,7 +3,7 @@ import { ISystemMenus } from "./AdminSystemLayout.type";
 const config = {
   MenuBackColor: "rgb(48,65,86)",
   width: 200,
-  default_menu: 'admin', //管理首页
+  default_menu: 'Admin', //管理首页
 }
 
 /**
@@ -16,20 +16,33 @@ const config = {
 const SystemMenus: ISystemMenus[] = [
   {
     name: "管理首页",
-    route: "admin",
-    key: "admin",
+    route: "Admin",
+    key: "Admin",
     icon: "setting-filling"
   },
   {
     name: "学生管理",
-    key: "student",
+    key: "Student",
     icon: "user-filling",
     subMenu: [
       {
         name: "学籍管理",
-        route: "info",
-        key: "info",
+        route: "StudentInfo",
+        key: "StudentInfo",
         icon: "file-common"
+      }
+    ]
+  },
+  {
+    name: "个人管理",
+    key: "Personal",
+    icon: "GitHub",
+    subMenu: [
+      {
+        name: "个人信息",
+        key: "PersonalInfo",
+        route: "PersonalInfo",
+        icon: "image-text"
       }
     ]
   }
