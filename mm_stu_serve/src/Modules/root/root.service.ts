@@ -1,23 +1,30 @@
-import { RootLoginDTO, RootRegistDTO } from "./root.dto";
+import { RootInfoDTO, RootLoginDTO, RootRegistDTO } from "./root.dto";
 import { RootUser } from "src/Entity/root_user.entity";
-import { InsertResult } from "typeorm";
+import { DataSource, InsertResult } from "typeorm";
 import { getDate } from "src/utils/date";
 import { RootServiceDAO } from "./root.dao";
 import { JWT, encryption } from "src/utils/crypto";
 import { randomUUID } from "crypto";
+import { Injectable } from "@nestjs/common";
 
-export class RootService extends RootServiceDAO {
+@Injectable()
+export class RootService {
+
+  constructor(public DataSource: DataSource){}
+
+  public RootServiceDAO = new RootServiceDAO(this.DataSource);
+
   public async RootRegist(root: RootRegistDTO) : Promise<[any, InsertResult | null]> {
     try {
-      const user = await this.findRootByName(root.username);
+      const user = await this.RootServiceDAO.findRootByName(root.username);
       if(user) throw "用户名重复";
-      const phone = await this.findRootByPhone(root.phone);
+      const phone = await this.RootServiceDAO.findRootByPhone(root.phone);
       if(phone) throw "手机号重复";
       const queryRunner = this.DataSource.createQueryRunner();
       try {
         await queryRunner.connect();
         await queryRunner.startTransaction();
-        const ok = await this.RootUserRepository
+        const ok = await this.RootServiceDAO.RootUserRepository
                           .createQueryBuilder(null, queryRunner)
                           .insert()
                           .into(RootUser)
@@ -45,7 +52,7 @@ export class RootService extends RootServiceDAO {
 
   public async RootLogin(body : RootLoginDTO) : Promise<[any, any]> {
     try {
-      const user = await this.findRootByName(body.username);
+      const user = await this.RootServiceDAO.findRootByName(body.username);
       if(user === null) throw "用户不存在";
       const verify = encryption(body.password);
       if(verify !== user.password) throw "密码错误";
@@ -68,5 +75,23 @@ export class RootService extends RootServiceDAO {
     } catch (error) {
       return [ error , null ];
     }
+  }
+
+  public async RootUpdateInfo(user: RootInfoDTO): Promise<[any, any]> {
+    const { username: OldName, rusername: NewName, label, avatar } = user;
+    try {
+      if(NewName !== OldName) {   //如果新旧名字不一样则先判断用户名是否重复，再更新
+        if(await this.RootServiceDAO.findRootByName(NewName))
+          throw "用户名重复";
+      }
+      //找到用户更新
+      const User = await this.RootServiceDAO.findRootByName(OldName);
+      User.username = NewName;
+      User.avatar = avatar ?? User.avatar;
+      User.label = label ?? User.label
+      User.update_time = new Date(getDate())
+      const ok = await this.RootServiceDAO.RootUserRepository.save(User);
+      return [ null, ok ];
+    } catch (error) { return [ error, null ]; }
   }
 }

@@ -12,7 +12,8 @@ export const HttpMessage = {
   [HttpStatus.ACCEPTED] : "accept",                         //有返回值请求成功
   [HttpStatus.UNAUTHORIZED] : "Authorized failed",          //用户认证失败
   [HttpStatus.CONFLICT] : "Authorized relogin",             //重新登录
-  [HttpStatus.GONE] : "Authorized expired"                  //用户认证过时      
+  [HttpStatus.GONE] : "Authorized expired",                 //用户认证过时    
+  [HttpStatus.RESET_CONTENT] : "Reset Information success"  
 }
 
 // 服务端统一返回格式

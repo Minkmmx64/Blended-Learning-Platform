@@ -35,11 +35,14 @@ export class RootController {
   @Put("/info")
   @UsePipes(new ValidationPipe(RootInfoSchema))
   @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
-  public RootInfo(
+  public async RootUpdateInfo(
     @Body() body: RootInfoDTO
   ) {
-
-    return new HttpResponse<RootInfoDTO>(HttpStatus.ACCEPTED, body).send();
+    const [ error, edit ] = await this.RootService.RootUpdateInfo(body);
+    if(error) {
+      throw new BadRequestException(new HttpResponse<any>(HttpStatus.BAD_REQUEST, null,  error).send());
+    } else return new HttpResponse<any>(HttpStatus.RESET_CONTENT, edit).send();
   }
 
+  
 }

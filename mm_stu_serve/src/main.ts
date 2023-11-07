@@ -1,5 +1,5 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
 import * as cookieParser from "cookie-parser";
 import * as session from "express-session";
 async function bootstrap() {
@@ -8,7 +8,7 @@ async function bootstrap() {
     origin: [
       "http://192.168.159.25:3000",
       "http://192.168.59.185:3000",
-      "http://localhost:3000"
+      "http://localhost:3000",
     ],
     credentials: true,
   });
@@ -22,9 +22,9 @@ async function bootstrap() {
         maxAge: 60000,
       },
       saveUninitialized: true,
-      resave: true
-    })
-  )
+      resave: true,
+    }),
+  );
   await app.listen(8080);
 }
 

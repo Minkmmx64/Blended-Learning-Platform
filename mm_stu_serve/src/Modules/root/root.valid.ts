@@ -21,10 +21,11 @@ export const RootLoginSchema = Joi.object<RootLoginDTO>({
 //修改信息验证
 
 export const RootInfoSchema = Joi.object<RootInfoDTO>({
-  username : Joi.string().required().regex(Rules.username.rule).error(new NotAcceptableException(Rules.username.msg)),
+  rusername : Joi.string().required().regex(Rules.username.rule).error(new NotAcceptableException(Rules.username.msg)),
   avatar: Joi.alternatives().try(
     Joi.string().valid(null,""),
     Joi.string().required().regex(Rules.img.rule).error(new NotAcceptableException(Rules.img.msg))
   ),
-  label: Joi.string()
+  label: Joi.string(),
+  username: Joi.string().required().regex(Rules.username.rule).error(new NotAcceptableException("用户名不能为空")),
 })

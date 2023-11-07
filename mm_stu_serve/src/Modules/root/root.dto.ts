@@ -11,6 +11,7 @@ export class RootLoginDTO {
 }
 
 export class RootInfoDTO {
+  rusername: string;
   username: string;
   label: string;
   avatar: string;

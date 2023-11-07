@@ -17,7 +17,7 @@ export class RootUser extends BaseAttrColumn {
   @Column({ type: "char", length: 255, comment: "标签", nullable: true})
   label: string;
 
-  @Column({ type: "char", comment: "头像", nullable: true })
+  @Column({ type: "char", length: 255, comment: "头像", nullable: true })
   avatar: string;
 
   @ManyToOne( type => RootRole, role => role.users, { nullable : false }) // 管理员需要有权限

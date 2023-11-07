@@ -2,8 +2,10 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CommonModule } from './Modules/common/common.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { RootModule } from './Modules/root/root.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { StuCollegeModule } from './Modules/college/college.module';
+
 
 @Module({
   imports: [
@@ -18,7 +20,8 @@ import { RootModule } from './Modules/root/root.module';
       "synchronize": true
     }),
     RootModule,
-    CommonModule  
+    CommonModule,
+    StuCollegeModule
   ],
   controllers: [AppController],
   providers: [AppService],
