@@ -1,7 +1,6 @@
 import { RootInfoDTO, RootLoginDTO, RootRegistDTO } from "./root.dto";
 import { RootUser } from "src/Entity/root_user.entity";
 import { DataSource, InsertResult } from "typeorm";
-import { getDate } from "src/utils/date";
 import { RootServiceDAO } from "./root.dao";
 import { JWT, encryption } from "src/utils/crypto";
 import { randomUUID } from "crypto";
@@ -30,9 +29,7 @@ export class RootService {
                           .into(RootUser)
                           .values({
                             username: root.username,
-                            create_time: getDate(),
                             password: encryption(root.password),
-                            update_time: getDate(),
                             phone: root.phone,
                             role: {
                               id: 1
@@ -78,20 +75,15 @@ export class RootService {
   }
 
   public async RootUpdateInfo(user: RootInfoDTO): Promise<[any, any]> {
-    const { username: OldName, rusername: NewName, label, avatar } = user;
+    const { username: OldName, rusername: NewName } = user;
     try {
       if(NewName !== OldName) {   //如果新旧名字不一样则先判断用户名是否重复，再更新
         if(await this.RootServiceDAO.findRootByName(NewName))
           throw "用户名重复";
       }
       //找到用户更新
-      const User = await this.RootServiceDAO.findRootByName(OldName);
-      User.username = NewName;
-      User.avatar = avatar ?? User.avatar;
-      User.label = label ?? User.label
-      User.update_time = new Date(getDate())
-      const ok = await this.RootServiceDAO.RootUserRepository.save(User);
-      return [ null, ok ];
+      const update = await this.RootServiceDAO.updateRootInfo(user);
+      return [ null, update ];
     } catch (error) { return [ error, null ]; }
   }
 }

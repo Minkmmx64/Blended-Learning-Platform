@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, HttpStatus, Post, Put, UseInterceptors, UsePipes } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, HttpStatus, Post, Query, UseInterceptors, UsePipes } from "@nestjs/common";
 import { StuCollegeService } from "./college.service";
 import { ValidationPipe } from "src/utils/pipes";
 import { TokenExpireInterceptor } from "src/guard/token.interceptor";
@@ -22,5 +22,13 @@ export class StuCollegeController {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error).send());
     }
     return new HttpResponse<any>(HttpStatus.RESET_CONTENT, college).send();
+  }
+
+  @Get("/list")
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async CollegeList(
+    @Query() query: any
+  ) {
+    return query;
   }
 }

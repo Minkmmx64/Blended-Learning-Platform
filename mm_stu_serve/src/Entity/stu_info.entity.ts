@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { BaseAttrColumn } from './BaseAttrColumn';
 import { StuCollege } from './stu_college.entity';
 import { StuClass } from './stu_class.entity';
@@ -7,8 +7,8 @@ import { StuClass } from './stu_class.entity';
 @Entity("mm_stu_stu_info")
 export class StuInfo extends BaseAttrColumn {
 
-  @PrimaryColumn({ type: "char", length: 20, comment: "学号" })
-  sno: number;
+  @Column({ type: "char", length: 20, comment: "学号", primary: true, unique: true })
+  student: number;
 
   @Column({ type: "char", length: 20, comment : "学校名称" })
   school: string;

@@ -1,5 +1,5 @@
 
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, GoneException, HttpStatus } from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

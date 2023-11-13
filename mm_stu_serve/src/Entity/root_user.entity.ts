@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { BaseAttrColumn } from './BaseAttrColumn';
 import { RootRole } from './root_role.entity';
 

@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
 import { RootUser } from "src/Entity/root_user.entity";
 import { DataSource } from "typeorm";
+import { RootInfoDTO } from "./root.dto";
+import { getDate } from "src/utils/date";
 
 
 export class RootServiceDAO {
@@ -11,23 +12,22 @@ export class RootServiceDAO {
 
   public async findRootByName(username: string): Promise<RootUser> {
     try {
-      const user = await this.RootUserRepository.findOne({
-        where: {
-          username: username
-        },
-        relations : {
-          "role": true
-        }
+      return  await this.RootUserRepository.findOne({
+        where: { username: username },
+        relations : { "role": true }
       });
-      return user;
-    } catch (error) {
-      return error;
-    }
+    } catch (error) { return error; }
   }
 
   public async findRootByPhone(phone: string): Promise<RootUser> {
-    return await this.RootUserRepository.findOne({where: {
-      phone: phone
-    }});
+    return await this.RootUserRepository.findOne({where: { phone: phone }});
+  }
+
+  public async updateRootInfo(RootInfo: RootInfoDTO) {
+    const User = await this.findRootByName(RootInfo.username);
+    User.username = RootInfo.rusername;
+    User.avatar = RootInfo.avatar ?? User.avatar;
+    User.label = RootInfo.label ?? User.label
+    return await this.RootUserRepository.save(User);
   }
 }
