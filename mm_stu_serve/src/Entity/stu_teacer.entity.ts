@@ -1,7 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
 import { StuCourse } from "./stu_course.entity";
 import { BaseAttrColumn } from "./BaseAttrColumn";
-import { ClassCourseTeacher } from "./teacher_course_class.entity";
+import { ClassCourseTeacher } from "./relation_teacher_course_class.entity";
 import { StuSign } from "./stu_sign.entity";
 
 
@@ -25,7 +25,7 @@ export class StuTeacher extends BaseAttrColumn {
 
   @ManyToMany(type => StuCourse, StuCourse => StuCourse.teachers, { cascade: true })
   @JoinTable({
-    name: "mm_stu_teacher_course",
+    name: "relation_mm_stu_teacher_course",
     joinColumn: {
       name: "teacher_id",
       referencedColumnName: "id"

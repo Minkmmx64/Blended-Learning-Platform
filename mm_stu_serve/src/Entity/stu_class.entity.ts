@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
 import { BaseAttrColumn } from './BaseAttrColumn';
 import { StuCollege } from './stu_college.entity';
-import { ClassCourseTeacher } from './teacher_course_class.entity';
+import { ClassCourseTeacher } from './relation_teacher_course_class.entity';
 import { StuInfo } from './stu_info.entity';
 
 @Entity("mm_stu_stu_class") //班级表

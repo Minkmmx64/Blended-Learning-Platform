@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { StuTeacher } from "./stu_teacer.entity";
-import { ClassCourseTeacher } from "./teacher_course_class.entity";
-import { UserSign } from "./user_sign.entity";
+import { ClassCourseTeacher } from "./relation_teacher_course_class.entity";
+import { UserSign } from "./relation_user_sign.entity";
 
 enum TypeEnum {
   hand = "手势签到",

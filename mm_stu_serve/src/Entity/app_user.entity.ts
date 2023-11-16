@@ -2,9 +2,8 @@ import { Check, Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, On
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { StuInfo } from "./stu_info.entity";
 import { StuTeacher } from "./stu_teacer.entity";
-import { UserSign } from "./user_sign.entity";
+import { UserSign } from "./relation_user_sign.entity";
 import { StuExam } from "./stu_exam.entity";
-import { ClassCourseTeacher } from "./teacher_course_class.entity";
 
 @Entity("mm_stu_app_user")
 @Check(`("type" = 'student' AND "student_id" IS NOT NULL AND "teacher_id" IS NULL) OR ("type" = 'teacher' AND "teacher_id" IS NOT NULL AND "student_id" IS NULL)`)
@@ -38,7 +37,7 @@ export class AppUser extends BaseAttrColumn {
 
   @ManyToMany(type => StuExam, StuExam => StuExam.id)
   @JoinTable({
-    name: "mm_stu_user_exam",
+    name: "relation_mm_stu_user_exam",
     joinColumn: {
       name: "user_id",
       referencedColumnName: "id"

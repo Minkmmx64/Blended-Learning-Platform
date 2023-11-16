@@ -14,7 +14,15 @@ export class StuPaper extends BaseAttrColumn {
 
   @ManyToMany(type => StuSubject, StuSubject => StuSubject.id)
   @JoinTable({
-    name: "mm_stu_paper_subject"
+    name: "relation_mm_stu_paper_subject",
+    joinColumn: {
+      referencedColumnName: "id",
+      name: "paper_id"
+    },
+    inverseJoinColumn: {
+      referencedColumnName: "id",
+      name: "subject_id"
+    }
   })
   subjects: StuSubject[];
 
