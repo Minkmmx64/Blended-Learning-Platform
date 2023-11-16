@@ -1,5 +1,6 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, ManyToMany } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
+import { StuPaper } from "./stu_paper.entity";
 
 @Entity("mm_stu_stu_subject")
 export class StuSubject extends BaseAttrColumn {
@@ -15,5 +16,8 @@ export class StuSubject extends BaseAttrColumn {
 
   @Column({type: "char", length: 255, comment: "选项", nullable: true})
   options: string;
+
+  @ManyToMany(type => StuPaper, StuPaper => StuPaper.id)
+  papers: StuPaper[];
 
 }

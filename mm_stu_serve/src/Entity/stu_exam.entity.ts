@@ -1,6 +1,7 @@
-import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToOne } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { AppUser } from "./app_user.entity";
+import { StuPaper } from "./stu_paper.entity";
 
 @Entity("mm_stu_stu_exam")
 export class StuExam extends BaseAttrColumn {
@@ -12,4 +13,7 @@ export class StuExam extends BaseAttrColumn {
 
   @ManyToMany(type => AppUser, AppUser => AppUser.id)
   users: AppUser[]
+
+  @ManyToOne( type => StuPaper, StuPaper => StuPaper.id)
+  paper: StuPaper;
 }
