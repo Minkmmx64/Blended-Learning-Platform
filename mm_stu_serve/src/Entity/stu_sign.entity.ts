@@ -33,6 +33,7 @@ export class StuSign extends BaseAttrColumn {
   @ManyToOne(type => StuTeacher, StuTeacher => StuTeacher.id)
   teacher: StuTeacher;
 
-  @OneToMany(type => UserSign,UserSign => UserSign.classcourseteacher)
-  classcourseteachers: ClassCourseTeacher[]
+  @OneToMany(type => UserSign, UserSign => UserSign.id)
+  users: UserSign[];
+
 }

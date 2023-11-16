@@ -22,9 +22,11 @@ export class StuInfo extends BaseAttrColumn {
   @Column({ type: "int", width: 4, comment : "入学年份" })
   year: number;
 
-  //学生属于一个学院
-  @ManyToOne( type => StuCollege , { nullable: false })
-  college: StuCollege;
+  @Column({ type: "enum", enum: ["男", "女"], comment : "性别" })
+  gender: "男" | "女";
+
+  @Column({ type: "int", width: 4, comment : "年龄" })
+  age: number;
 
   //学生班级属于一个学院的某个班级
   @ManyToOne( type => StuClass , { nullable : false })

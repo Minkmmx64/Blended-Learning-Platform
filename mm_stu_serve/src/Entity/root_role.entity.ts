@@ -8,9 +8,6 @@ export class RootRole extends BaseAttrColumn {
   @Column({ type: "char", length: 20, comment: "角色名称"})
   name: string;
 
-  @Column({ type: "char", length: 20, comment: "权限表"})
-  routers: string;
-
   @OneToMany(() => RootUser, user => user.id)
   users: RootUser[];
 }

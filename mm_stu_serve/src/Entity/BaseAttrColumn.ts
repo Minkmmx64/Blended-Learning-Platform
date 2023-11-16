@@ -13,4 +13,7 @@ export class BaseAttrColumn {
 
   @Column({ type: "bool", comment: "状态", default: true})
   status: boolean;
+
+  @Column({ type: "char", length: 255, comment: "备注"})
+  remark: string;
 }
