@@ -1,7 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
 import { StuCourse } from "./stu_course.entity";
 import { BaseAttrColumn } from "./BaseAttrColumn";
-import { ClassCourseTeacher } from "./relation_teacher_course_class.entity";
+import { ClassCourseTeacher } from "./teacher_course_class.entity";
 import { StuSign } from "./stu_sign.entity";
 
 

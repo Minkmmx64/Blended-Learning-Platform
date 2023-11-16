@@ -5,7 +5,7 @@ import { StuTeacher } from './stu_teacer.entity';
 import { BaseAttrColumn } from './BaseAttrColumn';
 import { StuSign } from './stu_sign.entity';
 
-@Entity("relation_mm_stu_teacher_course_class")
+@Entity("mm_stu_teacher_course_class")
 @Unique(["class_id","course_id","teacher_id"])
 export class ClassCourseTeacher extends BaseAttrColumn {
   @Column({type: "mediumtext", comment: "上课时间"})

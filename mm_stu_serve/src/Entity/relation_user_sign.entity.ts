@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { AppUser } from "./app_user.entity";
-import { ClassCourseTeacher } from "./relation_teacher_course_class.entity";
+import { ClassCourseTeacher } from "./teacher_course_class.entity";
 
 @Entity("relation_mm_stu_user_sign")
 export class UserSign extends BaseAttrColumn {
