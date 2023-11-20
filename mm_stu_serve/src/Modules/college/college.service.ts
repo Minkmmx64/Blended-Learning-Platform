@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { DataSource } from "typeorm";
+import { DataSource, InsertResult } from "typeorm";
 import { CollegeServiceDAO } from "./college.dao";
 import { StuCollegeCreateDTO } from "./college.dto";
 
@@ -10,7 +10,7 @@ export class StuCollegeService {
 
   public CollegeServiceDAO = new CollegeServiceDAO(this.DataSource);
 
-  public async CollegeCreate(college: StuCollegeCreateDTO): Promise<[any, any]> {
+  public async CollegeCreate(college: StuCollegeCreateDTO): Promise<[any, InsertResult]> {
     try {
       const result = await this.CollegeServiceDAO.CreateStuCollege(college);
       return [ null, result ]

@@ -1,4 +1,3 @@
-
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Observable } from 'rxjs';
@@ -13,7 +12,7 @@ export class TokenExpireInterceptor implements NestInterceptor {
     const req = context.switchToHttp().getRequest() as Request;
     const res = context.switchToHttp().getResponse() as Response;
     const Token = req.headers.authorization;
-    const [ error, verify ] = JWT.verify(Token);
+    const [ error ] = JWT.verify(Token);
     if(error) {
       // 需要Token认证的接口添加拦截器
       // 返回410 数据有效，token需要刷新

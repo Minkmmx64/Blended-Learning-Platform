@@ -12,19 +12,19 @@ export class CommonController {
 
   constructor(private readonly CommonService: CommonService) { }
 
-  @Get("/sms")
+  //获取图形验证码
+  @Get("/sms")    
   public getSmsCode(@Session() session: Record<string, any>) {
     const code = this.CommonService.getSmsCode(session);
     return new HttpResponse<string>(HttpStatus.NO_CONTENT, code).send();
   }
-
-  @Post("/sms")
+  //提交验证码
+  @Post("/sms") 
   @UsePipes(new ValidationPipe(CommonSmsValid))
   public vSmsCode(
     @Body() body: SmsDTO,
     @Session() session: Record<string, any>
   ) {
-    // 验证验证码正确
     const verify = this.CommonService.vSmsCode(body.code, session);
     if(verify) {
       return new HttpResponse<null>(HttpStatus.NO_CONTENT).send();
@@ -33,16 +33,17 @@ export class CommonController {
     }
   }
 
+  //验证Token有效性
   @Post("/vtoken")
   @UsePipes(new ValidationPipe(CommonTokenValid))
   public vToken(
     @Body() body: vTokenDTO
   ) {
-    const [ error, ok ] = this.CommonService.vToken(body.token);
+    const [ error ] = this.CommonService.vToken(body.token);
     if(error) {
       //token超过失效
       if(error === "TokenExpiredError: jwt expired") {
-        throw new GoneException(new HttpResponse<any>(HttpStatus.GONE, null,  error).send());
+        throw new GoneException(new HttpResponse<null>(HttpStatus.GONE, null,  error).send());
       } else {
         throw new ConflictException(new HttpResponse<string | JwtPayload>(HttpStatus.CONFLICT, null, error.toString() ).send());
       }
@@ -51,19 +52,21 @@ export class CommonController {
     }
   }
 
+  //刷新Token
   @Get("/rtoken")
   public rToken(
     @Headers("Authorization") Authorization: string
   ) {
     const [ error, Token ] = this.CommonService.rToken(Authorization);
     if(error){
-      throw new ConflictException(new HttpResponse<any>(HttpStatus.CONFLICT, null,  error).send());
+      throw new ConflictException(new HttpResponse<null>(HttpStatus.CONFLICT, null,  error).send());
     }
     return  new HttpResponse<{ token : string }>(HttpStatus.ACCEPTED, {
       token: Token
     }).send();
   }
 
+  //测试接口
   @Get("/test")
   @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
   public test(){

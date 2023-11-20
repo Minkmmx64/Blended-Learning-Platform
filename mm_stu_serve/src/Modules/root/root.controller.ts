@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, HttpStatus, Post, Put, UseInterceptors, UsePipes } from "@nestjs/common";
+import { BadRequestException, Body, Controller, HttpStatus, Post, Put, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
 import { RootService } from "./root.service";
 import { RootRegistDTO , RootLoginDTO, RootInfoDTO } from "./root.dto";
 import { ValidationPipe } from "src/utils/pipes";
@@ -6,6 +6,7 @@ import { RootRegistSchema, RootLoginSchema, RootInfoSchema } from "./root.valid"
 import { HttpResponse } from "src/response/response";
 import { InsertResult } from "typeorm";
 import { TokenExpireInterceptor } from "src/guard/token.interceptor";
+import { AuthGuard } from "src/guard/auth.gurad";
 
 @Controller("/root")
 export class RootController {
@@ -33,6 +34,7 @@ export class RootController {
   }
 
   @Put("/info")
+  @UseGuards(new AuthGuard())
   @UsePipes(new ValidationPipe(RootInfoSchema))
   @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
   public async RootUpdateInfo(
@@ -43,6 +45,4 @@ export class RootController {
       throw new BadRequestException(new HttpResponse<any>(HttpStatus.BAD_REQUEST, null,  error).send());
     } else return new HttpResponse<any>(HttpStatus.RESET_CONTENT, edit).send();
   }
-
-  
 }

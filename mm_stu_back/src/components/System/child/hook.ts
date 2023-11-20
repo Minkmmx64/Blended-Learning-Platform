@@ -80,6 +80,7 @@ const useBreadNav = (MenuWidth: Ref<number>): IuseBreadNav => {
     currentMenu.value = index;
     //菜单点击的路由切换由 配置项的 key 决定
     Router.push({name: index});
+    //console.log(BreadNavPath.value);
   }
   const togglecollapse = () => {
     collapse.value = !collapse.value;

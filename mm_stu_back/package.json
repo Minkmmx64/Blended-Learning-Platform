@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^1.6.0",
+    "circular-dependency-plugin": "^5.2.2",
     "core-js": "^3.8.3",
     "element-plus": "^2.3.6",
     "monaco-editor": "^0.39.0",
@@ -22,6 +23,7 @@
     "vue-router": "^4.0.3"
   },
   "devDependencies": {
+    "@types/circular-dependency-plugin": "^5.0.8",
     "@types/qrcode": "^1.5.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",

@@ -2,7 +2,6 @@ import Axios, { AxiosResponse } from "axios";
 import { baseURL } from "./env.http";
 import { ElMessage } from "element-plus";
 import { ServerData } from "./AxiosApis";
-import Common from "./Modules/common";
 import { useUserStore } from "@/store";
 import router from "@/router";
 
@@ -42,8 +41,12 @@ instance.interceptors.response.use((response: AxiosResponse<ServerData<any>>) =>
     //自定义数据结构
     const { message } = error?.response?.data;
     if (code === 410) {  //认证失效, 但是有数据返回
-      console.log("正在刷新Token")
-      Common.rToken().then(res => {
+      // 不能使用Common的Api会有循环引用
+      Axios.get(baseURL.Api.uri + ":" + baseURL.Api.port + "/api/common/rtoken",{
+        headers: {
+          Authorization: User.getToken
+        }
+      }).then(res => {
         User.setToken(res.data.data.token);
         console.log("刷新Token成功:[Authorization]:", res.data.data.token);
       }).catch(error => {
@@ -69,6 +72,6 @@ instance.interceptors.response.use((response: AxiosResponse<ServerData<any>>) =>
   }
 });
 
-export default function HttpRequest() {
+export function HttpRequest() {
   return instance;
 }

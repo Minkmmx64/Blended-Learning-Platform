@@ -17,9 +17,9 @@ export class CommonApi extends AxiosApi {
     return this.post("/vtoken", { token });
   }
 
-  public rToken() {
-    return this.get<null, { token: string }>("/rtoken");
-  }
+  // public rToken() {
+  //   return this.get<null, { token: string }>("/rtoken");
+  // }
 
   public test(){
     return this.get("/test", { date: new Date().getTime()});

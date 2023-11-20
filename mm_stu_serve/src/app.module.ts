@@ -5,6 +5,7 @@ import { CommonModule } from './Modules/common/common.module';
 import { RootModule } from './Modules/root/root.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StuCollegeModule } from './Modules/college/college.module';
+import { MenuModule } from './Modules/menu/menu.module';
 
 
 @Module({
@@ -21,7 +22,8 @@ import { StuCollegeModule } from './Modules/college/college.module';
     }),
     RootModule,
     CommonModule,
-    StuCollegeModule
+    StuCollegeModule,
+    MenuModule
   ],
   controllers: [AppController],
   providers: [AppService],

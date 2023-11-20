@@ -29,6 +29,18 @@ const routes: Array<RouteRecordRaw> = [
         name: "PersonalInfo",
         meta: { isAuth: true },
         component: () => import("@/views/admin/personal/PersonalInfo.vue")
+      },
+      {
+        path: "/AuthorizationMenu",
+        name: "AuthorizationMenu",
+        meta: { isAuth: true },
+        component: () => import("@/views/admin/Authorization/AuthorizationMenu.vue")
+      },
+      {
+        path: "/AuthorizationRole",
+        name: "AuthorizationRole",
+        meta: { isAuth: true },
+        component: () => import("@/views/admin/Authorization/AuthorizationRole.vue")
       }
     ]
   },
@@ -54,6 +66,7 @@ router.beforeEach(async (to, from, next) => {
   if (to.name === "Home") {
     if(getToken) {
       ElMessage.info("已经登录了");
+      console.log(from);
       next("/System")
     } else next();
   } else {

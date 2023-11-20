@@ -1,8 +1,6 @@
 import { RootUser } from "src/Entity/root_user.entity";
 import { DataSource } from "typeorm";
 import { RootInfoDTO } from "./root.dto";
-import { getDate } from "src/utils/date";
-
 
 export class RootServiceDAO {
 
@@ -25,6 +23,7 @@ export class RootServiceDAO {
 
   public async updateRootInfo(RootInfo: RootInfoDTO) {
     const User = await this.findRootByName(RootInfo.username);
+    if(User === null) throw "用户不存在";
     User.username = RootInfo.rusername;
     User.avatar = RootInfo.avatar ?? User.avatar;
     User.label = RootInfo.label ?? User.label

@@ -45,6 +45,25 @@ const SystemMenus: ISystemMenus[] = [
         icon: "image-text"
       }
     ]
+  },
+  {
+    name: "权限系统",
+    key: "Authorization",
+    icon: "port-dictionary-full",
+    subMenu: [
+      {
+        name: "菜单列表",
+        key: "AuthorizationMenu",
+        icon: "port-dictionary-left",
+        route: "AuthorizationMenu"
+      },
+      {
+        name: "角色列表",
+        key: "AuthorizationRole",
+        route: "AuthorizationRole",
+        icon: "users"
+      }
+    ]
   }
 ];
 

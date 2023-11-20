@@ -61,8 +61,15 @@ const CloseMenu = (item: string) =>  {
   const SetArr = [...HistoryPath.value];
   if(HistoryPath.value.size === 1) return;
   const Index = SetArr.findIndex( e =>  BreadMenu(e).key === MenuItem.key );
+  const Key = BreadMenu(SetArr[Index]).key
   SetArr.splice(Index,1);
-  active.value = Index >= SetArr.length ? BreadMenu(SetArr[Index - 1]).key : BreadMenu(SetArr[Index]).key;
+  if(Index >= SetArr.length) {
+    active.value = BreadMenu(SetArr[Index - 1]).key;
+  }else {
+    if(active.value === Key){
+      active.value = BreadMenu(SetArr[Index]).key;
+    }
+  }
   HistoryPath.value = new Set(SetArr);
   emit('togglemenu', active.value);
 };

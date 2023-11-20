@@ -23,7 +23,7 @@ export type ServerData<T> = {
   code: number
 }
 
-export class HttpResponse<T> {
+export class HttpResponse<T = any> {
 
   public code : HttpStatus;
   public data: T;
