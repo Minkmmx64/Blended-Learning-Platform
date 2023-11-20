@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { MenuCreateDTO } from './menu.dto';
+import { MenuCreateDTO, MenuQueryDTO } from './menu.dto';
 import { DataSource, InsertResult } from 'typeorm';
 import { MenuDAO } from './menu.dao';
+import { PaginationQuery } from '../index.type';
+import { RootRouters } from 'src/Entity/root_routers.entity';
 
 
 @Injectable()
@@ -18,6 +20,15 @@ export class MenuService {
     } catch (error) {
       console.log(error);
       return [ new Error(error), null ];
+    }
+  }
+
+  public async MenuListsPagination(MenuQuery: PaginationQuery<MenuQueryDTO>): Promise<[Error, RootRouters[]]> {
+    try {
+      const Menus = await this.MenuDAO.MenuListsPagination(MenuQuery);
+      return [ null, Menus ];
+    } catch (error) {
+      return [new Error(error), null];
     }
   }
 }

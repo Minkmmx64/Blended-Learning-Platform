@@ -8,6 +8,7 @@ import { TokenExpireInterceptor } from 'src/guard/token.interceptor';
 import { HttpResponse } from 'src/response/response';
 import { InsertResult } from 'typeorm';
 import { PaginationQuery } from '../index.type';
+import { RootRouters } from 'src/Entity/root_routers.entity';
 
 @Controller('menu')
 export class MenuController {
@@ -29,9 +30,11 @@ export class MenuController {
   @Get("/list")
   @UseInterceptors(new TokenExpireInterceptor())
   public async MenuList(
-    @Query() Param: PaginationQuery<MenuQueryDTO>
+    @Query() Query: PaginationQuery<MenuQueryDTO>
   ) {
-    console.log(Param);
-    return Param;
+    const [ error, menus ] = await this.menuService.MenuListsPagination(Query);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<RootRouters[]>(HttpStatus.RESET_CONTENT, menus).send();
   }
 }

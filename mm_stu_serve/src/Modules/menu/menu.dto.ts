@@ -5,5 +5,6 @@ export class MenuCreateDTO {
 }
 
 export class MenuQueryDTO {
-  name: string;
+  name?: string;
+  pid?: number;
 }
