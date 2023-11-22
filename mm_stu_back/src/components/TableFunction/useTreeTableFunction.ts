@@ -8,8 +8,6 @@ interface IuseTreeTableFunction {
   childKey: ChildProps;
 }
 
-
-
 // 树形列表，指定 子列表props, 指定hasProps 懒加载
 export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue>(
   TableApi: new () => T,
@@ -32,7 +30,6 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue>
     childrenKey: child.childrenKey ?? "children"
   }
   
-
   const loadTableDatas = () => {
     useTableApi.get<PaginationQuery<Query>, KeyValue[]>("/list", query).then( res => {
       DataSource.value = res.data.data;
@@ -40,13 +37,13 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue>
         data[childKey.childrenKey] = [];
         data[childKey.hasChildrenKey] = true;
       }
-      console.log(DataSource.value);
-      
     }).catch(error => { ElMessage.error(error); });
   }
 
-  const lazy: lazyFunc = (e) => {
-    console.log(e);
+  const lazy: lazyFunc = (row, treeNode, resolve) => {
+    console.log(row);
+    console.log(treeNode);
+    resolve([]);
   }
 
   return { loadTableDatas, DataSource, lazy, childKey }

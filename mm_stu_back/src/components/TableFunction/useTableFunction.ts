@@ -3,10 +3,6 @@ import { ElMessage } from "element-plus";
 import { Ref, ref } from "vue";
 import { ITableFunction, Pagination, PaginationQuery, Sorted } from "./index.type";
 
-
-
-
-
 export function useTableFunction<T extends AxiosApi, Query extends object>(
   TableApi: new () => T,
   UserSearchQuery: Query,
