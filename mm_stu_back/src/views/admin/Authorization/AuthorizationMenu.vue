@@ -1,7 +1,8 @@
 <template>
   <TableContent 
-   
-    :DataSource="TableData">
+    :child="childKey"
+    :lazyLoad="lazy"
+    :DataSource="DataSource">
     <el-table-column prop="id" label="id" />
     <el-table-column prop="create_time" label="create_time" />
     <el-table-column prop="update_time" label="update_time" />
@@ -18,8 +19,11 @@ import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { useTreeTableFunction } from "@/components/TableFunction/useTreeTableFunction";
 import { onMounted } from "vue";
 
-const { TableData, loadTableDatas } = useTableFunction<menu, MenuQueryDTO>(menu, {});
-
+const { DataSource , loadTableDatas, childKey, lazy } = useTreeTableFunction<menu, MenuQueryDTO>(
+  menu,
+  {}, 
+  { childrenKey : "child", hasChildrenKey: "hashChild"}
+);
 
 onMounted(() => {
   loadTableDatas();
