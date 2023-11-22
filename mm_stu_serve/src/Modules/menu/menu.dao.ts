@@ -1,8 +1,7 @@
 import { DataSource, SelectQueryBuilder } from "typeorm";
-import { MenuCreateDTO, MenuQueryDTO } from "./menu.dto";
+import { MenuCreateDTO, MenuQueryDTO, MenuUpdateDTO } from "./menu.dto";
 import { RootRouters } from "src/Entity/root_routers.entity";
 import { PaginationQuery } from "../index.type";
-
 
 export class MenuDAO {
   constructor(protected DataSource : DataSource){};
@@ -39,5 +38,49 @@ export class MenuDAO {
                                    .skip(MenuQuery.limit * (MenuQuery.offset - 1))
                                    .take(MenuQuery.limit)
                                    .getMany();
+  }
+
+  //通过id 删除 菜单
+  public async DeleteMenuById(id: number) {
+    //创建事务
+    const queryRunner = this.DataSource.createQueryRunner();
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+      //先删除 pid = id 的 子菜单
+      await this.MenuRepository
+                .createQueryBuilder(null, queryRunner)
+                .delete()
+                .where("pid = :id")
+                .setParameter("id", id)
+                .execute();
+
+      const DeleteResult = await this.MenuRepository
+                                     .createQueryBuilder(null, queryRunner)
+                                     .delete()
+                                     .where("id = :id")
+                                     .setParameter("id", id)
+                                     .execute();
+      //提交事务
+      await queryRunner.commitTransaction();
+      return DeleteResult;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new Error(error);
+    }
+  }
+
+  public async UpdateMenuById(MenuUpdate: MenuUpdateDTO) {
+    return await this.MenuRepository
+                     .createQueryBuilder()
+                     .update()
+                     .set({
+                       name: MenuUpdate.data.name,
+                       key: MenuUpdate.data.key,
+                       pid: MenuUpdate.data.pid
+                     })
+                     .where("id = :id")
+                     .setParameter("id", MenuUpdate.id)
+                     .execute();
   }
 }

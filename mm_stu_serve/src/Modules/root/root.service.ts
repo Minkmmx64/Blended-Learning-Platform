@@ -1,10 +1,11 @@
-import { RootInfoDTO, RootLoginDTO, RootRegistDTO } from "./root.dto";
+import { RootInfoDTO, RootLoginDTO, RootLoginUserInfo, RootRegistDTO } from "./root.dto";
 import { RootUser } from "src/Entity/root_user.entity";
 import { DataSource, InsertResult } from "typeorm";
 import { RootServiceDAO } from "./root.dao";
 import { JWT, encryption } from "src/utils/crypto";
 import { randomUUID } from "crypto";
 import { Injectable } from "@nestjs/common";
+import { ServiceData } from "../index.type";
 
 @Injectable()
 export class RootService {
@@ -13,7 +14,7 @@ export class RootService {
 
   public RootServiceDAO = new RootServiceDAO(this.DataSource);
 
-  public async RootRegist(root: RootRegistDTO) : Promise<[any, InsertResult | null]> {
+  public async RootRegist(root: RootRegistDTO) : ServiceData<InsertResult> {
     try {
       const user = await this.RootServiceDAO.findRootByName(root.username);
       if(user) throw "用户名重复";
@@ -40,14 +41,14 @@ export class RootService {
         return [ null, ok ];
       } catch (error) {
         queryRunner.rollbackTransaction();
-        return [ error, null];
+        return [ new Error(error) , null];
       }
     } catch (error) {
-      return [ error, null];
+      return [ new Error(error), null];
     }
   }
 
-  public async RootLogin(body : RootLoginDTO) : Promise<[any, any]> {
+  public async RootLogin(body : RootLoginDTO) : ServiceData<RootLoginUserInfo> {
     try {
       const user = await this.RootServiceDAO.findRootByName(body.username);
       if(user === null) throw "用户不存在";
@@ -70,11 +71,11 @@ export class RootService {
         }
     ];
     } catch (error) {
-      return [ error , null ];
+      return [ new Error(error) , null ];
     }
   }
 
-  public async RootUpdateInfo(user: RootInfoDTO): Promise<[any, any]> {
+  public async RootUpdateInfo(user: RootInfoDTO): ServiceData<RootUser> {
     const { username: OldName, rusername: NewName } = user;
     try {
       if(NewName !== OldName) {   //如果新旧名字不一样则先判断用户名是否重复，再更新
@@ -84,6 +85,6 @@ export class RootService {
       //找到用户更新
       const update = await this.RootServiceDAO.updateRootInfo(user);
       return [ null, update ];
-    } catch (error) { return [ error, null ]; }
+    } catch (error) { return [ new Error(error), null ]; }
   }
 }

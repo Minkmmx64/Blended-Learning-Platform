@@ -9,3 +9,5 @@ interface Sorted {
 }
 
 export type PaginationQuery<T> = Sorted & Pagination & T;
+
+export type ServiceData<T> = Promise<[Error, T]>;

@@ -8,7 +8,7 @@ export const HttpMessage = {
   [HttpStatus.NO_CONTENT] : "success, No data",             //无返回值请求成功
   [HttpStatus.FORBIDDEN] : "refuse, Authentication failed", //用户无认证
   [HttpStatus.BAD_REQUEST] : "Bad Request",                 //请求错误
-  [HttpStatus.CREATED] : "createdd success",                //创建资源成功
+  [HttpStatus.CREATED] : "created success",                 //创建资源成功
   [HttpStatus.ACCEPTED] : "accept",                         //有返回值请求成功
   [HttpStatus.UNAUTHORIZED] : "Authorized failed",          //用户认证失败
   [HttpStatus.CONFLICT] : "Authorized relogin",             //重新登录

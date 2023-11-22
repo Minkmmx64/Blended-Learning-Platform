@@ -22,7 +22,7 @@ export class StuCollegeController {
   ) {
     const [error, college] = await this.StuCollegeService.CollegeCreate(body);
     if(error) {
-      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error).send());
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     }
     return new HttpResponse(HttpStatus.RESET_CONTENT, college).send();
   }

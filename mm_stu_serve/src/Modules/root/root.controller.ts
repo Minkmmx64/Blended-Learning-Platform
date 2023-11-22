@@ -1,12 +1,13 @@
 import { BadRequestException, Body, Controller, HttpStatus, Post, Put, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
 import { RootService } from "./root.service";
-import { RootRegistDTO , RootLoginDTO, RootInfoDTO } from "./root.dto";
+import { RootRegistDTO , RootLoginDTO, RootInfoDTO, RootLoginUserInfo } from "./root.dto";
 import { ValidationPipe } from "src/utils/pipes";
 import { RootRegistSchema, RootLoginSchema, RootInfoSchema } from "./root.valid";
 import { HttpResponse } from "src/response/response";
 import { InsertResult } from "typeorm";
 import { TokenExpireInterceptor } from "src/guard/token.interceptor";
 import { AuthGuard } from "src/guard/auth.gurad";
+import { RootUser } from "src/Entity/root_user.entity";
 
 @Controller("/root")
 export class RootController {
@@ -18,7 +19,7 @@ export class RootController {
     @Body() body: RootRegistDTO) {
       const [ error, insert ] = await this.RootService.RootRegist(body);
       if(error){
-        throw new BadRequestException(new HttpResponse<any>(HttpStatus.BAD_REQUEST, null,  error).send());
+        throw new BadRequestException(new HttpResponse<any>(HttpStatus.BAD_REQUEST, null,  error.message).send());
       } else return new HttpResponse<InsertResult>(HttpStatus.CREATED, insert).send();
     }
 
@@ -29,8 +30,8 @@ export class RootController {
   ) {
     const [ error, user ] = await this.RootService.RootLogin(body);
     if(error){
-      throw new BadRequestException(new HttpResponse<any>(HttpStatus.BAD_REQUEST, null,  error).send());
-    } else return new HttpResponse<InsertResult>(HttpStatus.ACCEPTED, user).send();
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<RootLoginUserInfo>(HttpStatus.ACCEPTED, user).send();
   }
 
   @Put("/info")
@@ -42,7 +43,7 @@ export class RootController {
   ) {
     const [ error, edit ] = await this.RootService.RootUpdateInfo(body);
     if(error) {
-      throw new BadRequestException(new HttpResponse<any>(HttpStatus.BAD_REQUEST, null,  error).send());
-    } else return new HttpResponse<any>(HttpStatus.RESET_CONTENT, edit).send();
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<RootUser>(HttpStatus.RESET_CONTENT, edit).send();
   }
 }

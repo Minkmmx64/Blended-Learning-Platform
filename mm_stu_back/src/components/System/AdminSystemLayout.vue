@@ -9,23 +9,23 @@
       :default-openeds="[currentMenu]"
       :unique-opened="true"
       @select="MenuSelect"
-      :collapse-transition="false"
+      :collapse-transition="true"
       :collapse="collapse"
-      :style="{ width: `${MenuWidth}px` , height: '100vh' }">
+      :style="{ height: '100vh', padding: '0px 30px 0px 0px' }">
       <div class="text-center text-white fangzheng select-none flex-row flex-center mt-5 font-20 mb-5">
         <!-- <IconFont icon="setting-filling" class="mr-2" /> -->
-        <span v-if="!collapse" style="font-size: 16px;">{{ title }}</span>
+        <!-- <span v-if="!collapse" style="font-size: 16px;">{{ title }}</span> -->
       </div>
       <MainSystemMenu :data="SystemMenus" />
       <!-- <el-button @click="MenuGoBack" class="w-full" type="primary">Back -</el-button> -->
     </el-menu>
-    <div
+    <!-- <div
       v-show="!collapse"
       v-minkm-drag
       class="System-drag select-none absolute flex-column flex-center"
       :style="{ width: `15px`, left: `${MenuWidth - 10}px`, height: `30px`, zIndex: 999 }">
       <div v-for="(item,index) in 4" :key="index" :style="{ height:'10px' }">..</div>
-    </div>
+    </div> -->
     <div class="System-right flex-column text-white">
       <BreadNav 
         @togglecollapse="togglecollapse"

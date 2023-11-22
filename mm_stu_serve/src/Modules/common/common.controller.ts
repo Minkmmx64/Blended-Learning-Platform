@@ -14,8 +14,8 @@ export class CommonController {
 
   //获取图形验证码
   @Get("/sms")    
-  public getSmsCode(@Session() session: Record<string, any>) {
-    const code = this.CommonService.getSmsCode(session);
+  public async getSmsCode(@Session() session: Record<string, any>) {
+    const code = await this.CommonService.getSmsCode(session);
     return new HttpResponse<string>(HttpStatus.NO_CONTENT, code).send();
   }
   //提交验证码
@@ -54,12 +54,12 @@ export class CommonController {
 
   //刷新Token
   @Get("/rtoken")
-  public rToken(
+  public async rToken(
     @Headers("Authorization") Authorization: string
   ) {
     const [ error, Token ] = this.CommonService.rToken(Authorization);
     if(error){
-      throw new ConflictException(new HttpResponse<null>(HttpStatus.CONFLICT, null,  error).send());
+      throw new ConflictException(new HttpResponse(HttpStatus.CONFLICT, null,  error.message).send());
     }
     return  new HttpResponse<{ token : string }>(HttpStatus.ACCEPTED, {
       token: Token

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { DataSource, InsertResult } from "typeorm";
 import { CollegeServiceDAO } from "./college.dao";
 import { StuCollegeCreateDTO } from "./college.dto";
+import { ServiceData } from "../index.type";
 
 @Injectable()
 export class StuCollegeService {
@@ -10,12 +11,12 @@ export class StuCollegeService {
 
   public CollegeServiceDAO = new CollegeServiceDAO(this.DataSource);
 
-  public async CollegeCreate(college: StuCollegeCreateDTO): Promise<[any, InsertResult]> {
+  public async CollegeCreate(college: StuCollegeCreateDTO): ServiceData<InsertResult> {
     try {
       const result = await this.CollegeServiceDAO.CreateStuCollege(college);
       return [ null, result ]
     } catch (error) {
-      return [ error, null ]
+      return [ new Error(error) , null ]
     }
   }
 

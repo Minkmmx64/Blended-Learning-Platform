@@ -1,12 +1,12 @@
-import { Controller, Post, Body, UseInterceptors, UsePipes, UseGuards, BadRequestException, HttpStatus, Get, Query} from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, UsePipes, UseGuards, BadRequestException, HttpStatus, Get, Query, Delete, Put} from '@nestjs/common';
 import { MenuService } from './menu.service';
-import { MenuCreateDTO, MenuQueryDTO } from './menu.dto';
+import { MenuCreateDTO, MenuQueryDTO, MenuUpdateDTO } from './menu.dto';
 import { ValidationPipe } from 'src/utils/pipes';
-import { MenuCreateValid } from './menu.valid';
+import { MenuCreateValid, MenuUpdateValid } from './menu.valid';
 import { AuthGuard } from 'src/guard/auth.gurad';
 import { TokenExpireInterceptor } from 'src/guard/token.interceptor';
 import { HttpResponse } from 'src/response/response';
-import { InsertResult } from 'typeorm';
+import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 import { PaginationQuery } from '../index.type';
 import { RootRouters } from 'src/Entity/root_routers.entity';
 
@@ -19,12 +19,12 @@ export class MenuController {
   @UsePipes(new ValidationPipe(MenuCreateValid))
   @UseInterceptors(new TokenExpireInterceptor())
   public async MenuCreate(
-    @Body() body: MenuCreateDTO
+    @Body() Body: MenuCreateDTO
   ) {
-    const [ error, InsertResult ] = await this.menuService.MenuCreate(body);
+    const [ error, InsertResult ] = await this.menuService.MenuCreate(Body);
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
-    } else return new HttpResponse<InsertResult>(HttpStatus.RESET_CONTENT, InsertResult).send();
+    } else return new HttpResponse<InsertResult>(HttpStatus.CREATED, InsertResult).send();
   }
 
   @Get("/list")
@@ -35,6 +35,31 @@ export class MenuController {
     const [ error, menus ] = await this.menuService.MenuListsPagination(Query);
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
-    } else return new HttpResponse<RootRouters[]>(HttpStatus.RESET_CONTENT, menus).send();
+    } else return new HttpResponse<RootRouters[]>(HttpStatus.ACCEPTED, menus).send();
+  }
+
+  @Delete("/delete")
+  @UseGuards(new AuthGuard())
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async MenuDelete(
+    @Query("id") id: number
+  ) {
+    const [ error, DeleteResult ] = await this.menuService.MenuDelete(id);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<DeleteResult>(HttpStatus.ACCEPTED, DeleteResult).send();
+  }
+
+  @Put("/update")
+  @UseGuards(new AuthGuard())
+  @UsePipes(new ValidationPipe(MenuUpdateValid))
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async MenuUpdate(
+    @Body() Body : MenuUpdateDTO
+  ) {
+    const [ error, UpdateResult ] = await this.menuService.MenuUpdate(Body);
+    if(error) {
+      throw new BadRequestException(new HttpResponse<UpdateResult>(HttpStatus.BAD_REQUEST, UpdateResult,  error.message).send());
+    } else return new HttpResponse<UpdateResult>(HttpStatus.RESET_CONTENT, UpdateResult).send();
   }
 }

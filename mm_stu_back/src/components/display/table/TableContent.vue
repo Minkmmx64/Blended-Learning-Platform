@@ -6,10 +6,10 @@
       row-key="id" 
       lazy
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" 
-      :load="load"
+      :load="Props.lazyLoad"
       stripe
       @sort-change="onSortChange"
-      :efault-expand-all="DefaultExpandAll">
+      :efault-expand-all="false">
       <slot></slot>
     </el-table>
     <div class="Pagination absolute flex-row flex-jus">
@@ -33,13 +33,17 @@ import { ref } from "vue";
 
 interface IProps {
   DataSource: any[];
-  DefaultExpandAll?: false;
+  lazyLoad ?: <T> (
+    row: T,
+    treeNode: unknown,
+    resolve: (date: T[]) => void
+  ) => void;
 }
 
 const Props = withDefaults(
   defineProps<IProps>(),
   {
-    DefaultExpandAll: false
+    
   }
 )
 
@@ -47,56 +51,7 @@ const onSortChange = (e: any) => {
   console.log(e);
 }
 
-const load = (
-  row: any,
-  treeNode: unknown,
-  resolve: (date: any[]) => void
-) => {
-  setTimeout(() => {
-    resolve([
-      {
-        id: 1,
-        create_time: new Date(),
-        update_time: new Date(),
-        remark: "remark",
-        status: 1,
-        name: "name",
-        key: "key",
-        children: [
-          {
-            id: 2,
-            create_time: new Date(),
-            update_time: new Date(),
-            remark: "remark",
-            status: 1,
-            name: "name",
-            key: "key",
-            children: [
-              {
-                id: 3,
-                create_time: new Date(),
-                update_time: new Date(),
-                remark: "remark",
-                status: 1,
-                name: "name",
-                key: "key",
-              }
-            ]
-          }
-        ]
-      },
-      {
-        id: 4,
-        create_time: new Date(),
-        update_time: new Date(),
-        remark: "remark",
-        status: 1,
-        name: "name",
-        key: "key",
-      }
-    ])
-  }, 1000)
-}
+
 
 const currentPage = ref(4)
 const pageSize = ref(100)
