@@ -31,7 +31,7 @@ import { ref } from "vue";
 import { useUserStore } from "@/store";
 import ImageLayout from "@/components/display/img/ImageLayout.vue";
 import { Upload } from '@element-plus/icons-vue'
-import { RootInfoEdit } from "@/Request/Modules/root";
+import { RootInfoEdit } from "@/Request/ApiModules/root";
 import { UploadRawFile } from "element-plus";
 
 const User = useUserStore();

@@ -103,7 +103,7 @@ import InputLayout from "../display/from/InputLayout.vue";
 import { User } from "./LoginLayout.type";
 import IconFont from "../display/icon/IconFont.vue";
 import { FromModel } from "./model";
-import Common from "@/Request/Modules/common";
+import Common from "@/Request/ApiModules/common";
 import { ElMessage } from "element-plus";
 
 interface IEmits {

@@ -32,6 +32,9 @@ export class MenuDAO {
       SelectQueryBuilder
                         .andWhere("pid = :pid")
                         .setParameter("pid", MenuQuery.pid);
+    } else {
+      SelectQueryBuilder
+                        .andWhere("pid IS NULL")
     }
     return await SelectQueryBuilder
                                    .orderBy(MenuQuery.prop, Order)

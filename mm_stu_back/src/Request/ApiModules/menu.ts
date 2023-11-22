@@ -9,8 +9,6 @@ export class menu extends AxiosApi {
   constructor(){
     super("/api/menu");
   }
-
- 
 }
 
 export default new menu();

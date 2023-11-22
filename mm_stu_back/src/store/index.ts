@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ElMessage } from 'element-plus';
 import { useRouter } from "vue-router";
-import Root, { UserInfo, RootLoginDTO } from '@/Request/Modules/root';
+import Root, { UserInfo, RootLoginDTO } from '@/Request/ApiModules/root';
 
 const nullUser: UserInfo = { username: "未登录", avatar: "", label: "",
   role: {

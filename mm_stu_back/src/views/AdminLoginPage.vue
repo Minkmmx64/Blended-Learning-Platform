@@ -6,8 +6,8 @@
 import { User } from "@/components/User/LoginLayout.type";
 import LoginLayout from "@/components/User/LoginLayout.vue";
 import { useRouter } from "vue-router";
-import Common from "@/Request/Modules/common";
-import Root from "@/Request/Modules/root";
+import Common from "@/Request/ApiModules/common";
+import Root from "@/Request/ApiModules/root";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import { useUserStore } from "@/store/index";

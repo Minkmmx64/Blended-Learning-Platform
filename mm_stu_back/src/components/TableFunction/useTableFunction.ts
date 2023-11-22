@@ -19,7 +19,7 @@ export function useTableFunction<T extends AxiosApi, Query extends object>(
   const query = Object.assign(UserSearchQuery, { limit, offset, props, order })
 
   const loadTableDatas = () => {
-    useTableApi.get<PaginationQuery<Query>, object[]>("/list", query).then( res => {
+    useTableApi.get<PaginationQuery<Query>, object[]>(`/list?date=${new Date().getTime()}`, query).then( res => {
       DataSource.value = res.data.data;
     }).catch(error => { ElMessage.error(error); });
   }

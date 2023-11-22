@@ -12,6 +12,7 @@
     "circular-dependency-plugin": "^5.2.2",
     "core-js": "^3.8.3",
     "element-plus": "^2.3.6",
+    "moment": "^2.29.4",
     "monaco-editor": "^0.39.0",
     "monaco-editor-webpack-plugin": "^7.0.1",
     "node-sass": "^8.0.0",

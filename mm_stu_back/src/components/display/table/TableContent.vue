@@ -31,11 +31,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { lazyFunc, ChildProps } from "@/components/TableFunction/index.type";
+import { DataModules } from "@/Request/DataModules/DataModules";
 interface IProps {
   //数据源
   DataSource: object[];
   //懒加载函数
-  lazyLoad ?: lazyFunc;
+  lazyLoad ?: lazyFunc<DataModules>;
   //子列表名称 //懒加载bool字段名称
   child ?: ChildProps; 
 }
@@ -50,7 +51,7 @@ const onSortChange = (e: any) => {
 }
 
 const currentPage = ref(4)
-const pageSize = ref(100)
+const pageSize = ref(10)
 const small = ref(false)
 const background = ref(false)
 const disabled = ref(false)
@@ -67,7 +68,7 @@ const handleCurrentChange = (val: number) => {
 .TableContent {
   width: 90%;
   margin: 0 auto;
-  height: 700px;
+  height: calc(100% - 50px);
 }
 
 .Pagination {

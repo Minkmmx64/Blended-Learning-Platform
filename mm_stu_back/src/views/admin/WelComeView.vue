@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useUserStore } from "@/store";
-import Common from "@/Request/Modules/common"
+import Common from "@/Request/ApiModules/common"
 
 const User = useUserStore();
 
