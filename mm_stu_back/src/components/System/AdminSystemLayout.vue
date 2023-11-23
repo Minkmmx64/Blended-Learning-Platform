@@ -70,7 +70,7 @@ const reFresh = () => {
 
 onMounted(() => {
   window.addEventListener("beforeunload", reFresh);
-  const Data = localStorage.sessionStorage("Data");
+  const Data = sessionStorage.getItem("Data");
   if(Data != null) {
     try {
       const { currentMenu: CM, BreadNavPath: BNP } = JSON.parse(Data);
