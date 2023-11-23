@@ -65,12 +65,12 @@ const vMinkmDrag : Directive = { mounted: (el: HTMLDivElement) =>  MenuDrag(el) 
 
 const reFresh = () => {
   const Data = { currentMenu: currentMenu.value, BreadNavPath: BreadNavPath.value }
-  localStorage.setItem("Data", JSON.stringify(Data));
+  sessionStorage.setItem("Data", JSON.stringify(Data));
 }
 
 onMounted(() => {
   window.addEventListener("beforeunload", reFresh);
-  const Data = localStorage.getItem("Data");
+  const Data = localStorage.sessionStorage("Data");
   if(Data != null) {
     try {
       const { currentMenu: CM, BreadNavPath: BNP } = JSON.parse(Data);
