@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseInterceptors, UsePipes, UseGuards, BadRequestException, HttpStatus, Get, Query, Delete, Put} from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, UsePipes, UseGuards, BadRequestException, HttpStatus, Get, Query, Delete, Put, Param} from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { MenuCreateDTO, MenuQueryDTO, MenuUpdateDTO } from './menu.dto';
 import { ValidationPipe } from 'src/utils/pipes';
@@ -42,7 +42,7 @@ export class MenuController {
   @UseGuards(new AuthGuard())
   @UseInterceptors(new TokenExpireInterceptor())
   public async MenuDelete(
-    @Query("id") id: number
+    @Query("id") id: number,
   ) {
     const [ error, DeleteResult ] = await this.menuService.MenuDelete(id);
     if(error) {

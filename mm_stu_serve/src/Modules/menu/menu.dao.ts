@@ -70,6 +70,8 @@ export class MenuDAO {
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new Error(error);
+    } finally {
+      await queryRunner.release();
     }
   }
 

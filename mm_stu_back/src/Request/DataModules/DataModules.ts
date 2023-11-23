@@ -12,4 +12,8 @@ export class DataModules {
 
   public remark: string = "";
 
+  public pid?: number;
+
+  public index?: number;
+
 }

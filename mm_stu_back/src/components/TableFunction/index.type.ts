@@ -25,7 +25,7 @@ export interface ITableFunction {
 }
 
 //懒加载方法
-export type lazyFunc<T> =(row: T, treeNode: T[], resolve: (date: T[]) => void) => void;
+export type lazyFunc<T> =(row: T, treeNode: any, resolve: (date: T[]) => void) => void;
 
 export interface ChildProps {
     //子列表名称

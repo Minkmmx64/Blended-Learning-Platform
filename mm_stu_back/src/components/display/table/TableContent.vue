@@ -9,6 +9,7 @@
       :load="Props.lazyLoad"
       stripe
       @sort-change="onSortChange"
+      :key="Props.tableKey"
       :efault-expand-all="false">
       <slot></slot>
     </el-table>
@@ -24,6 +25,9 @@
         :total="400"
         @size-change="handleSizeChange" 
         @current-change="handleCurrentChange" />
+        <div class="h-full flex-row flex-center mr-5">
+          <el-button @click="emit('refresh')" type="primary">刷新数据</el-button>
+        </div>
     </div>
   </div>
 </template>
@@ -36,18 +40,30 @@ interface IProps {
   //数据源
   DataSource: object[];
   //懒加载函数
-  lazyLoad ?: lazyFunc<DataModules>;
+  lazyLoad ?: lazyFunc<any>;
   //子列表名称 //懒加载bool字段名称
   child ?: ChildProps; 
+  //表格key
+  tableKey?: number;
 }
+
+interface Emit {
+  (event: "refresh") : void;
+}
+
+const emit = defineEmits<Emit>();
 
 const Props = withDefaults(
   defineProps<IProps>(),
-  {}
+  { tableKey: 0 }
 );
 
 const onSortChange = (e: any) => {
   console.log(e);
+}
+
+const onExpandChange = (row: any, o: any) => {
+  console.log(row, o);
 }
 
 const currentPage = ref(4)
@@ -63,6 +79,7 @@ const handleSizeChange = (val: number) => {
 const handleCurrentChange = (val: number) => {
   console.log(`current page: ${val}`)
 }
+
 </script>
 <style lang="scss" scoped>
 .TableContent {
