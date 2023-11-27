@@ -75,6 +75,7 @@ export class MenuDAO {
     }
   }
 
+  //根据id修改菜单
   public async UpdateMenuById(MenuUpdate: MenuUpdateDTO) {
     return await this.MenuRepository
                      .createQueryBuilder()
@@ -87,5 +88,13 @@ export class MenuDAO {
                      .where("id = :id")
                      .setParameter("id", MenuUpdate.id)
                      .execute();
+  }
+
+  public async Total() {
+    return await this.MenuRepository
+                     .createQueryBuilder()
+                     .select()
+                     .where("pid IS NULL")
+                     .getCount();
   }
 }

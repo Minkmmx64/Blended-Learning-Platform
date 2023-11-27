@@ -8,7 +8,8 @@
       :tree-props="{ children: Props.child?.childrenKey, hasChildren: Props.child?.hasChildrenKey }" 
       :load="Props.lazyLoad"
       stripe
-      @sort-change="onSortChange"
+      v-loading="loading"
+      @sort-change="handleSortChange"
       :key="Props.tableKey"
       :efault-expand-all="false">
       <slot></slot>
@@ -21,12 +22,12 @@
         :small="small" 
         :disabled="disabled" 
         :background="background" 
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        layout="total, sizes, prev, pager, next"
+        :total="total"
         @size-change="handleSizeChange" 
         @current-change="handleCurrentChange" />
         <div class="h-full flex-row flex-center mr-5">
-          <el-button @click="emit('refresh')" type="primary">刷新数据</el-button>
+          <el-button @click="emit('refresh')" type="primary" :loading="loading">刷新数据</el-button>
         </div>
     </div>
   </div>
@@ -34,8 +35,7 @@
   
 <script setup lang="ts">
 import { ref } from "vue";
-import { lazyFunc, ChildProps } from "@/components/TableFunction/index.type";
-import { DataModules } from "@/Request/DataModules/DataModules";
+import { lazyFunc, ChildProps, Sorted } from "@/components/TableFunction/index.type";
 interface IProps {
   //数据源
   DataSource: object[];
@@ -45,39 +45,47 @@ interface IProps {
   child ?: ChildProps; 
   //表格key
   tableKey?: number;
+  //加载
+  loading: boolean;
+  //数据总数
+  total: number;
 }
 
 interface Emit {
   (event: "refresh") : void;
+  (event: "handleSizeChange", limit: number) : void;
+  (event: "handleCurrentChange", offset: number) : void;
+  (event: "handleSortChange", sort: { prop: string, order: "descending" | "ascending" | null } ): void;
 }
 
 const emit = defineEmits<Emit>();
 
 const Props = withDefaults(
   defineProps<IProps>(),
-  { tableKey: 0 }
+  { 
+    tableKey: 0,
+    loading: false,
+    total: 0
+  }
 );
 
-const onSortChange = (e: any) => {
-  console.log(e);
+const handleSortChange = ({ column,  prop, order } : Sorted & { column : any } ) => {
+  emit("handleSortChange", { prop, order });
+  console.log(column);
 }
 
-const onExpandChange = (row: any, o: any) => {
-  console.log(row, o);
-}
-
-const currentPage = ref(4)
-const pageSize = ref(10)
+const currentPage = ref(1);
+const pageSize = ref(10);
 const small = ref(false)
 const background = ref(false)
 const disabled = ref(false)
 
 const handleSizeChange = (val: number) => {
-  console.log(`${val} items per page`)
+  emit("handleSizeChange", val);
 }
 
 const handleCurrentChange = (val: number) => {
-  console.log(`current page: ${val}`)
+  emit("handleCurrentChange", val);
 }
 
 </script>

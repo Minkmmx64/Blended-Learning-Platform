@@ -7,7 +7,7 @@ import { AuthGuard } from 'src/guard/auth.gurad';
 import { TokenExpireInterceptor } from 'src/guard/token.interceptor';
 import { HttpResponse } from 'src/response/response';
 import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
-import { PaginationQuery } from '../index.type';
+import { ListMetaData, PaginationQuery } from '../index.type';
 import { RootRouters } from 'src/Entity/root_routers.entity';
 
 @Controller('menu')
@@ -33,9 +33,10 @@ export class MenuController {
     @Query() Query: PaginationQuery<MenuQueryDTO>
   ) {
     const [ error, menus ] = await this.menuService.MenuListsPagination(Query);
+    console.log(Query);
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
-    } else return new HttpResponse<RootRouters[]>(HttpStatus.ACCEPTED, menus).send();
+    } else return new HttpResponse<ListMetaData<RootRouters[]>>(HttpStatus.ACCEPTED, menus).send();
   }
 
   @Delete("/delete")

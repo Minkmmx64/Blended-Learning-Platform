@@ -16,3 +16,8 @@ export interface CommonData {
   status?: boolean;
   remark?: string;
 }
+
+export type ListMetaData<T, META = any> = {
+  list: T;
+  meta: META
+}
