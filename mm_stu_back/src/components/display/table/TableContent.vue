@@ -55,9 +55,8 @@ interface Emit {
   (event: "refresh") : void;
   (event: "handleSizeChange", limit: number) : void;
   (event: "handleCurrentChange", offset: number) : void;
-  (event: "handleSortChange", sort: { prop: string, order: "descending" | "ascending" | null } ): void;
+  (event: "handleSortChange", sort: any): void;
 }
-
 const emit = defineEmits<Emit>();
 
 const Props = withDefaults(
@@ -71,7 +70,7 @@ const Props = withDefaults(
 
 const handleSortChange = ({ column,  prop, order } : Sorted & { column : any } ) => {
   emit("handleSortChange", { prop, order });
-  console.log(column);
+  // console.log(column);
 }
 
 const currentPage = ref(1);
@@ -91,9 +90,9 @@ const handleCurrentChange = (val: number) => {
 </script>
 <style lang="scss" scoped>
 .TableContent {
-  width: 90%;
+  
   margin: 0 auto;
-  height: calc(100% - 50px);
+  height: calc(100% - 250px);
 }
 
 .Pagination {

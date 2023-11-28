@@ -1,7 +1,7 @@
 import { AxiosApi } from "@/Request/AxiosApis";
 import { ElMessage } from "element-plus";
 import { Ref, ref } from "vue";
-import { EditProps, ITableFunction, Pagination, PaginationQuery, Sorted } from "./index.type";
+import { DeleteProps, EditProps, ITableFunction, ListMetaData, Pagination, PaginationQuery, Sorted } from "./index.type";
 import { DataModules } from "@/Request/DataModules/DataModules";
 
 export function useTableFunction<T extends AxiosApi, Query extends object, Edit extends object>(
@@ -25,7 +25,8 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
 
   const isEdit = ref(false);
   const EditTxt = ref<'修改' | '添加'>('修改');
-  const loading = ref(false);
+  const TableLoading = ref(false);
+  const EditLoading = ref(false);
   
   //合并查询参数
   const queryBuilder = () => {
@@ -39,10 +40,26 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
     return query;
   }
 
+  //表格加载数据
   const loadTableDatas = () => {
-    useTableApi.get<PaginationQuery<Query>, object[]>(`/list?date=${new Date().getTime()}`, queryBuilder()).then( res => {
-      DataSource.value = res.data.data;
+    TableLoading.value = true;
+    useTableApi.get<PaginationQuery<Query>, ListMetaData<DataModules[]>>(`/list?date=${new Date().getTime()}`, queryBuilder()).then( res => {
+      setTimeout(() => {
+        DataSource.value = res.data.data.list;
+        total.value = res.data.data.meta.total;
+        TableLoading.value = false;
+      }, 500);
     }).catch(error => { ElMessage.error(error); });
+  }
+
+  //删除按钮
+  const handleDelete = (deleteNode : DataModules) => {
+    useTableApi.delete<DeleteProps>("/delete", { id: deleteNode.id }).then( res => {
+      setTimeout( async () => {
+        ElMessage.success("删除成功");
+        loadTableDatas();
+      }, 500);
+    })
   }
 
   const handleSizeChange = (val: number) => {
@@ -67,7 +84,7 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
     console.log(UserEditParam.value);
   }
 
-  const handleEditOpen = (type: EditProps, row: DataModules) => {
+  const handleEditOpen = (type: EditProps, row?: DataModules) => {
     isEdit.value = true;
     console.log(type, row);
   }
@@ -76,7 +93,7 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
     apiname,
     DataSource, 
     loadTableDatas, 
-    loading, 
+    TableLoading, 
     total, 
     isEdit, 
     handleEditClose, 
@@ -85,6 +102,8 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
     EditTxt, 
     handleCurrentChange,
     handleSizeChange,
-    handleSortChange
+    handleSortChange,
+    EditLoading,
+    handleDelete
   }
 }

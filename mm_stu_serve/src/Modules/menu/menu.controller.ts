@@ -33,7 +33,6 @@ export class MenuController {
     @Query() Query: PaginationQuery<MenuQueryDTO>
   ) {
     const [ error, menus ] = await this.menuService.MenuListsPagination(Query);
-    console.log(Query);
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<ListMetaData<RootRouters[]>>(HttpStatus.ACCEPTED, menus).send();

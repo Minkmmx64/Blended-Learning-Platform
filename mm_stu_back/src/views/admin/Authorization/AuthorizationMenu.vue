@@ -1,17 +1,57 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full scroll">
+    <div class="TableHead">
+      <el-row class="mb-10 mt-10">
+        <el-col :span="24">
+          <div class="grid-content ep-bg-purple-dark" >
+            <el-button type="primary" @click="TableProps.handleEditOpen('create')">添加菜单</el-button>
+          </div>
+        </el-col>
+    </el-row>
+    </div>
     <el-dialog v-model="isEdit" :title="`${EditTxt}-${TableProps.apiname}`" width="30%">
+      <el-row class="mb-5 text-center">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
+            <span>菜单名称:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-input v-model="EditParams.name" placeholder="menu name" />
+        </el-col>
+      </el-row>
+      <el-row class="mb-5 text-center">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
+            <span>菜单key:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-input v-model="EditParams.key" placeholder="menu key" />
+        </el-col>
+      </el-row>
+      <el-row class="text-center" v-if="EditParams.pid">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
+            <span>pid:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-input disabled v-model="EditParams.pid" placeholder="menu key" />
+        </el-col>
+      </el-row>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="TableProps.handleEditClose">取消</el-button>
-          <el-button type="primary" @click="TableProps.handleEditConfirm"> {{ EditTxt }} </el-button>
+          <el-button type="primary" @click="TableProps.handleEditConfirm" :loading="EditLoading"> {{ EditTxt }} </el-button>
         </span>
       </template>
     </el-dialog>
+
     <TableContent
       :child="TableProps.childKey" 
       :lazyLoad="TableProps.lazy" 
-      :loading="loading" 
+      :loading="TableLoading" 
       :total="total" 
       @refresh="TableProps.loadTableDatas"
       @handleSizeChange="TableProps.handleSizeChange"
@@ -20,6 +60,7 @@
       :table-key="TreeTableKey" 
       :DataSource="DataSource">
       <el-table-column fixed type="index" width="50" />
+      <el-table-column prop="id" label="ID" header-align="center" align="center" />
       <el-table-column prop="name" label="路由名称" header-align="center" align="center" width="200" />
       <el-table-column prop="key" label="路由关键字" header-align="center" align="center" />
       <el-table-column prop="status" label="状态" sortable header-align="center" align="center">
@@ -29,8 +70,8 @@
         </template>
       </el-table-column>
       <el-table-column prop="remark" label="描述" header-align="center" align="center" />
-      <el-table-column prop="create_time" label="创建时间" header-align="center" align="center" width="300" />
-      <el-table-column prop="update_time" label="修改时间" header-align="center" align="center" width="300" />
+      <el-table-column prop="create_time" label="创建时间" header-align="center" align="center" width="250" />
+      <el-table-column prop="update_time" label="修改时间" header-align="center" align="center" width="250" />
       <el-table-column flex="right" label="操作" header-align="center" align="center" width="300">
         <template #default="{ row }"> <!---->
           <el-button type="primary" @click="TableProps.handleEditOpen('create', row)">添加子菜单</el-button>
@@ -45,20 +86,29 @@
 </template>
 <script lang="ts" setup>
 import TableContent from "@/components/display/table/TableContent.vue";
-import { menu, MenuQueryDTO } from "@/Request/ApiModules/menu";
+import { menu, MenuEdit, MenuQuery } from "@/Request/ApiModules/menu";
 import { useTreeTableFunction } from "@/components/TableFunction/useTreeTableFunction";
 import { onMounted, ref } from "vue";
 
-const EditParams = ref();
+//添加修改对象
+const EditParams = ref<MenuEdit>({
+  name: "",
+  key: "",
+  pid: undefined
+});
 
-const TableProps = useTreeTableFunction<menu, MenuQueryDTO>(
+const QueryParams = ref<MenuQuery>({
+  
+});
+
+const TableProps = useTreeTableFunction<menu, MenuQuery, MenuEdit>(
   "菜单",
   menu,
-  {},
+  QueryParams,
   { childrenKey: "child", hasChildrenKey: "hashChild" },
   EditParams
 );
-const { isEdit, DataSource, loading, total, TreeTableKey , EditTxt} = TableProps;
+const { isEdit, DataSource, TableLoading, total, TreeTableKey , EditTxt, EditLoading } = TableProps;
 
 onMounted(() => {
   TableProps.loadTableDatas();

@@ -1,27 +1,36 @@
-import { AxiosApi } from "@/Request/AxiosApis";
+import { AxiosApi, ServerData } from "@/Request/AxiosApis";
 import { Ref, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { ChildProps, EditProps, ITableFunction, KeyValue, ListMetaData, Pagination, PaginationQuery, Sorted, lazyFunc } from "./index.type";
+import { ChildProps, DeleteProps, EditProps, ITableFunction, KeyValue, ListMetaData, Pagination, PaginationQuery, Sorted, lazyFunc } from "./index.type";
 import { DataModules } from "@/Request/DataModules/DataModules";
+import { AxiosResponse } from "axios";
 
 interface IuseTreeTableFunction {
+  //加载子树
   lazy: lazyFunc<KeyValue>;
+  //子树属性
   childKey: ChildProps;
-  handleDelete: (row: DataModules) => void;
+  //el-table key
   TreeTableKey: Ref<number>;
 }
 
-type DeleteProps<T = unknown> = {
-  [K in keyof T]: any;
-} & {
-  id: number;
-};
-
+/**
+ *  通用树形列表加载器 
+ *  后端返回数据结构:
+ *  @param {
+ *  message: "请求消息",
+ *  code: "状态码",
+ *  data: {
+ *    list: [],  list 拥有 pid 属性,通过pid对属性列表绑定
+ *    meta: { ... }
+ *  }
+ * }
+ */
 // 树形列表，指定 子列表props, 指定hasProps 懒加载
-export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue, Edit extends object = any>(
+export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue, Edit extends KeyValue = any>(
   apiname: string,
   TableApi: new () => T,
-  UserSearchQuery: Query,
+  UserSearchQuery: Ref<Query>,
   child: ChildProps,
   UserEditParam: Ref<Edit>,                   // 用户添加&编辑表单
   PaginationQuery?: Sorted & Pagination  // 分页请求参数 & 用户自定义请求参数
@@ -44,32 +53,41 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
   const DataSource = ref<KeyValue[]>([]);
   const total = ref(0);
   //表格加载动画 
-  const loading = ref(false);
+  const TableLoading = ref(false);
+  //编辑框加载
+  const EditLoading = ref(false);
+
   //设置当前是否正在编辑
   const isEdit = ref(false);
   //当前正在编辑的情况
   const EditTxt = ref<'修改' | '添加'>('修改');
-
-  //合并查询参数
-  const queryBuilder = () => {
-    const query = Object.assign(UserSearchQuery, 
-      {
-        limit: limit.value, 
-        offset: offset.value, 
-        prop: props.value, 
-        order: order.value 
-      });
-    return query;
-  }
-  
-  // ----------
+  // 当前item id
+  const id = ref<number | undefined>();
+  // el-table
   const TreeNodeMap = new Map<number, any>();
   const TreeTableKey = ref(0);
-  // ----------
+  //合并查询参数
+  const queryBuilder = () => {
+    return Object.assign(UserSearchQuery.value, {
+      limit: limit.value, 
+      offset: offset.value, 
+      prop: props.value, 
+      order: order.value 
+    });
+  }
+  //排除一些参数
+  const editBuildr = () => {
+    const edit = {} as Edit;
+    for(const K in UserEditParam.value) {
+      if(K !== "pid") 
+        edit[K] = UserEditParam.value[K];
+    }
+    return edit;
+  }
 
   //表格加载数据
   const loadTableDatas = () => {
-    loading.value = true;
+    TableLoading.value = true;
     useTableApi.get<PaginationQuery<Query>, ListMetaData<DataModules[]>>(`/list?date=${new Date().getTime()}`, queryBuilder()).then( res => {
       setTimeout(() => {
         DataSource.value = res.data.data.list;
@@ -79,13 +97,13 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
           DataSource.value[i][childKey.hasChildrenKey] = true;
           DataSource.value[i]["index"] = i;
         }
-        loading.value = false;
+        TableLoading.value = false;
         TreeTableKey.value++;
       }, 500);
     }).catch(error => { ElMessage.error(error); });
   }
 
-  //加载子数据， pid = id
+  //渲染el-table子数据
   const lazy: lazyFunc<KeyValue> = (row, treeNode, resolve) => {
     TreeNodeMap.set(row.id, { row, treeNode, resolve, index: row.index });
     setTimeout( async() => {
@@ -94,6 +112,7 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
     }, 500);
   }
 
+  //通过pid加载子树
   const loadTreeNodeChildData = (row: KeyValue) : Promise<KeyValue[]> => {
     return new Promise((resolve, reject) => {
       useTableApi.get<PaginationQuery<Query>, ListMetaData<DataModules[]>>(`/list?d=${Math.random()}`,{
@@ -143,26 +162,53 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
     loadTableDatas();
   }
 
+  //排序
   const handleSortChange = (val: Sorted) => {
     props.value = val.prop;
     order.value = val.order;
     loadTableDatas();
-    console.log(val);
   }
 
+  //提交修改，添加
   const handleEditConfirm = () => {
-    console.log(UserEditParam.value);
-    console.log(EditTxt.value + "操作");
-    
+    EditLoading.value = true;
+    let Api: Promise<AxiosResponse<ServerData<any>, any>>;
+    if(EditTxt.value === "添加") {
+      Api = useTableApi.post<Edit>("/create", UserEditParam.value );
+    } else {
+      Api = useTableApi.put<{ id: number, data: Edit }>("/update", { id: id.value!, data:  editBuildr() });
+    }
+    Api.then( res => {
+      setTimeout(() => {
+        ElMessage.success(`${EditTxt.value} ${apiname} 成功`);
+        EditLoading.value = false;
+        handleEditClose();
+        loadTableDatas();
+      }, 500);
+    }).catch( error => {
+      ElMessage.error(error);
+      TableLoading.value = false;
+      handleEditClose();
+    });
   }
 
   const handleEditClose = () => {
     isEdit.value = false;
   }
 
-  const handleEditOpen = (type: EditProps, row: DataModules) => {
+  const handleEditOpen = (type: EditProps, row?: KeyValue) => {
     isEdit.value = true;
-    console.log(type, row);
+    if(row) {
+      id.value = row.id;
+      for(const K in UserEditParam.value) {
+        UserEditParam.value[K] = row[K];
+        if(K === "pid") UserEditParam.value[K] = row["id"];
+      }
+    } else {
+      for(const K in UserEditParam.value) {
+        (UserEditParam.value[K] as any) = undefined;
+      }
+    }
     if(type === "create") {
       EditTxt.value = "添加";
     } else EditTxt.value = "修改";
@@ -176,7 +222,8 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
     childKey, 
     handleDelete, 
     TreeTableKey, 
-    loading, 
+    TableLoading, 
+    EditLoading,
     total, 
     isEdit, 
     handleEditClose, 
