@@ -2,6 +2,7 @@ import { DataSource, SelectQueryBuilder } from "typeorm";
 import { MenuCreateDTO, MenuQueryDTO, MenuUpdateDTO } from "./menu.dto";
 import { RootRouters } from "src/Entity/root_routers.entity";
 import { PaginationQuery } from "../index.type";
+import { ToOrder } from "src/common/common";
 
 export class MenuDAO {
   constructor(protected DataSource : DataSource){};
@@ -17,10 +18,7 @@ export class MenuDAO {
   }
 
   public async MenuListsPagination(MenuQuery: PaginationQuery<MenuQueryDTO>) {
-    const Order = MenuQuery.order === "ascending" 
-                  ? "ASC" : 
-                          MenuQuery.order === "descending" 
-                          ? "DESC" : "ASC";
+    const Order = ToOrder(MenuQuery);
 
     const SelectQueryBuilder: SelectQueryBuilder<RootRouters> = this.MenuRepository.createQueryBuilder().select()
     if(MenuQuery.name){
