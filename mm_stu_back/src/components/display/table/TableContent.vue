@@ -90,7 +90,7 @@ const handleCurrentChange = (val: number) => {
 </script>
 <style lang="scss" scoped>
 .TableContent {
-  
+  width: 90%;
   margin: 0 auto;
   height: calc(100% - 250px);
 }

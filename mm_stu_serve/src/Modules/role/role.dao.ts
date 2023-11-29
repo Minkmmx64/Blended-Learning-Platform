@@ -12,17 +12,27 @@ export class RoleDAO {
   private RoleRepository = this.DataSource.getRepository(RootRole);
 
   public async RoleListsPagination(RoleQuery: PaginationQuery<RoleQueryDTO>):  Promise<RootRole[]> {
-    
-    const SelectQueryBuilder: SelectQueryBuilder<RootRole> = this.RoleRepository.createQueryBuilder().select();
+
+    const SelectQueryBuilder: SelectQueryBuilder<RootRole> = this.RoleRepository.createQueryBuilder("role").leftJoinAndSelect("role.routers", "mm_stu_root_routers");
 
     if(RoleQuery.name) {
       SelectQueryBuilder
                         .where("name = :name")
                         .setParameter("name", RoleQuery.name);
     }
-  
+    if(RoleQuery.prop) {
+      SelectQueryBuilder
+                        .orderBy("role." + RoleQuery.prop, ToOrder(RoleQuery))
+    }
+
+    //打印sql
+    // const sql = SelectQueryBuilder
+    //                               .skip((RoleQuery.offset - 1) * RoleQuery.limit)
+    //                               .take(RoleQuery.limit)
+    //                               .getSql();
+    // console.log(sql);
+    //还需要获取角色的所有菜单权限
     return await SelectQueryBuilder
-                                   .orderBy(RoleQuery.prop, ToOrder(RoleQuery))
                                    .skip((RoleQuery.offset - 1) * RoleQuery.limit)
                                    .take(RoleQuery.limit)
                                    .getMany();

@@ -4,7 +4,7 @@
       <el-row class="mb-10 mt-10">
         <el-col :span="24">
           <div class="grid-content ep-bg-purple-dark" >
-            <el-button type="primary" @click="TableProps.handleEditOpen('create')">添加菜单</el-button>
+            <el-button type="primary" @click="TableProps.handleEditOpen('create')">添加{{ TableProps.apiname }}</el-button>
           </div>
         </el-col>
     </el-row>

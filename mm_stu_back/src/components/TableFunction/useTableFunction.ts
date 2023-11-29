@@ -1,13 +1,14 @@
-import { AxiosApi } from "@/Request/AxiosApis";
+import { AxiosApi, ServerData } from "@/Request/AxiosApis";
 import { ElMessage } from "element-plus";
 import { Ref, ref } from "vue";
-import { DeleteProps, EditProps, ITableFunction, ListMetaData, Pagination, PaginationQuery, Sorted } from "./index.type";
+import { DeleteProps, EditProps, ITableFunction, KeyValue, ListMetaData, Pagination, PaginationQuery, Sorted } from "./index.type";
 import { DataModules } from "@/Request/DataModules/DataModules";
+import { AxiosResponse } from "axios";
 
 export function useTableFunction<T extends AxiosApi, Query extends object, Edit extends object>(
   apiname: string,
   TableApi: new () => T,
-  UserSearchQuery: Query,                // 用户查询参数
+  UserSearchQuery: Ref<Query>,                // 用户查询参数
   UserEditParam: Ref<Edit>,                   // 用户添加&编辑表单
   PaginationQuery?: Sorted & Pagination  // 分页请求参数 & 用户自定义请求参数
 ) : ITableFunction {
@@ -27,10 +28,13 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
   const EditTxt = ref<'修改' | '添加'>('修改');
   const TableLoading = ref(false);
   const EditLoading = ref(false);
-  
+
+  // 当前item id
+  const id = ref<number | undefined>();
+
   //合并查询参数
   const queryBuilder = () => {
-    const query = Object.assign(UserSearchQuery, 
+    const query = Object.assign(UserSearchQuery.value, 
       { 
         limit: limit.value, 
         offset: offset.value, 
@@ -59,7 +63,7 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
         ElMessage.success("删除成功");
         loadTableDatas();
       }, 500);
-    })
+    }).catch(() => ElMessage.error("你没有权限删除"));
   }
 
   const handleSizeChange = (val: number) => {
@@ -73,7 +77,9 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
   }
 
   const handleSortChange = (val: Sorted) => {
-    console.log(val);
+    props.value = val.prop;
+    order.value = val.order;
+    loadTableDatas();
   }
 
   const handleEditClose = () => {
@@ -81,12 +87,45 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
   }
 
   const handleEditConfirm = () => {
+    EditLoading.value = true;
+    let Api: Promise<AxiosResponse<ServerData<any>, any>>;
+    if(EditTxt.value === "添加") {
+      Api = useTableApi.post<Edit>("/create", UserEditParam.value );
+    } else {
+      Api = useTableApi.put<{ id: number, data: Edit }>("/update", { id: id.value!, data:  UserEditParam.value });
+    }
     console.log(UserEditParam.value);
+    
+    Api.then( res => {
+      setTimeout(() => {
+        ElMessage.success(`${EditTxt.value} ${apiname} 成功`);
+        EditLoading.value = false;
+        handleEditClose();
+        loadTableDatas();
+      }, 500);
+    }).catch( error => {
+      ElMessage.error(error);
+      TableLoading.value = false;
+      handleEditClose();
+    });
   }
 
-  const handleEditOpen = (type: EditProps, row?: DataModules) => {
+  const handleEditOpen = (type: EditProps, row?: KeyValue) => {
     isEdit.value = true;
-    console.log(type, row);
+    if(row) {
+      id.value = row.id;
+      for(const K in UserEditParam.value) {
+        if(row[K])
+          UserEditParam.value[K] = row[K];
+      }
+    } else {
+      for(const K in UserEditParam.value) {
+        (UserEditParam.value[K] as any) = typeof UserEditParam.value[K] === "object" ? UserEditParam.value[K] : undefined;
+      }
+    }
+    if(type === "create") {
+      EditTxt.value = "添加";
+    } else EditTxt.value = "修改";
   }
 
   return { 
