@@ -1,0 +1,110 @@
+/*wrong开始*/
+.wrong { background: #e6f1f7 url(../images/wrong_bg.gif) repeat-x; width: 815px; margin: 0 auto; padding-top: 64px; }
+/*wrong结束*/
+/*Login开始*/
+.login { width: 741px; height: 602px; background: url(../images/login_bg.gif) no-repeat; margin: 0 auto; }
+.login_l { float: left; display: inline; width: 276px; margin: 340px 0 0 164px; }
+.login_r { float: left; display: inline; width: 102px; margin: 352px 0 0 60px; }
+.login_l label { float: left; width: 50px; height: 28px; line-height: 28px; text-align: right; font-size: 14px; color: #0c6eb2; margin-top: 12px; }
+.login_txt { float: left; width: 200px; height: 26px; line-height: 26px; margin: 12px 0 0 5px; border: #cfcfd1 1px solid; }
+.login_txt_short { float: left; width: 114px; height: 26px; line-height: 26px; margin: 12px 0 0 5px; border: #cfcfd1 1px solid; }
+.login_verificate { float: left; margin: 12px 0 0 5px; }
+.login_btn { width: 102px; height: 34px; cursor: pointer; background: url(../images/general.gif) no-repeat -500px 0; border: none; color: #fff; margin-top: 14px; font-size: 14px; }
+.login_tip { color: Red; font-size: 14px; }
+.login_tipmess { color: Red; float: left; margin: 7px 0 0 2px; font-size: 14px; }
+/*Login结束*/
+/*table控制按钮开始*/
+.operate { height: 24px; line-height: 24px; margin: 10px 0; }
+.operate span { height: 24px; display: inline-block; float: left; padding-left: 28px; margin-right: 15px; cursor: pointer; background-position: left center; }
+.search_btn { background: url(../images/search_btn_bg.gif) no-repeat; }
+.add_btn { background: url(../images/add_btn_bg.gif) no-repeat; }
+.edit_btn { background: url(../images/edit_btn_bg.gif) no-repeat; }
+.delete_btn { background: url(../images/delete_btn_bg.gif) no-repeat; }
+.monitor_btn { background: url(../images/monitor_btn_bg.gif) no-repeat; }
+.floor_btn { background: url(../images/floor_btn_bg.gif) no-repeat; }
+/*table控制按钮结束*/
+/*table_gray开始*/
+.table_gray { width: 100%; _width: 97%; border: #e2e0dc 1px solid; }
+.table_gray th { text-align: left; height: 33px; line-height: 33px; background: url(../images/table_gray_th_bg.gif) repeat-x; }
+.table_gray tbody tr { height: 30px; line-height: 30px; background: #fff; cursor: pointer; }
+.table_gray td { text-align: left; border-bottom: #e2e0dc 1px solid; }
+.table_gray th.align_ctr, .table_gray td.align_ctr { text-align: center; }
+.table_gray td a:hover { color: #4684be; }
+.table_gray .cur td { background: #e9eef4; }
+.list_btn { display: none; float: left; }
+.table_btn { display: none; position: absolute; width: 74px; right: 10px; top: 15px; background: #f1f1f1; line-height: 24px; padding: 5px 14px; border: #97b1c8 1px solid; }
+.table_btn span { padding-left: 24px; margin: 3px 0; height: 24px; display: block; background-position: left center; }
+/*table_gray结束*/
+/*intable_gray开始*/
+.intable_gray { width: 100%; }
+.intable_gray th, .intable_gray td { height: 30px; line-height: 30px; text-align: left; border-bottom: #e2e0dc 1px solid; padding: 0 5px; }
+/*intable_gray结束*/
+/*表单样式开始*/
+.pop_w1 { float: left; width: 262px; }
+.search_label { float: left; display: block; width: 90px; line-height: 22px; }
+.search_sel { float: left; width: 142px; height: 22px; border: #abadb3 1px solid; }
+.search_text { float: left; width: 140px; height: 20px; border: #abadb3 1px solid; }
+.search_text.floor_txt { width: 94px; }
+.floor_srhbtn { display: inline-block; cursor: pointer; padding: 0 5px; margin-left: 10px; letter-spacing: 2px; height: 20px; line-height: 20px; border: #999 1px solid; border-radius: 4px; background: #ddd; background: -moz-linear-gradient(top, #fff, #ddd); background: -webkit-linear-gradient(top, #fff, #ddd); background: -o-linear-gradient(top, #fff, #ddd); background: -ms-linear-gradient(top, #fff, #ddd); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff", endColorstr="#dddddd", gradientType="0");
+}
+.search_text.longw { width: 412px; }
+.search_sel.longw { width: 202px; }
+label.error { float: left; line-height: 22px; margin-left: 5px; color: red; }
+.floor_table { width: 300px; margin: 15px 0; }
+.floor_table tr { cursor: pointer; height: 26px; }
+.floor_table tr.hover td { background: #f6eebb; }
+.floor_table th, .floor_table td { padding: 0 10px; background: #fff; border: #c6c6c6 1px solid; text-align: left; }
+.floor_table td { background: #fff; border: #c6c6c6 1px solid; }
+/*表单样式结束*/
+/*详细信息开始*/
+.detail_box { display: inline-block; width: 100%; *width:auto;
+background: #fff; border: #e2e0dc 1px solid; margin: 10px 0; }
+.detail_top { height: 33px; line-height: 33px; background: url(../images/table_gray_th_bg.gif) repeat-x; }
+.detail_top li { cursor: pointer; padding: 0 25px; float: left; border-right: #e2e0dc 1px solid; }
+.detail_top li.currentd { background: url(../images/detail_top_li_cur_bg.gif) repeat-x; color: #fff; }
+.basic_l, .basic_r { float: left; height: 30px; line-height: 30px; }
+.basic_l { width: 100px; color: #3e5f7e; }
+.basic_r { width: 260px; }
+/*详细信息结束*/
+/*图表开始*/
+.jqplot_title { height: 40px; line-height: 40px; font-size: 13px; font-weight: bold; margin-left: 50px; }
+.jqplot { padding-bottom: 20px; }
+/*图表结束*/
+/*jqplot样式开始*/
+.jqplot-target { position: relative; color: #666; }
+.jqplot-axis { font-size: 12px; }
+.jqplot-xaxis { margin-top: 10px; }
+.jqplot-x2axis { margin-bottom: 10px; }
+.jqplot-yaxis { margin-right: 10px; }
+.jqplot-y2axis, .jqplot-y3axis, .jqplot-y4axis, .jqplot-y5axis, .jqplot-y6axis, .jqplot-y7axis, .jqplot-y8axis, .jqplot-y9axis { margin-left: 10px; margin-right: 10px; }
+.jqplot-axis-tick, .jqplot-xaxis-tick, .jqplot-yaxis-tick, .jqplot-x2axis-tick, .jqplot-y2axis-tick, .jqplot-y3axis-tick, .jqplot-y4axis-tick, .jqplot-y5axis-tick, .jqplot-y6axis-tick, .jqplot-y7axis-tick, .jqplot-y8axis-tick, .jqplot-y9axis-tick { position: absolute; }
+.jqplot-xaxis-tick { top: 0; left: 15px; vertical-align: top; }
+.jqplot-x2axis-tick { bottom: 0; left: 15px; vertical-align: bottom; }
+.jqplot-yaxis-tick { right: 0; top: 15px; text-align: right; }
+.jqplot-yaxis-tick.jqplot-breakTick { right: -20px; margin-right: 0; padding: 1px 5px 1px 5px; z-index: 2; font-size: 1.5em; }
+.jqplot-y2axis-tick, .jqplot-y3axis-tick, .jqplot-y4axis-tick, .jqplot-y5axis-tick, .jqplot-y6axis-tick, .jqplot-y7axis-tick, .jqplot-y8axis-tick, .jqplot-y9axis-tick { left: 0; top: 15px; text-align: left; }
+.jqplot-meterGauge-tick { font-size: .75em; color: #999; }
+.jqplot-meterGauge-label { font-size: 1em; color: #999; }
+.jqplot-xaxis-label { margin-top: 10px; font-size: 11pt; position: absolute; }
+.jqplot-x2axis-label { margin-bottom: 10px; font-size: 11pt; position: absolute; }
+.jqplot-yaxis-label { margin-right: 10px; font-size: 11pt; position: absolute; }
+.jqplot-y2axis-label, .jqplot-y3axis-label, .jqplot-y4axis-label, .jqplot-y5axis-label, .jqplot-y6axis-label, .jqplot-y7axis-label, .jqplot-y8axis-label, .jqplot-y9axis-label { font-size: 11pt; position: absolute; }
+table.jqplot-table-legend { margin-top: 12px; margin-bottom: 12px; margin-left: 12px; margin-right: 12px; }
+table.jqplot-table-legend, table.jqplot-cursor-legend { background-color: rgba(255,255,255,0.6); border: 1px solid #ccc; position: absolute; font-size: .75em; }
+td.jqplot-table-legend { vertical-align: middle; }
+td.jqplot-seriesToggle:hover, td.jqplot-seriesToggle:active { cursor: pointer; }
+td.jqplot-table-legend>div { border: 1px solid #ccc; padding: 1px; }
+div.jqplot-table-legend-swatch { width: 0; height: 0; border-top-width: 5px; border-bottom-width: 5px; border-left-width: 6px; border-right-width: 6px; border-top-style: solid; border-bottom-style: solid; border-left-style: solid; border-right-style: solid; }
+.jqplot-title { top: 0; left: 0; padding-bottom: .5em; font-size: 1.2em; }
+table.jqplot-cursor-tooltip { border: 1px solid #ccc; font-size: .75em; }
+.jqplot-cursor-tooltip { border: 1px solid #ccc; font-size: .75em; white-space: nowrap; background: rgba(208,208,208,0.5); padding: 1px; }
+.jqplot-highlighter-tooltip { border: 1px solid #ccc; font-size: .75em; white-space: nowrap; background: rgba(208,208,208,0.5); padding: 1px; }
+.jqplot-point-label { z-index: 2; }
+td.jqplot-cursor-legend-swatch { vertical-align: middle; text-align: center; }
+div.jqplot-cursor-legend-swatch { width: 1.2em; height: .7em; }
+.jqplot-error { text-align: center; }
+.jqplot-error-message { position: relative; top: 46%; display: inline-block; }
+div.jqplot-bubble-label { font-size: .8em; padding-left: 2px; padding-right: 2px; color: rgb(20%,20%,20%); }
+div.jqplot-bubble-label.jqplot-bubble-label-highlight { background: rgba(90%,90%,90%,0.7); }
+div.jqplot-noData-container { text-align: center; background-color: rgba(96%,96%,96%,0.3); }
+/*jqplot样式结束*/

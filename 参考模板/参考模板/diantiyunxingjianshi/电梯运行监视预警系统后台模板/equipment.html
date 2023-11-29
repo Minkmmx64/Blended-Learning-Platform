@@ -1,0 +1,458 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>电梯系统</title>
+<link href="css/basic.css" rel="stylesheet" type="text/css">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<!--[if IE]><script src="Scripts/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<div class="container">
+  <header>
+    <div class="header_top">
+      <ul class="header_tip">
+        <li class="header_tipl"></li>
+        <li> <a href="#" class="header_tip_a htip_icon1">账号管理</a> </li>
+        <li> <a href="#" class="header_tip_a htip_icon2">系统帮助</a> </li>
+        <li> <a href="#" class="header_tip_a htip_icon3">注销</a> </li>
+        <li> <a href="#" class="header_tip_a htip_icon4">退出</a> </li>
+        <li class="header_tipr"></li>
+      </ul>
+      <div class="clear"></div>
+      <a href="#" class="logo"></a>
+      <nav> <a href="#">首 页</a> <a href="#" class="current">电梯管理</a> <a href="#">电梯维保</a> <a href="#">统计分析</a> <a href="#">广告发布</a> <a href="#">系统公告</a> <a href="#">系统管理</a> </nav>
+    </div>
+    <div class="msg"> <span class="floatleft">欢迎您，admin</span> <span class="msg_line"></span> <span class="msg_a">2 <span class="gray">条公告</span></span>
+      <div class="notice"> <span class="msg_line"></span>
+        <div class="notice_ctn_box">
+          <ul class="notice_ctn">
+            <li><a href="#">电梯运行监视预警系统公告详情</a></li>
+            <li><a href="#">电梯运行监视预警系统公告详情，电梯运行监视预警系统公告详情</a></li>
+            <li><a href="#">电梯运行监视预警系统公告详情</a></li>
+            <li><a href="#">电梯运行监视预警系统公告详情，电梯运行监视预警系统公告详情</a></li>
+          </ul>
+        </div>
+        <span class="notice_close"></span> <span class="notice_arrowr"></span> <span class="notice_arrowl"></span> </div>
+    </div>
+  </header>
+  <div class="left">
+    <dl class="left_nav">
+      <dt> <span>电梯管理</span> </dt>
+      <dd class="currentl"> <a href="#" class="floatleft">管理电梯列表</a> </dd>
+      <dd> <a href="#" class="floatleft">报废电梯列表</a> </dd>
+      <dd> <a href="#" class="floatleft">停用电梯列表</a> </dd>
+      <dd> <a href="#" class="floatleft">电梯楼层维护</a> </dd>
+      <dd> <a href="#" class="floatleft">电梯年检提示</a> </dd>
+      <dd> <a href="#" class="floatleft">电梯检验预警</a> </dd>
+      <dd> <a href="#" class="floatleft">电梯故障报警</a> </dd>
+      <dd> <a href="#" class="floatleft">故障历史记录</a> </dd>
+    </dl>
+  </div>
+  <div class="right">
+    <div class="right_ctn">
+      <div class="operate"> <span class="search_btn" onClick="tip()">查 询</span> <span class="add_btn" onClick="add()">新 增</span> <span class="delete_btn" onClick="del()">批量删除</span> </div>
+      <table class="table_gray">
+        <colgroup>
+        <col style="width: 4%" />
+        <col style="width: 19%" />
+        <col style="width: 15%" />
+        <col style="width: 16%" />
+        <col span="2" style="width: 17%" />
+        <col style="width: 8%" />
+        <col style="width: 4%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="align_ctr"><input type="checkbox" class="check_all" id="check_all" value="全选" onClick="checkAll()"></th>
+            <th>注册登记证号</th>
+            <th>电梯类型</th>
+            <th>区划</th>
+            <th>物业单位</th>
+            <th>维保单位</th>
+            <th colspan="2">使用状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="align_ctr"><input type="checkbox" name="check"></td>
+            <td><a href="#" class="black">20103701122010370112</a></td>
+            <td>载客电梯、乘客电梯</td>
+            <td>山东省济南市市北区</td>
+            <td>通力电梯有限公司</td>
+            <td>山东射频识别研究中心</td>
+            <td>正常运行</td>
+            <td><div class="relative">
+                <img src="images/list_btn.png" class="list_btn">
+              </div></td>
+          </tr>
+          <tr>
+            <td class="align_ctr"><input type="checkbox" name="check"></td>
+            <td><a href="#" class="black">20103701122010370112</a></td>
+            <td>载客电梯、乘客电梯</td>
+            <td>山东省济南市市北区</td>
+            <td>通力电梯有限公司</td>
+            <td>山东射频识别研究中心</td>
+            <td>正常运行</td>
+            <td><div class="relative">
+                <img src="images/list_btn.png" class="list_btn">
+              </div></td>
+          </tr>
+          <tr>
+            <td class="align_ctr"><input type="checkbox" name="check"></td>
+            <td><a href="#" class="black">20103701122010370112</a></td>
+            <td>载客电梯、乘客电梯</td>
+            <td>山东省济南市市北区</td>
+            <td>通力电梯有限公司</td>
+            <td>山东射频识别研究中心</td>
+            <td>正常运行</td>
+            <td><div class="relative">
+                <img src="images/list_btn.png" class="list_btn">
+              </div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="page"> <span class="floatleft pt2">共有<strong>&nbsp;265&nbsp;</strong>条数据，当前第<strong>&nbsp;1&nbsp;</strong>页</span>
+        <div class="pageblue"> <span class="disabled">首页</span> <span class="disabled">上一页</span> <span class="current">1</span> <a href="#?page=2">2</a> <a href="#?page=3">3</a> <a href="#?page=4">4</a> <a href="#?page=5">5</a> <a href="#?page=6">6</a> <a href="#?page=7">7</a> <a href="#?page=2" class="border_none">下一页</a> <a href="#?page=20" class="border_none">尾页</a> </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="table_btn"> <span class="edit_btn" onClick="edit()">编 辑</span> <span class="monitor_btn" onClick="monitor_cnc()">设备关联</span> <span class="floor_btn" onClick="floor_cnc()">楼层关联</span> </div>
+<div id="search_pop" class="none">
+  <form id="search_popf" action="" method="post">
+    <div class="clearfix mt10">
+      <label class="search_label">注册代码：</label>
+      <input type="text" class="search_text">
+    </div>
+    <div class="clearfix mt10">
+      <label class="search_label">产权单位：</label>
+      <input type="text" class="search_text">
+    </div>
+    <div class="clearfix mt10">
+      <label class="search_label">所在地址：</label>
+      <input type="text" class="search_text">
+    </div>
+  </form>
+</div>
+<div id="add_pop" class="none">
+  <form id="add_popf" action="" method="post">
+    <div class="clearfix mt10">
+      <div class="pop_w1">
+        <label class="search_label"><span class="red">*</span>电梯名称：</label>
+        <input type="text" class="search_text required">
+      </div>
+      <div class="pop_w1 ml10">
+        <label class="search_label"><span class="red">*</span>注册登记证号：</label>
+        <input type="text" class="search_text required">
+      </div>
+    </div>
+    <div class="clearfix mt10">
+      <div class="pop_w1">
+        <label class="search_label"><span class="red">*</span>品 牌：</label>
+        <select class="search_sel">
+          <option>请选择</option>
+          <option>帝奥电梯</option>
+        </select>
+      </div>
+      <div class="pop_w1 ml10">
+        <label class="search_label"><span class="red">*</span>电梯类型：</label>
+        <select class="search_sel">
+          <option>请选择</option>
+          <option>客梯</option>
+        </select>
+      </div>
+    </div>
+    <div class="clearfix mt10">
+      <div class="pop_w1">
+        <label class="search_label"><span class="red">*</span>运行状态：</label>
+        <select class="search_sel">
+          <option>请选择</option>
+          <option>故障</option>
+        </select>
+      </div>
+      <div class="pop_w1 ml10">
+        <label class="search_label"><span class="red">*</span>维保状态：</label>
+        <select class="search_sel">
+          <option>请选择</option>
+          <option>超期维保</option>
+        </select>
+      </div>
+    </div>
+    <div class="clearfix mt10">
+      <label class="search_label">区划：</label>
+      <select class="search_sel longw">
+        <option>请选择</option>
+        <option>济南市</option>
+      </select>
+      <select class="search_sel longw ml10">
+        <option>请选择</option>
+        <option>市北区</option>
+      </select>
+    </div>
+    <div class="clearfix mt10">
+      <label class="search_label">电梯所在地址：</label>
+      <input type="text" class="search_text longw required">
+    </div>
+    <div class="clearfix mt10">
+      <div class="pop_w1">
+        <label class="search_label">生产单位：</label>
+        <input type="text" class="search_text required">
+      </div>
+      <div class="pop_w1 ml10">
+        <label class="search_label"><span class="red">*</span>维保单位：</label>
+        <input type="text" class="search_text required">
+      </div>
+    </div>
+    <div class="clearfix mt10">
+      <label class="search_label">生产单位地址：</label>
+      <input type="text" class="search_text longw required">
+    </div>
+    <div class="clearfix mt10">
+      <div class="pop_w1">
+        <label class="search_label">物业单位：</label>
+        <input type="text" class="search_text required">
+      </div>
+      <div class="pop_w1 ml10">
+        <label class="search_label">使用单位：</label>
+        <input type="text" class="search_text required">
+      </div>
+    </div>
+    <div class="clearfix mt10">
+      <label class="search_label"><span class="red">*</span>设备地址：</label>
+      <input type="text" class="search_text longw required">
+    </div>
+    <div class="clearfix mt10">
+      <div class="pop_w1">
+        <label class="search_label"><span class="red">*</span>楼层总数：</label>
+        <input type="text" class="search_text required">
+      </div>
+      <div class="pop_w1 ml10">
+        <label class="search_label"><span class="red">*</span>安装日期：</label>
+        <input type="text" class="search_text required">
+      </div>
+    </div>
+    <div class="clearfix mt10">
+      <div class="pop_w1">
+        <label class="search_label"><span class="red">*</span>出厂编号：</label>
+        <input type="text" class="search_text required">
+      </div>
+      <div class="pop_w1 ml10">
+        <label class="search_label">出厂日期：</label>
+        <input type="text" class="search_text">
+      </div>
+    </div>
+    <div class="clearfix mt10">
+      <div class="pop_w1">
+        <label class="search_label">最后检验日期：</label>
+        <input type="text" class="search_text">
+      </div>
+      <div class="pop_w1 ml10">
+        <label class="search_label">最后维保日期：</label>
+        <input type="text" class="search_text">
+      </div>
+    </div>
+  </form>
+</div>
+<div id="monitor_pop" class="none">
+  <form id="monitor_popf" action="" method="post">
+    <div class="clearfix mt10">
+      <label class="search_label"><span class="red">*</span>注册代码：</label>
+      <span class="floatleft mt3">30101052465478054</span> </div>
+    <div class="clearfix mt10">
+      <label class="search_label"><span class="red">*</span>设备编号：</label>
+      <input type="text" class="search_text required">
+    </div>
+    <div class="clearfix mt10">
+      <label class="search_label"><span class="red">*</span>设备厂商：</label>
+      <select class="search_sel">
+        <option>请选择</option>
+        <option>大连奥远</option>
+      </select>
+    </div>
+    <div class="clearfix mt10">
+      <label class="search_label"><span class="red">*</span>设备电话：</label>
+      <input type="text" class="search_text required">
+    </div>
+    <div class="clearfix mt10">
+      <label class="search_label"><span class="red">*</span>移动运营商：</label>
+      <input type="text" class="search_text required">
+    </div>
+  </form>
+</div>
+<div id="floor_pop" class="none">
+  <form id="floor_popf" action="" method="post">
+    <div class="clearfix"> <span class="floatleft ln22">楼层协议描述：</span>
+      <input type="text" class="search_text floor_txt">
+      <input type="button" value="查询" class="floor_srhbtn">
+      <input type="button" value="关联" class="floor_srhbtn">
+    </div>
+    <table class="floor_table">
+      <tr>
+        <th>楼层版本</th>
+        <th>楼层协议描述</th>
+      </tr>
+      <tr>
+        <td>20130506</td>
+        <td>15</td>
+      </tr>
+      <tr>
+        <td>20130809</td>
+        <td>20</td>
+      </tr>
+    </table>
+  </form>
+</div>
+<script src="Scripts/jquery-1.9.1.min.js"></script> 
+<script src="Scripts/common.js"></script> 
+<script src="Scripts/jquery.validate.min.js"></script> 
+<script src="Scripts/jquery.validate.messages_cn.js"></script> 
+<script src="Scripts/artDialog.js?skin=blue"></script> 
+<script>
+//弹出框验证信息
+$(function(){
+	$("#add_popf").validate();
+	$("#monitor_popf").validate();
+})
+
+//查询弹出框
+function tip(){
+    var dialog = art.dialog({
+	    title:"查询框",
+		content:document.getElementById("search_pop"),
+		lock:true,
+		ok:true,
+		okVal:"搜索",
+		cancel:true,
+		cancelVal:"取消"
+	});
+}
+
+//新增弹出框
+function add(){
+    var dialog = art.dialog({
+	    title:"电梯信息维护",
+		content:document.getElementById("add_pop"),
+		lock:true,
+		ok:function(){
+			$("#add_popf").submit();
+			if($("#add_popf").valid()){
+				art.dialog({
+					content:"保存成功",
+					time:5,
+					icon:"succeed"
+				})
+			}
+			return $("#add_popf").valid();
+		},
+		cancel:true,
+		okVal:"保存",
+		cancelVal:"取消"
+	});
+}
+
+//编辑弹出框
+function edit(){
+    var dialog = art.dialog({
+	    title:"电梯信息维护",
+		content:document.getElementById("add_pop"),
+		lock:true,
+		ok:function(){
+			$("#add_popf").submit();
+			if($("#add_popf").valid()){
+				art.dialog({
+					content:"保存成功",
+					time:5,
+					icon:"succeed"
+				})
+			}
+			return $("#add_popf").valid();
+		},
+		cancel:true,
+		okVal:"保存",
+		cancelVal:"取消"
+	});
+}
+
+//全选
+function checkAll() {
+    var allCheckBoxs = document.getElementsByName("check");
+    var desc = document.getElementById("check_all").value;
+    if (desc == "全选") {
+        document.getElementById("check_all").value = "全不选";
+        for (var i = 0; i < allCheckBoxs.length; i++) {
+            allCheckBoxs[i].checked = true;
+        }
+    } else {
+        document.getElementById("check_all").value = "全选";
+        for (var i = 0; i < allCheckBoxs.length; i++) {
+            allCheckBoxs[i].checked = false;
+        }
+    }
+}
+//批量删除
+function del() {
+    var checkFlag = false;
+    var allCheckBoxs = document.getElementsByName("check");
+    for (var i = 0; i < allCheckBoxs.length; i++) {
+        if (allCheckBoxs[i].checked == true) {
+            checkFlag = true;
+        }
+    }
+    if (!checkFlag) {
+        var dialog = art.dialog({
+            title: "批量删除",
+            content: "请先选择至少一条数据",
+            icon: "warning",
+            ok: true
+        });
+    } else {
+        //提示是否真的删除
+        art.dialog("确定要删除么？", 
+        function() {
+            var dialog = art.dialog({
+                title: "批量删除",
+                content: "删除成功！",
+                icon: "succeed",
+                ok: true
+            });
+        },
+        function() {});
+    }
+}
+
+//设备关联
+function monitor_cnc(){
+    var dialog = art.dialog({
+	    title:"电梯设备关联",
+		content:document.getElementById("monitor_pop"),
+		lock:true,
+		ok:function(){
+			$("#monitor_popf").submit();
+			if($("#monitor_popf").valid()){
+				art.dialog({
+					content:"保存成功",
+					time:5,
+					icon:"succeed"
+				})
+			}
+			return $("#monitor_popf").valid();
+		},
+		cancel:true,
+		okVal:"保存",
+		cancelVal:"取消"
+	});
+}
+
+//楼层关联
+function floor_cnc(){
+    var dialog = art.dialog({
+        title: "电梯楼层关联",
+		content:document.getElementById("floor_pop"),
+		lock:true
+	});
+}
+</script>
+</body>
+</html>
