@@ -1,5 +1,5 @@
 export class RoleQueryDTO {
-    
+  name?: string;
 }
 
 export class RoleCreateDTO {

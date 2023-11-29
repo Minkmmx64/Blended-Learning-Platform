@@ -9,14 +9,12 @@ import { AuthGuard } from "src/guard/auth.gurad";
 import { RoleCreateValid, RoleUpdateValid } from "./role.valid";
 import { DeleteResult, InsertResult, UpdateResult } from "typeorm";
 import { ValidationPipe } from 'src/utils/pipes';
-import { CommonPaginationValid } from "../common/common.valid";
 
 @Controller("role")
 export class RoleController {
   constructor(private readonly RoleService: RoleService){}
 
   @Get("/list")
-  @UsePipes(new ValidationPipe(CommonPaginationValid))
   @UseInterceptors(new TokenExpireInterceptor())
   public async RoleListsPagination(
     @Query() Query: PaginationQuery<RoleQueryDTO>
@@ -34,7 +32,6 @@ export class RoleController {
   public async RoleCreate(
       @Body() body: RoleCreateDTO
   ) {
-    console.log(body.menus);
     const [ error, insert ] = await this.RoleService.RoleCreate(body);
     if(error) {
         throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());

@@ -1,9 +1,9 @@
-import { DataSource, DeleteResult, InsertResult, UpdateResult } from "typeorm";
-import { MenuQueryDTO } from "../menu/menu.dto";
+import { DataSource, DeleteResult, InsertResult, SelectQueryBuilder, UpdateResult } from "typeorm";
 import { PaginationQuery } from "../index.type";
 import { RootRole } from "src/Entity/root_role.entity";
-import { RoleCreateDTO, RoleUpdateDTO } from "./role.dto";
+import { RoleCreateDTO, RoleQueryDTO, RoleUpdateDTO } from "./role.dto";
 import { RootRouters } from "src/Entity/root_routers.entity";
+import { ToOrder } from "src/common/common";
 
 export class RoleDAO {
 
@@ -11,14 +11,39 @@ export class RoleDAO {
 
   private RoleRepository = this.DataSource.getRepository(RootRole);
 
-  public async RoleListsPagination(RoleQuery: PaginationQuery<MenuQueryDTO>):  Promise<RootRole[]> {
-    return [];
+  public async RoleListsPagination(RoleQuery: PaginationQuery<RoleQueryDTO>):  Promise<RootRole[]> {
+    
+    const SelectQueryBuilder: SelectQueryBuilder<RootRole> = this.RoleRepository.createQueryBuilder().select();
+
+    if(RoleQuery.name) {
+      SelectQueryBuilder
+                        .where("name = :name")
+                        .setParameter("name", RoleQuery.name);
+    }
+  
+    return await SelectQueryBuilder
+                                   .orderBy(RoleQuery.prop, ToOrder(RoleQuery))
+                                   .skip((RoleQuery.offset - 1) * RoleQuery.limit)
+                                   .take(RoleQuery.limit)
+                                   .getMany();
   }
 
   public async RoleUpdate(update: RoleUpdateDTO): Promise<UpdateResult> {
-    return ;
+
+    await this.SetRoutersToRols(update.id, update.data.menus);
+
+    return await this.RoleRepository
+                     .createQueryBuilder()
+                     .update()
+                     .set({
+                       name: update.data.name
+                     })
+                     .where("id = :id")
+                     .setParameter("id", update.id)
+                     .execute();
   }
 
+  //给角色添加菜单
   public async SetRoutersToRols(RoleId: number, Menus: Array<number>): Promise<void> {
     const queryRunner = this.DataSource.createQueryRunner();
     try {
@@ -28,13 +53,13 @@ export class RoleDAO {
       const data = await this.RoleRepository
                              .createQueryBuilder(null, queryRunner)
                              .relation(RootRole, "routers")
-                             .of(1)
+                             .of(RoleId)
                              .loadMany<RootRouters>();
       // 删除之前的菜单
       await this.RoleRepository
                 .createQueryBuilder(null, queryRunner)
                 .relation(RootRole, "routers")
-                .of(1)
+                .of(RoleId)
                 .remove(data);
       // 重新添加关系
       await this.RoleRepository
