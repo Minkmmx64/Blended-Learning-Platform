@@ -3,10 +3,11 @@ export class RoleQueryDTO {
 }
 
 export class RoleCreateDTO {
-    name: string;
+  name: string;
+  menus?: any;
 }
 
 export class RoleUpdateDTO {
-    id: number;
-    data: RoleCreateDTO;
+  id: number;
+  data: RoleCreateDTO;
 }
