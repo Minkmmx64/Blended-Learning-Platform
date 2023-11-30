@@ -54,4 +54,13 @@ export class MenuService {
       return [new Error(error), null];
     }
   }
+
+  public async MenuAll() : ServiceData<RootRouters[]> {
+    try {
+      const all = await this.MenuDAO.MenuAll();
+      return [ null, all ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
 }

@@ -62,4 +62,14 @@ export class MenuController {
       throw new BadRequestException(new HttpResponse<UpdateResult>(HttpStatus.BAD_REQUEST, UpdateResult,  error.message).send());
     } else return new HttpResponse<UpdateResult>(HttpStatus.RESET_CONTENT, UpdateResult).send();
   }
+
+  @Get("/all")
+  @UseGuards(new AuthGuard())
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async MenuAll() {
+    const [ error, all ] = await this.menuService.MenuAll();
+    if(error) {
+      throw new BadRequestException(new HttpResponse<RootRouters[]>(HttpStatus.BAD_REQUEST, all,  error.message).send());
+    } else return new HttpResponse<RootRouters[]>(HttpStatus.RESET_CONTENT, all).send();
+  }
 }

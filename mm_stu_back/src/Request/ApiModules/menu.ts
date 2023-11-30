@@ -15,6 +15,12 @@ export class menu extends AxiosApi {
   constructor(){
     super("/api/menu");
   }
+
+  public async all() {
+    return this.get("/all", {
+      date: new Date()
+    });
+  }
 }
 
 export default new menu();

@@ -10,7 +10,11 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
   TableApi: new () => T,
   UserSearchQuery: Ref<Query>,                // 用户查询参数
   UserEditParam: Ref<Edit>,                   // 用户添加&编辑表单
-  PaginationQuery?: Sorted & Pagination  // 分页请求参数 & 用户自定义请求参数
+  PaginationQuery?: Sorted & Pagination,  // 分页请求参数 & 用户自定义请求参数
+  life ?: {
+    beforehandleEditConfirm?: () => void;
+    beforehandleEditOpen?: (row?: KeyValue) => void;
+  }
 ) : ITableFunction {
   //分页参数
   const limit = ref(PaginationQuery?.limit ?? 10);
@@ -63,7 +67,7 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
         ElMessage.success("删除成功");
         loadTableDatas();
       }, 500);
-    }).catch(() => ElMessage.error("你没有权限删除"));
+    }).catch( error => ElMessage.error(error));
   }
 
   const handleSizeChange = (val: number) => {
@@ -87,6 +91,9 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
   }
 
   const handleEditConfirm = () => {
+    // 执行回调
+    if(life && life.beforehandleEditConfirm) life.beforehandleEditConfirm();
+    
     EditLoading.value = true;
     let Api: Promise<AxiosResponse<ServerData<any>, any>>;
     if(EditTxt.value === "添加") {
@@ -94,8 +101,6 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
     } else {
       Api = useTableApi.put<{ id: number, data: Edit }>("/update", { id: id.value!, data:  UserEditParam.value });
     }
-    console.log(UserEditParam.value);
-    
     Api.then( res => {
       setTimeout(() => {
         ElMessage.success(`${EditTxt.value} ${apiname} 成功`);
@@ -111,6 +116,10 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
   }
 
   const handleEditOpen = (type: EditProps, row?: KeyValue) => {
+    if(life && life.beforehandleEditOpen) {
+      if(typeof life.beforehandleEditOpen === "function")
+        life.beforehandleEditOpen(row);
+    }
     isEdit.value = true;
     if(row) {
       id.value = row.id;
@@ -125,7 +134,9 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
     }
     if(type === "create") {
       EditTxt.value = "添加";
-    } else EditTxt.value = "修改";
+    } else {
+      EditTxt.value = "修改";
+    }
   }
 
   return { 

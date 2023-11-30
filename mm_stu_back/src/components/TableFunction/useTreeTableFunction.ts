@@ -147,7 +147,7 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
           resolve(data);
         }
       }, 500);
-    })
+    }).catch( error => ElMessage.error(error));
   }
 
   //分页limit 改变

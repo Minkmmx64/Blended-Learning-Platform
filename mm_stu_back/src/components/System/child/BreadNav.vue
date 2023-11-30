@@ -1,5 +1,5 @@
 <template>
-  <div class="Bread-Nav font-14 pl-2 flex-column flex-alg">
+  <div class="Bread-Nav relative font-14 pl-2 flex-column flex-alg">
     <div class="Bread-Nav-Top w-full flex-row select-none">
       <IconFont @click="emit('togglecollapse')" class="mr-4 point" icon="back1" />
       <div class="Bread-Nav-List" v-for="(item,index) in Props.path" :key="index" >
@@ -9,6 +9,7 @@
           <span>{{ item.name }}</span>
         </template>
       </div>
+      <UserAvatar />
     </div>
     <div class="Bread-Nav-history font-12 h-full hidden w-full flex-row flex-alg">
       <template v-for="(item,index) in HistoryPath" :key="index">
@@ -31,6 +32,7 @@
 import IconFont from "@/components/display/icon/IconFont.vue";
 import { ref, watch, onMounted } from "vue";
 import { ISystemMenus } from "../AdminSystemLayout.type";
+import UserAvatar from "@/components/Layouts/UserAvatar.vue";
 interface IProps{
   path : ISystemMenus[];
   active : string;

@@ -1,16 +1,16 @@
 import moment from "moment";
 
 export class DataModules {
-  
-  public id: number = 0;
 
-  public create_time: string = moment().format("YYYY-MM-DD");
+  public id = 0;
+
+  public create_time = moment().format("YYYY-MM-DD");
  
-  public update_time: string = moment().format("YYYY-MM-DD");
+  public update_time = moment().format("YYYY-MM-DD");
 
-  public status: boolean = true;;
+  public status?: boolean;
 
-  public remark: string = "";
+  public remark?: string;
 
   public pid?: number;
 

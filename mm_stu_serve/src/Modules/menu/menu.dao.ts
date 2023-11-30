@@ -17,7 +17,7 @@ export class MenuDAO {
     });
   }
 
-  public async MenuListsPagination(MenuQuery: PaginationQuery<MenuQueryDTO>) {
+  public async MenuListsPagination(MenuQuery: PaginationQuery<MenuQueryDTO>) : Promise<RootRouters[]> {
     const Order = ToOrder(MenuQuery);
 
     const SelectQueryBuilder: SelectQueryBuilder<RootRouters> = this.MenuRepository.createQueryBuilder().select()
@@ -94,5 +94,13 @@ export class MenuDAO {
                      .select()
                      .where("pid IS NULL")
                      .getCount();
+  }
+
+  public async MenuAll() : Promise<RootRouters[]> {
+    return await this.MenuRepository
+                                    .createQueryBuilder("menu")
+                                    .select()
+                                    // .where("pid IS NULL")
+                                    .getMany();
   }
 }
