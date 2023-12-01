@@ -4,7 +4,7 @@
       <el-row class="mb-10 mt-10">
         <el-col :span="24">
           <div class="grid-content ep-bg-purple-dark" >
-            <el-button type="primary" @click="TableProps.handleEditOpen('create')">添加{{ TableProps.apiname }}</el-button>
+            <el-button type="primary" @click="TableProps.handleEditOpen('create')">添加 {{ TableProps.apiname }}</el-button>
           </div>
         </el-col>
     </el-row>
@@ -13,41 +13,21 @@
       <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
-            <span>菜单名称:</span>
+            <span>{{ TableProps.apiname }}名称:</span>
           </div>
         </el-col>
         <el-col :span="18">
-          <el-input v-model="EditParams.name" placeholder="menu name" />
+          <el-input v-model="EditParams.name" placeholder="role name" />
         </el-col>
       </el-row>
       <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
-            <span>菜单key:</span>
+            <span>学院描述:</span>
           </div>
         </el-col>
         <el-col :span="18">
-          <el-input v-model="EditParams.key" placeholder="menu key" />
-        </el-col>
-      </el-row>
-      <el-row class="mb-5 text-center">
-        <el-col :span="6">
-          <div class="h-full flex-row flex-center">
-            <span>菜单描述:</span>
-          </div>
-        </el-col>
-        <el-col :span="18">
-          <el-input v-model="EditParams.remark" placeholder="menu remark" />
-        </el-col>
-      </el-row>
-      <el-row class="text-center" v-if="EditParams.pid">
-        <el-col :span="6">
-          <div class="h-full flex-row flex-center">
-            <span>pid:</span>
-          </div>
-        </el-col>
-        <el-col :span="18">
-          <el-input disabled v-model="EditParams.pid" placeholder="menu key" />
+          <el-input v-model="EditParams.remark" placeholder="role remark" />
         </el-col>
       </el-row>
       <template #footer>
@@ -59,33 +39,27 @@
     </el-dialog>
 
     <TableContent
-      :child="TableProps.childKey" 
-      :lazyLoad="TableProps.lazy" 
       :loading="TableLoading" 
       :total="total" 
       @refresh="TableProps.loadTableDatas"
       @handleSizeChange="TableProps.handleSizeChange"
       @handleCurrentChange="TableProps.handleCurrentChange"
       @handleSortChange="TableProps.handleSortChange"
-      :table-key="TreeTableKey" 
       :DataSource="DataSource">
       <el-table-column fixed type="index" width="50" />
-      <el-table-column prop="id" label="ID" header-align="center" align="center" />
-      <el-table-column prop="name" label="路由名称" header-align="center" align="center" width="200" />
-      <el-table-column prop="key" label="路由关键字" header-align="center" align="center" />
-      <el-table-column prop="status" label="状态" sortable header-align="center" align="center">
-        <template #default="scope">
-          <el-tag v-if="scope.row.status" class="ml-2 select-none" type="success">启用</el-tag>
+      <el-table-column prop="id" label="ID" header-align="center" align="center" width="50"/>
+      <el-table-column prop="name" label="学院" header-align="center" align="center" width="200" />
+      <el-table-column prop="remark" label="描述" header-align="center" align="center" />
+      <el-table-column prop="status" label="状态" sortable header-align="center" align="center" width="150">
+        <template #default="{ row }">
+          <el-tag v-if="row.status" class="ml-2 select-none" type="success">启用</el-tag>
           <el-tag v-else class="ml-2 select-none" type="danger">禁用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="描述" header-align="center" align="center" />
       <el-table-column prop="create_time" label="创建时间" header-align="center" align="center" width="250" />
       <el-table-column prop="update_time" label="修改时间" header-align="center" align="center" width="250" />
       <el-table-column flex="right" label="操作" header-align="center" align="center" width="300">
-        <template #default="{ row }"> <!---->
-          <el-button type="primary" @click="TableProps.handleEditOpen('create', row)">添加子菜单</el-button>
-          <el-divider direction="vertical" />
+        <template #default="{ row }">
           <el-button type="success" @click="TableProps.handleEditOpen('update', row)">编辑</el-button>
           <el-divider direction="vertical" />
           <el-button type="danger" @click="TableProps.handleDelete(row)">删除</el-button>
@@ -96,32 +70,30 @@
 </template>
 <script lang="ts" setup>
 import TableContent from "@/components/display/table/TableContent.vue";
-import { menu, MenuEdit, MenuQuery } from "@/Request/ApiModules/menu";
-import { useTreeTableFunction } from "@/components/TableFunction/useTreeTableFunction";
+import { college, CollegeEdit, CollegeQuery } from "@/Request/ApiModules/college";
+import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";
-
 //添加修改对象
-const EditParams = ref<MenuEdit>({
+const EditParams = ref<CollegeEdit>({
   name: "",
-  key: "",
-  pid: undefined,
   remark: ""
 });
-
-const QueryParams = ref<MenuQuery>({
-  
+//查询对象
+const QueryParams = ref<CollegeQuery>({
+  name: ""
 });
 
-const TableProps = useTreeTableFunction<menu, MenuQuery, MenuEdit>(
-  "菜单",
-  menu,
+const TableProps = useTableFunction<college, CollegeQuery, CollegeEdit>(
+  "学院",
+  college,
   QueryParams,
-  { childrenKey: "child", hasChildrenKey: "hashChild" },
-  EditParams
+  EditParams,
+  undefined,
 );
-const { isEdit, DataSource, TableLoading, total, TreeTableKey , EditTxt, EditLoading } = TableProps;
 
-onMounted(() => {
+const { isEdit, DataSource, TableLoading, total , EditTxt, EditLoading } = TableProps;
+
+onMounted( async () => {
   TableProps.loadTableDatas();
 })
 </script>

@@ -13,7 +13,8 @@ export class MenuDAO {
     return await this.MenuRepository.insert({
       name: MenuCreate.name,
       key: MenuCreate.key,
-      pid: MenuCreate.pid ?? null
+      pid: MenuCreate.pid ?? null,
+      remark: MenuCreate.remark
     });
   }
 
@@ -81,7 +82,8 @@ export class MenuDAO {
                      .set({
                        name: MenuUpdate.data.name,
                        key: MenuUpdate.data.key,
-                       pid: MenuUpdate.data.pid
+                       pid: MenuUpdate.data.pid,
+                       remark: MenuUpdate.data.remark
                      })
                      .where("id = :id")
                      .setParameter("id", MenuUpdate.id)

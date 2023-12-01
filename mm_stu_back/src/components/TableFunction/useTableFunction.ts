@@ -117,8 +117,9 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
 
   const handleEditOpen = (type: EditProps, row?: KeyValue) => {
     if(life && life.beforehandleEditOpen) {
-      if(typeof life.beforehandleEditOpen === "function")
+      if(typeof life.beforehandleEditOpen === "function"){
         life.beforehandleEditOpen(row);
+      }
     }
     isEdit.value = true;
     if(row) {

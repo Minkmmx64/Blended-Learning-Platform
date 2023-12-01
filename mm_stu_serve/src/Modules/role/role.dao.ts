@@ -46,7 +46,8 @@ export class RoleDAO {
                      .createQueryBuilder()
                      .update()
                      .set({
-                       name: update.data.name
+                       name: update.data.name,
+                       remark: update.data.remark
                      })
                      .where("id = :id")
                      .setParameter("id", update.id)
@@ -91,7 +92,8 @@ export class RoleDAO {
                            .createQueryBuilder()
                            .insert()
                            .values({
-                             name: create.name
+                             name: create.name,
+                             remark: create.remark
                            }).execute();
     // 增加角色时添加菜单列表
     await this.SetRoutersToRols(Role.raw.insertId, create.menus);

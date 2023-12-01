@@ -41,6 +41,12 @@ const routes: Array<RouteRecordRaw> = [
         name: "AuthorizationRole",
         meta: { isAuth: true },
         component: () => import("@/views/admin/Authorization/AuthorizationRole.vue")
+      },
+      {
+        path: "/CollegeManager",
+        name: "CollegeManager",
+        meta: { isAuth: true },
+        component: () => import("@/views/admin/college/CollegeManager.vue")
       }
     ]
   },

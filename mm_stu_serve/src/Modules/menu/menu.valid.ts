@@ -5,14 +5,11 @@ import { NotAcceptableException } from "@nestjs/common";
 export const MenuCreateValid = Joi.object<MenuCreateDTO>({
   name: Joi.string().required().error(new NotAcceptableException("菜单名字不能为空")),
   key: Joi.string().required().error(new NotAcceptableException("菜单关键字不能为空")),
-  pid: Joi.number().error(new NotAcceptableException("pid字段异常"))
+  pid: Joi.number().error(new NotAcceptableException("pid字段异常")),
+  remark: Joi.string()
 });
 
 export const MenuUpdateValid = Joi.object<MenuUpdateDTO>({
   id: Joi.number().required().error(new NotAcceptableException("id 异常")),
-  data: Joi.object<MenuCreateDTO>({
-    name: Joi.string().required().error(new NotAcceptableException("菜单名字不能为空")),
-    key: Joi.string().required().error(new NotAcceptableException("菜单关键字不能为空")),
-    pid: Joi.number().error(new NotAcceptableException("pid 异常"))
-  })
+  data: MenuCreateValid
 })

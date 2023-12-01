@@ -11,12 +11,12 @@
       @select="MenuSelect"
       :collapse-transition="true"
       :collapse="collapse"
-      :style="{ height: '100vh', padding: '0px 30px 0px 0px' }">
+      :style="{ height: '100vh', padding: '0px 0px 0px 0px' }">
       <div class="text-center text-white fangzheng select-none flex-row flex-center mt-5 font-20 mb-5">
         <!-- <IconFont icon="setting-filling" class="mr-2" /> -->
         <!-- <span v-if="!collapse" style="font-size: 16px;">{{ title }}</span> -->
       </div>
-      <MainSystemMenu :data="SystemMenus" />
+      <MainSystemMenu :data="SystemMenus" :collapse="collapse" />
       <!-- <el-button @click="MenuGoBack" class="w-full" type="primary">Back -</el-button> -->
     </el-menu>
     <!-- <div

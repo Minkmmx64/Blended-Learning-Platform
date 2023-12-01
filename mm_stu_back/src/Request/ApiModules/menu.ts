@@ -5,6 +5,7 @@ export interface MenuEdit {
   pid?: number;
   key?: string;
   id?: number;
+  remark?:string;
 }
 
 export interface MenuQuery {

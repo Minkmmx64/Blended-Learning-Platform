@@ -4,7 +4,8 @@ import { NotAcceptableException } from "@nestjs/common";
 
 export const RoleCreateValid = Joi.object<RoleCreateDTO>({
   name: Joi.string().required().error(new NotAcceptableException("角色名字不能为空")),
-  menus: Joi.array()  
+  menus: Joi.array(),
+  remark: Joi.string()
 });
 
 export const RoleUpdateValid = Joi.object<RoleUpdateDTO>({

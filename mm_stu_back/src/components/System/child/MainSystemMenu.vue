@@ -1,14 +1,14 @@
 <template>
   <template v-for="(group, index) in Props" :key="index">
     <template v-if="group.subMenu">
-      <MenuGroup :data="group" >
+      <MenuGroup :data="group" :iscollapse="iscollapse">
         <template #default="{ sub }">
           <MainSystemMenu :data="sub" />
         </template>
       </MenuGroup>
     </template>
     <template v-else>
-      <SubMenu :data="group" />
+      <SubMenu :data="group" :iscollapse="iscollapse"/>
     </template>
   </template>
 </template>
@@ -18,15 +18,15 @@ import SubMenu from "./SubMenu.vue";
 import MenuGroup from "./MenuGroup.vue";
 import { ISystemMenus } from "../AdminSystemLayout.type";
 export default defineComponent({
-  props: ["data"],
+  props: ["data", "collapse"],
   name: "MainSystemMenu",
   components: {
     MenuGroup,
     SubMenu
   },
   setup(props){
-    const { data: Props } = toRefs<{data:ISystemMenus[]}>(props);
-    return { Props }
+    const { data: Props, collapse: iscollapse } = toRefs<{data:ISystemMenus[], collapse: boolean}>(props);
+    return { Props, iscollapse }
   }
 })
 </script>

@@ -5,6 +5,7 @@ export class RoleQueryDTO {
 export class RoleCreateDTO {
   name: string;
   menus?: any;
+  remark?: string;
 }
 
 export class RoleUpdateDTO {

@@ -1,4 +1,4 @@
-import { Controller, Get, Session, Post, Body, HttpStatus, UsePipes, GoneException, Headers, ConflictException, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Session, Post, Body, HttpStatus, UsePipes, GoneException, Headers, ConflictException, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { CommonService } from "./common.service";
 import { HttpResponse } from "src/response/response";
 import { ValidationPipe } from "src/utils/pipes";
@@ -6,6 +6,7 @@ import { CommonSmsValid, CommonTokenValid } from "./common.valid";
 import { SmsDTO, vTokenDTO } from "./common.dto";
 import { JwtPayload } from "jsonwebtoken";
 import { TokenExpireInterceptor } from "src/guard/token.interceptor";
+import { FileFieldsInterceptor } from "@nestjs/platform-express";
 
 @Controller("/common")
 export class CommonController {
@@ -64,6 +65,18 @@ export class CommonController {
     return  new HttpResponse<{ token : string }>(HttpStatus.ACCEPTED, {
       token: Token
     }).send();
+  }
+
+  //文件上传接口
+  @Post("/upload")
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'file', maxCount: 1 },
+  ]))
+  public async FileUpload(
+    @Body("file") file: any,
+  ) {
+    console.log(file);
+    return { };
   }
 
   //测试接口

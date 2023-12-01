@@ -3,6 +3,7 @@ import { AxiosApi } from "../AxiosApis";
 export interface RoleEdit {
   name?: string;
   menus: number[];
+  remark?: string;
 }
 
 export interface RoleQuery {

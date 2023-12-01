@@ -1,8 +1,8 @@
 <template>
-  <el-sub-menu :index="Props.key">
+  <el-sub-menu :index="Props.key" style="width: 180px;">
     <template #title>
       <IconFont :icon="Props.icon" class="mr-2" />
-      <div class="text-overflow hidden" style="width: 80%;" >{{ Props.name }}</div> 
+      <div v-if="!is" class="text-overflow hidden" style="width: 80%;" >{{ Props.name }}</div> 
     </template>
     <slot :sub="Props.subMenu" />
   </el-sub-menu>
@@ -12,12 +12,12 @@ import { defineComponent, toRefs } from "vue";
 import { ISystemMenus } from "../AdminSystemLayout.type";
 import IconFont from "@/components/display/icon/IconFont.vue";
 export default defineComponent({
-  props: ["data"],
+  props: ["data", "iscollapse"],
   name: "MenuGroup",
   components: { IconFont },
   setup(props){
-    const { data: Props } = toRefs<{data : ISystemMenus}>(props);
-    return { Props }
+    const { data: Props, iscollapse: is } = toRefs<{data : ISystemMenus, iscollapse: boolean}>(props);
+    return { Props, is }
   }
 })
 </script>

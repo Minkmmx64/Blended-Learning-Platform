@@ -21,28 +21,28 @@ const SystemMenus: ISystemMenus[] = [
     icon: "setting-filling"
   },
   {
-    name: "学生管理",
-    key: "Student",
-    icon: "user-filling",
-    subMenu: [
+    name: "信息管理",
+    key: "BaseManager",
+    icon: "configue",
+    subMenu : [
       {
-        name: "学籍管理",
-        route: "StudentInfo",
-        key: "StudentInfo",
-        icon: "file-common"
-      }
-    ]
-  },
-  {
-    name: "个人管理",
-    key: "Personal",
-    icon: "GitHub",
-    subMenu: [
+        name: "学生管理",
+        key: "StudentManager",
+        icon: "user-filling",
+        subMenu: [
+          {
+            name: "学籍管理",
+            route: "StudentInfo",
+            key: "StudentInfo",
+            icon: "file-common"
+          }
+        ]
+      },
       {
-        name: "个人信息",
-        key: "PersonalInfo",
-        route: "PersonalInfo",
-        icon: "image-text"
+        name: "学院管理",
+        route: "CollegeManager",
+        key: "CollegeManager",
+        icon: "sbox"
       }
     ]
   },
@@ -64,7 +64,20 @@ const SystemMenus: ISystemMenus[] = [
         icon: "users"
       }
     ]
-  }
+  },
+  {
+    name: "个人管理",
+    key: "Personal",
+    icon: "GitHub",
+    subMenu: [
+      {
+        name: "个人信息",
+        key: "PersonalInfo",
+        route: "PersonalInfo",
+        icon: "image-text"
+      }
+    ]
+  },
 ];
 
 export { SystemMenus , config }

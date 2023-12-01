@@ -23,6 +23,16 @@
       <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
+            <span>角色描述:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-input v-model="EditParams.remark" placeholder="role remark" />
+        </el-col>
+      </el-row>
+      <el-row class="mb-5 text-center">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
             <span>显示菜单列表:</span>
           </div>
         </el-col>
@@ -114,7 +124,8 @@ import { DeepClone } from "@/components/Utils/deepClone";
 //添加修改对象
 const EditParams = ref<RoleEdit>({
   name: "",
-  menus: []
+  menus: [],
+  remark: ""
 });
 //查询对象
 const QueryParams = ref<RoleQuery>({
