@@ -1,4 +1,4 @@
-import { Controller, Get, Session, Post, Body, HttpStatus, UsePipes, GoneException, Headers, ConflictException, UseInterceptors, UploadedFile } from "@nestjs/common";
+import { Controller, BadRequestException, Get, Session, Post, Body, HttpStatus, UsePipes, GoneException, Headers, ConflictException, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { CommonService } from "./common.service";
 import { HttpResponse } from "src/response/response";
 import { ValidationPipe } from "src/utils/pipes";
@@ -6,7 +6,8 @@ import { CommonSmsValid, CommonTokenValid } from "./common.valid";
 import { SmsDTO, vTokenDTO } from "./common.dto";
 import { JwtPayload } from "jsonwebtoken";
 import { TokenExpireInterceptor } from "src/guard/token.interceptor";
-import { FileFieldsInterceptor } from "@nestjs/platform-express";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { Express } from 'express'
 
 @Controller("/common")
 export class CommonController {
@@ -67,16 +68,20 @@ export class CommonController {
     }).send();
   }
 
-  //文件上传接口
+  /**
+   * 小文件上传
+   * @returns md5 url
+   * @param file 小文件
+   * @returns 
+   */
   @Post("/upload")
-  @UseInterceptors(FileFieldsInterceptor([
-    { name: 'file', maxCount: 1 },
-  ]))
+  @UseInterceptors(FileInterceptor("file"))
   public async FileUpload(
-    @Body("file") file: any,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log(file);
-    return { };
+    const [ error, url ] = await this.CommonService.FileUpload(file);
+    if(error) throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    return new HttpResponse<{ url : string }>(HttpStatus.ACCEPTED, { url: url }).send();
   }
 
   //测试接口

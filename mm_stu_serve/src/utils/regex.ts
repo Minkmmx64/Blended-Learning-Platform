@@ -14,5 +14,9 @@ export const Rules = {
   img : {
     rule: new RegExp(/(http|https):\/\/([a-z0-9A-Z]{1,})(\.[a-z0-9A-Z]{1,})*((\/[a-z0-9A-Z]{1,}){1,})([^/]*)(?=\.png|\.jpg)(\.png|\.jpg)$/),
     msg : "图片格式非法"
+  },
+  suff: {
+    rule: new RegExp(/(?!.*\.).*/),
+    msg: "文件后缀名"
   }
 }

@@ -3,8 +3,11 @@ import { randomUUID } from "crypto";
 import { JWT } from "src/utils/crypto";
 import { svgCode } from "src/utils/sms";
 import { TokenDTO } from "./common.dto";
-import { ServiceData } from "../index.type";
-
+import { Express } from 'express'
+import { ReadFile } from "src/common/common";
+import * as path from "path";
+import { Rules } from "src/utils/regex";
+import * as fs from "node:fs";
 @Injectable()
 export class CommonService {
 
@@ -32,8 +35,6 @@ export class CommonService {
     if(error) {
       if(error === "TokenExpiredError: jwt expired") {
         const deToken = JWT.decode(Authorization) as TokenDTO;
-        console.log(deToken);
-        
         //过期了先解包里面的用户数据，如权限id
         const token = JWT.genToken({
           uuid: randomUUID(),
@@ -45,5 +46,19 @@ export class CommonService {
     }
 
     return [ null, Authorization ];
+  }
+
+
+  public async FileUpload(file : Express.Multer.File): Promise<[Error, string]> {
+    try {
+      const md5 = await ReadFile(file);
+      const fileSuff = Rules.suff.rule.exec(file.originalname)[0];
+      const fileName = `${md5}.${fileSuff}`;
+      const filePath = path.join(__dirname, "..", "..", "static", "image", fileName);
+      fs.writeFileSync(filePath,file.buffer, { flag: "w+" });
+      return [ null, "http://loaclhost:8080/static/image/" + md5 ];
+    } catch (error) {
+      return [new Error(error), null]; 
+    }
   }
 }
