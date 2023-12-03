@@ -85,5 +85,5 @@ onUnmounted(() => { window.removeEventListener("beforeunload", reFresh); })
 .System-main{ height: 100vh; }
 .System-drag{ top: 50%; cursor: move; }
 .System-view{ flex-grow: 1; color: #000; }
-.System-right{ height: 100vh; flex-grow: 1; }
+.System-right{ height: 100vh; flex-grow: 1; width: calc(100% - 250px); }
 </style>

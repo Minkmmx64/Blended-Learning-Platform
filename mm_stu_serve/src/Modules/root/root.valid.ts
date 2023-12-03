@@ -26,6 +26,6 @@ export const RootInfoSchema = Joi.object<RootInfoDTO>({
     Joi.string().valid(null,""),
     Joi.string().required().regex(Rules.img.rule).error(new NotAcceptableException(Rules.img.msg))
   ),
-  label: Joi.string(),
+  label: Joi.allow(),
   username: Joi.string().required().regex(Rules.username.rule).error(new NotAcceptableException("用户名不能为空")),
 })

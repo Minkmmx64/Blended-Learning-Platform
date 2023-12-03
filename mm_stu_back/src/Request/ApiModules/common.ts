@@ -17,6 +17,14 @@ export class CommonApi extends AxiosApi {
     return this.post("/vtoken", { token });
   }
 
+  public upload(data: FormData) {
+    return this.post("/upload", data, {
+      "headers" : {
+        "Content-Type" : "multipart/form-data"
+      }
+    } )
+  }
+
   // public rToken() {
   //   return this.get<null, { token: string }>("/rtoken");
   // }

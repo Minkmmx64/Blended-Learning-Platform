@@ -101,8 +101,16 @@
           <el-tag v-else class="ml-2 select-none" type="danger">禁用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="create_time" label="创建时间" header-align="center" align="center" width="250" />
-      <el-table-column prop="update_time" label="修改时间" header-align="center" align="center" width="250" />
+      <el-table-column prop="create_time" label="创建时间" header-align="center" align="center" width="150" >
+        <template #default="{ row }">
+          <showTime :date="row.create_time"/>
+        </template>
+      </el-table-column>
+      <el-table-column prop="update_time" label="修改时间" header-align="center" align="center" width="150" >
+        <template #default="{ row }">
+          <showTime :date="row.update_time"/>
+        </template>
+      </el-table-column>
       <el-table-column flex="right" label="操作" header-align="center" align="center" width="300">
         <template #default="{ row }"> <!---->
           <el-button type="success" @click="TableProps.handleEditOpen('update', row)">编辑</el-button>

@@ -1,13 +1,10 @@
 import { defineStore } from 'pinia';
-import { ElMessage } from 'element-plus';
-import { useRouter } from "vue-router";
-import Root, { UserInfo, RootLoginDTO } from '@/Request/ApiModules/root';
+import { UserInfo } from '@/Request/ApiModules/root';
 
 const nullUser: UserInfo = { username: "未登录", avatar: "", label: "",
   role: {
     id: -1,
     name: "未登录",
-    routers: "",
   }
 };
 
@@ -25,7 +22,8 @@ export const useUserStore = defineStore("User",{
   actions: {
     setUser(User: UserInfo){ this.User = User; },
     setToken(Token: string){ this.Token = Token; },
-    clearInfo() { this.User = nullUser; this.Token = ""; }
+    clearInfo() { this.User = nullUser; this.Token = ""; },
+    setAvatar(url: string){ this.User.avatar = url }
   },
   persist: { enabled: true }
 }

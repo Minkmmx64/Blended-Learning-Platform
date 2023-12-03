@@ -70,19 +70,27 @@
       :table-key="TreeTableKey" 
       :DataSource="DataSource">
       <el-table-column fixed type="index" width="50" />
-      <el-table-column prop="id" label="ID" header-align="center" align="center" />
+      <el-table-column prop="id" label="ID" header-align="center" align="center" width="100"/>
       <el-table-column prop="name" label="路由名称" header-align="center" align="center" width="200" />
-      <el-table-column prop="key" label="路由关键字" header-align="center" align="center" />
-      <el-table-column prop="status" label="状态" sortable header-align="center" align="center">
-        <template #default="scope">
-          <el-tag v-if="scope.row.status" class="ml-2 select-none" type="success">启用</el-tag>
+      <el-table-column prop="key" label="路由关键字" header-align="center" align="center" width="150"/>
+      <el-table-column prop="status" label="状态" sortable header-align="center" align="center" width="150">
+        <template #default="{ row }">
+          <el-tag v-if="row.status" class="ml-2 select-none" type="success">启用</el-tag>
           <el-tag v-else class="ml-2 select-none" type="danger">禁用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="描述" header-align="center" align="center" />
-      <el-table-column prop="create_time" label="创建时间" header-align="center" align="center" width="250" />
-      <el-table-column prop="update_time" label="修改时间" header-align="center" align="center" width="250" />
-      <el-table-column flex="right" label="操作" header-align="center" align="center" width="300">
+      <el-table-column prop="remark" label="描述" header-align="center" align="center" width="250"/>
+      <el-table-column prop="create_time" label="创建时间" header-align="center" align="center" width="150" >
+        <template #default="{ row }">
+          <showTime :date="row.create_time"/>
+        </template>
+      </el-table-column>
+      <el-table-column prop="update_time" label="修改时间" header-align="center" align="center" width="150" >
+        <template #default="{ row }">
+          <showTime :date="row.update_time"/>
+        </template>
+      </el-table-column>
+      <el-table-column flex="right" label="操作" header-align="center" align="center">
         <template #default="{ row }"> <!---->
           <el-button type="primary" @click="TableProps.handleEditOpen('create', row)">添加子菜单</el-button>
           <el-divider direction="vertical" />

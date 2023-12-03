@@ -56,7 +56,7 @@ export class CommonService {
       const fileName = `${md5}.${fileSuff}`;
       const filePath = path.join(__dirname, "..", "..", "static", "image", fileName);
       fs.writeFileSync(filePath,file.buffer, { flag: "w+" });
-      return [ null, "http://loaclhost:8080/static/image/" + md5 ];
+      return [ null, "http://localhost:8080/image/" + md5 + "." + fileSuff ];
     } catch (error) {
       return [new Error(error), null]; 
     }

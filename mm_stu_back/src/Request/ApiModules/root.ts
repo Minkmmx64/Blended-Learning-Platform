@@ -15,7 +15,6 @@ export interface RootLoginDTO {
 export interface RootRole {
   id: number;
   name: string;
-  routers: any[] | any;
 }
 
 export interface UserInfo {
@@ -34,6 +33,7 @@ export interface RootInfoEdit {
   avatar: string;
   label: string;
   username: string;
+  rusername:string;
 }
 
 export class root extends AxiosApi {
@@ -47,6 +47,9 @@ export class root extends AxiosApi {
 
   public login(data : RootLoginDTO) {
     return this.post<RootLoginDTO,LoginResponseData>("/login", data);
+  }
+  public info(data: RootInfoEdit) {
+    return this.put("/info", data);
   }
 }
 
