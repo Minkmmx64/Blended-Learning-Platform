@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseAttrColumn } from './BaseAttrColumn';
 import { StuCollege } from './stu_college.entity';
 import { StuClass } from './stu_class.entity';
@@ -30,5 +30,8 @@ export class StuInfo extends BaseAttrColumn {
 
   //学生班级属于一个学院的某个班级
   @ManyToOne( type => StuClass , { nullable : false })
+  @JoinColumn({
+    name: "class_id"
+  })
   class: StuClass;
 }

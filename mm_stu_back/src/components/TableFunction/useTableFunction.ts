@@ -5,7 +5,7 @@ import { DeleteProps, EditProps, ITableFunction, KeyValue, ListMetaData, Paginat
 import { DataModules } from "@/Request/DataModules/DataModules";
 import { AxiosResponse } from "axios";
 
-export function useTableFunction<T extends AxiosApi, Query extends object, Edit extends object>(
+export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edit extends KeyValue>(
   apiname: string,
   TableApi: new () => T,
   UserSearchQuery: Ref<Query>,                // 用户查询参数
@@ -140,6 +140,16 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
     }
   }
 
+  const handleClearQuery = () => {
+    for(const k in UserSearchQuery.value) {
+      if(typeof UserSearchQuery.value[k] === "number") 
+        (UserSearchQuery.value[k] as any) = 0;
+      else 
+        (UserSearchQuery.value[k] as any) = "";
+    }
+    loadTableDatas();
+  }
+
   return { 
     apiname,
     DataSource, 
@@ -155,6 +165,7 @@ export function useTableFunction<T extends AxiosApi, Query extends object, Edit 
     handleSizeChange,
     handleSortChange,
     EditLoading,
-    handleDelete
+    handleDelete,
+    handleClearQuery
   }
 }

@@ -3,6 +3,7 @@ import { DataSource, InsertResult, SelectQueryBuilder } from "typeorm";
 import { CollegeUpdateDTO, StuCollegeCreateDTO, StuCollegeQueryDTO } from "./college.dto";
 import { ToOrder } from "src/common/common";
 import { PaginationQuery } from "../index.type";
+import { StuClass } from "src/Entity/stu_class.entity";
 
 export class CollegeServiceDAO {
   constructor(protected DataSource : DataSource){};
@@ -56,6 +57,13 @@ export class CollegeServiceDAO {
     try {
       await queryRunner.connect();
       await queryRunner.startTransaction();
+      //删除学院先删除学院所在的班级
+      await this.DataSource.getRepository(StuClass)
+                           .createQueryBuilder(null, queryRunner)
+                           .delete()
+                           .where("college_id = :id")
+                           .setParameter("id", id)
+                           .execute();
       const DeleteResult = await this.StuCollegeRepository
                                      .createQueryBuilder(null, queryRunner)
                                      .delete()
@@ -72,6 +80,14 @@ export class CollegeServiceDAO {
       await queryRunner.release();
     }
   }
+
+  public async CollegeAll(){
+    return await this.StuCollegeRepository
+                     .createQueryBuilder()
+                     .select()
+                     .getMany();
+  }
+
   public async Total() {
     return await this.StuCollegeRepository
                      .createQueryBuilder()

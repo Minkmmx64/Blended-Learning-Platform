@@ -23,7 +23,7 @@ export class StuTeacher extends BaseAttrColumn {
   @OneToMany(type => StuSign, StuSign => StuSign.teacher)
   signs: StuSign[];
 
-  @ManyToMany(type => StuCourse, StuCourse => StuCourse.teachers, { cascade: true })
+  @ManyToMany(type => StuCourse, StuCourse => StuCourse.teachers)
   @JoinTable({
     name: "relation_mm_stu_teacher_course",
     joinColumn: {

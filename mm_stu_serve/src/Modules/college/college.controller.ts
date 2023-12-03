@@ -67,4 +67,13 @@ export class StuCollegeController {
     } else return new HttpResponse<DeleteResult>(HttpStatus.ACCEPTED, DeleteResult).send();
   }
 
+  @Get("/all")
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async CollegeAll(){
+    const [ error, college ] = await this.StuCollegeService.CollegeAll();
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<StuCollege[]>(HttpStatus.ACCEPTED, college).send();
+  }
+
 }

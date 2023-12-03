@@ -42,7 +42,13 @@ const SystemMenus: ISystemMenus[] = [
         name: "学院管理",
         route: "CollegeManager",
         key: "CollegeManager",
-        icon: "sbox"
+        icon: "survey"
+      },
+      {
+        name: "班级管理",
+        route: "ClassManager",
+        key: "ClassManager",
+        icon: "intermediate-filling"
       }
     ]
   },

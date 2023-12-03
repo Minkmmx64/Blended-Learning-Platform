@@ -214,6 +214,16 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
     } else EditTxt.value = "修改";
   }
 
+  const handleClearQuery = () => {
+    for(const k in UserSearchQuery.value) {
+      if(typeof UserSearchQuery.value[k] === "number") 
+        (UserSearchQuery.value[k] as any) = 0;
+      else 
+        (UserSearchQuery.value[k] as any) = "";
+    }
+    loadTableDatas();
+  }
+
   return { 
     apiname,
     loadTableDatas,
@@ -232,6 +242,7 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
     EditTxt,
     handleSizeChange,
     handleCurrentChange,
-    handleSortChange
+    handleSortChange,
+    handleClearQuery
   }
 }

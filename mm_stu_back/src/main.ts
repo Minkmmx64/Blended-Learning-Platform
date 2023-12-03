@@ -5,6 +5,7 @@ import router from './router';
 import ElementPlus from 'element-plus';
 import piniaPluginPersist from 'pinia-plugin-persist';
 import showTime from "@/components/display/showTime.vue";
+import IconFont from "@/components/display/icon/IconFont.vue";
 import  "./assets/font_3321676_e42xnb5xu6i/iconfont.css";
 import 'element-plus/dist/index.css';
 
@@ -18,5 +19,5 @@ app
 .use(ElementPlus)
 
 app.component("ShowTime", showTime)
-
+app.component("IconFont", IconFont)
 app.mount('#app');

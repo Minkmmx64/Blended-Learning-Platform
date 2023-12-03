@@ -17,7 +17,7 @@ export class RoleDAO {
 
     if(RoleQuery.name) {
       SelectQueryBuilder
-                        .where("name = :name")
+                        .where("role.name = :name")
                         .setParameter("name", RoleQuery.name);
     }
     if(RoleQuery.prop) {

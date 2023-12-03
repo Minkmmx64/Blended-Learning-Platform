@@ -53,4 +53,13 @@ export class StuCollegeService {
       return [new Error(error), null];
     }
   }
+
+  public async CollegeAll() : ServiceData<StuCollege[]> {
+    try {
+      const college = await this.CollegeServiceDAO.CollegeAll();
+      return [ null, college ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
 }

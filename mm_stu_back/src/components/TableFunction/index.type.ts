@@ -57,4 +57,5 @@ export interface ITableFunction {
   handleCurrentChange: (offset: number) => void;
   handleSortChange: (sort: Sorted) => void;
   handleDelete: (row: DataModules) => void;
+  handleClearQuery: () => void;
 }
