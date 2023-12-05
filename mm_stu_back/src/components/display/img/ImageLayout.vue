@@ -1,6 +1,12 @@
 <template>
-  <div class="image-layout hidden" :style="{ width: Props.width + 'px', height: Props.height + 'px', borderRadius: Props.round ? '50%' : '10%' }">
-    <img @error="LoadError" :src="Fail" />
+  <div
+    class="image-layout hidden"
+    :style="{ width: Props.width + 'px', height: Props.height + 'px', borderRadius: Props.round ? '50%' : '10%' }"
+  >
+    <img
+      :src="Fail"
+      @error="LoadError"
+    >
   </div>
 </template>
   

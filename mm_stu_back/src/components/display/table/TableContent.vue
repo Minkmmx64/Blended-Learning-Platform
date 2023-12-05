@@ -1,18 +1,19 @@
 <template>
   <div class="TableContent border-info relative">
     <el-table 
+      :key="Props.tableKey" 
+      v-loading="loading" 
       style="width:100%; height: calc(100% - 50px)" 
-      :data="Props.DataSource" 
+      :data="Props.DataSource"
       row-key="id" 
       lazy
-      :tree-props="{ children: Props.child?.childrenKey, hasChildren: Props.child?.hasChildrenKey }" 
+      :tree-props="{ children: Props.child?.childrenKey, hasChildren: Props.child?.hasChildrenKey }"
       :load="Props.lazyLoad"
       stripe
-      v-loading="loading"
+      :efault-expand-all="false"
       @sort-change="handleSortChange"
-      :key="Props.tableKey"
-      :efault-expand-all="false">
-      <slot></slot>
+    >
+      <slot />
     </el-table>
     <div class="Pagination absolute flex-row flex-jus">
       <el-pagination 
@@ -25,10 +26,17 @@
         layout="total, sizes, prev, pager, next"
         :total="total"
         @size-change="handleSizeChange" 
-        @current-change="handleCurrentChange" />
-        <div class="h-full flex-row flex-center mr-5">
-          <el-button @click="emit('refresh')" type="primary" :loading="loading">刷新数据</el-button>
-        </div>
+        @current-change="handleCurrentChange"
+      />
+      <div class="h-full flex-row flex-center mr-5">
+        <el-button
+          type="primary"
+          :loading="loading"
+          @click="emit('refresh')"
+        >
+          刷新数据
+        </el-button>
+      </div>
     </div>
   </div>
 </template>

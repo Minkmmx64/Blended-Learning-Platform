@@ -1,39 +1,14 @@
 <template>
   <div class="w-full h-full scroll">
     <div class="TableHead">
-      <el-row
-        class="mb-10 mt-10"
-        :gutter="20"
-      >
-        <el-col :span="6">
+      <el-row class="mb-10 mt-10">
+        <el-col :span="24">
           <div class="grid-content ep-bg-purple-dark">
             <el-button
               type="primary"
               @click="TableProps.handleEditOpen('create')"
             >
-              添加{{ TableProps.apiname }}
-            </el-button>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <el-input
-            v-model="QueryParams.name"
-            placeholder="role name"
-          />
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content ep-bg-purple-dark">
-            <el-button
-              type="success"
-              @click="TableProps.loadTableDatas()"
-            >
-              查询 {{ TableProps.apiname }}
-            </el-button>
-            <el-button
-              type="info"
-              @click="TableProps.handleClearQuery()"
-            >
-              <IconFont icon="refresh" />
+              添加 {{ TableProps.apiname }}
             </el-button>
           </div>
         </el-col>
@@ -47,56 +22,26 @@
       <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
-            <span>菜单名称:</span>
+            <span>{{ TableProps.apiname }}名称:</span>
           </div>
         </el-col>
         <el-col :span="18">
           <el-input
             v-model="EditParams.name"
-            placeholder="menu name"
+            placeholder="role name"
           />
         </el-col>
       </el-row>
       <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
-            <span>菜单key:</span>
-          </div>
-        </el-col>
-        <el-col :span="18">
-          <el-input
-            v-model="EditParams.key"
-            placeholder="menu key"
-          />
-        </el-col>
-      </el-row>
-      <el-row class="mb-5 text-center">
-        <el-col :span="6">
-          <div class="h-full flex-row flex-center">
-            <span>菜单描述:</span>
+            <span>学院描述:</span>
           </div>
         </el-col>
         <el-col :span="18">
           <el-input
             v-model="EditParams.remark"
-            placeholder="menu remark"
-          />
-        </el-col>
-      </el-row>
-      <el-row
-        v-if="EditParams.pid"
-        class="text-center"
-      >
-        <el-col :span="6">
-          <div class="h-full flex-row flex-center">
-            <span>pid:</span>
-          </div>
-        </el-col>
-        <el-col :span="18">
-          <el-input
-            v-model="EditParams.pid"
-            disabled
-            placeholder="menu key"
+            placeholder="role remark"
           />
         </el-col>
       </el-row>
@@ -113,15 +58,12 @@
     </el-dialog>
 
     <TableContent
-      :child="TableProps.childKey" 
-      :lazy-load="TableProps.lazy" 
       :loading="TableLoading" 
       :total="total" 
-      :table-key="TreeTableKey"
       :DataSource="DataSource"
       @refresh="TableProps.loadTableDatas"
       @handleSizeChange="TableProps.handleSizeChange"
-      @handleCurrentChange="TableProps.handleCurrentChange" 
+      @handleCurrentChange="TableProps.handleCurrentChange"
       @handleSortChange="TableProps.handleSortChange"
     >
       <el-table-column
@@ -134,21 +76,20 @@
         label="ID"
         header-align="center"
         align="center"
-        width="100"
+        width="50"
       />
       <el-table-column
         prop="name"
-        label="路由名称"
+        label="学院"
         header-align="center"
         align="center"
         width="200"
       />
       <el-table-column
-        prop="key"
-        label="路由关键字"
+        prop="remark"
+        label="描述"
         header-align="center"
         align="center"
-        width="150"
       />
       <el-table-column
         prop="status"
@@ -176,13 +117,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="remark"
-        label="描述"
-        header-align="center"
-        align="center"
-        width="250"
-      />
-      <el-table-column
         prop="create_time"
         label="创建时间"
         header-align="center"
@@ -209,16 +143,9 @@
         label="操作"
         header-align="center"
         align="center"
+        width="300"
       >
         <template #default="{ row }">
-          <!---->
-          <el-button
-            type="primary"
-            @click="TableProps.handleEditOpen('create', row)"
-          >
-            添加子菜单
-          </el-button>
-          <el-divider direction="vertical" />
           <el-button
             type="success"
             @click="TableProps.handleEditOpen('update', row)"
@@ -239,32 +166,30 @@
 </template>
 <script lang="ts" setup>
 import TableContent from "@/components/display/table/TableContent.vue";
-import { menu, MenuEdit, MenuQuery } from "@/Request/ApiModules/menu";
-import { useTreeTableFunction } from "@/components/TableFunction/useTreeTableFunction";
+import { college, CollegeEdit, CollegeQuery } from "@/Request/ApiModules/college";
+import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";
-
 //添加修改对象
-const EditParams = ref<MenuEdit>({
+const EditParams = ref<CollegeEdit>({
   name: "",
-  key: "",
-  pid: undefined,
   remark: ""
 });
-
-const QueryParams = ref<MenuQuery>({
+//查询对象
+const QueryParams = ref<CollegeQuery>({
   name: ""
 });
 
-const TableProps = useTreeTableFunction<menu, MenuQuery, MenuEdit>(
-  "菜单",
-  menu,
+const TableProps = useTableFunction<college, CollegeQuery, CollegeEdit>(
+  "学院",
+  college,
   QueryParams,
-  { childrenKey: "child", hasChildrenKey: "hashChild" },
-  EditParams
+  EditParams,
+  undefined,
 );
-const { isEdit, DataSource, TableLoading, total, TreeTableKey , EditTxt, EditLoading } = TableProps;
 
-onMounted(() => {
+const { isEdit, DataSource, TableLoading, total , EditTxt, EditLoading } = TableProps;
+
+onMounted( async () => {
   TableProps.loadTableDatas();
 })
 </script>

@@ -8,6 +8,7 @@ import { StuCollegeModule } from './Modules/college/college.module';
 import { MenuModule } from './Modules/menu/menu.module';
 import { RoleModule } from './Modules/role/role.module';
 import { ClassModule } from './Modules/class/class.module';
+import { StuModule } from './Modules/stu/stu.module';
 
 
 @Module({
@@ -27,7 +28,8 @@ import { ClassModule } from './Modules/class/class.module';
     StuCollegeModule,
     MenuModule,
     RoleModule,
-    ClassModule
+    ClassModule,
+    StuModule
   ],
   controllers: [AppController],
   providers: [AppService],

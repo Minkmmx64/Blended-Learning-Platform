@@ -46,13 +46,13 @@ const routes: Array<RouteRecordRaw> = [
         path: "/CollegeManager",
         name: "CollegeManager",
         meta: { isAuth: true },
-        component: () => import("@/views/admin/college/CollegeManager.vue")
+        component: () => import("@/views/admin/info/CollegeManager.vue")
       },
       {
         path: "/ClassManager",
         name: "ClassManager",
         meta: { isAuth: true },
-        component: () => import("@/views/admin/class/ClassManager.vue")
+        component: () => import("@/views/admin/info/ClassManager.vue")
       }
     ]
   },

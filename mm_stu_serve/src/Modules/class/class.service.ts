@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { DataSource, DeleteResult, InsertResult, UpdateResult } from "typeorm";
 import { ClassDAO } from "./class.dao";
-import { ClassCreateDTO, ClassUpdateDTO } from "./class.dto";
+import { ClassCreateDTO, ClassQueryDTO, ClassUpdateDTO } from "./class.dto";
 import { ListMetaData, PaginationQuery, ServiceData } from "../index.type";
 import { StuClass } from "src/Entity/stu_class.entity";
 
@@ -12,7 +12,7 @@ export class ClassService {
 
   public ClassDAO = new ClassDAO(this.DataSource);
   
-  public async ClassListsPagination(ClassQuery: PaginationQuery<ClassCreateDTO>): ServiceData<ListMetaData<StuClass[]>> {
+  public async ClassListsPagination(ClassQuery: PaginationQuery<ClassQueryDTO>): ServiceData<ListMetaData<StuClass[]>> {
     try {
       const Classes = await this.ClassDAO.ClassListsPagination(ClassQuery);
       const res: ListMetaData<StuClass[]> = {

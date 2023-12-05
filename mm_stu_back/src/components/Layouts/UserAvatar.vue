@@ -1,6 +1,10 @@
 <template>
   <div class="user-avatar border-round border-info absolute hidden">
-    <ImageLayout :resource="UserStore.getUser.avatar ?? ''" :width="36" :height="36" />
+    <ImageLayout
+      :resource="UserStore.getUser.avatar ?? ''"
+      :width="36"
+      :height="36"
+    />
   </div>
 </template>
   

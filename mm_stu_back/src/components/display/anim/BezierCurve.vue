@@ -1,6 +1,9 @@
 <template>
-  <div id="BezierCurve" class="flex-column flex-center">
-    <canvas ref="BezierCurve" ></canvas>
+  <div
+    id="BezierCurve"
+    class="flex-column flex-center"
+  >
+    <canvas ref="BezierCurve" />
   </div>
 </template>
   

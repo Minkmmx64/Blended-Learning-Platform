@@ -1,5 +1,8 @@
 <template>
-  <div :class="'h-full iconfont ' + Props.icon" :style="{ fontSize: size + 'px' }"></div>
+  <div
+    :class="'h-full iconfont ' + Props.icon"
+    :style="{ fontSize: size + 'px' }"
+  />
 </template>
   
 <script setup lang="ts">

@@ -1,20 +1,31 @@
 <template>
-  <div ref="inp" class="input hidden mg-5 w-full border-info border-small flex-row flex-center">
-    <div class="flex-row flex-center text-center" style="width: 40px; height: 40px;line-height: 40px;">
-      <IconFont class="mg-2" style="width: 40px;" :icon="Props.icon" />
+  <div
+    ref="inp"
+    class="input hidden mg-5 w-full border-info border-small flex-row flex-center"
+  >
+    <div
+      class="flex-row flex-center text-center"
+      style="width: 40px; height: 40px;line-height: 40px;"
+    >
+      <IconFont
+        class="mg-2"
+        style="width: 40px;"
+        :icon="Props.icon"
+      />
     </div>
-    <form class="w-full h-full border-none transparent" >
+    <form class="w-full h-full border-none transparent">
       <input
-      @blur="blur"
-      @focus="focus"
-      autocomplete="off" 
-      maxlength="20" 
-      :type="Props.type ?? 'text'" 
-      v-model="value" 
-      :placeholder="Props.placeholder" 
-      class="w-full h-full border-none transparent" />
+        v-model="value"
+        autocomplete="off"
+        maxlength="20" 
+        :type="Props.type ?? 'text'" 
+        :placeholder="Props.placeholder" 
+        class="w-full h-full border-none transparent" 
+        @blur="blur" 
+        @focus="focus"
+      >
     </form>
-    <slot></slot>
+    <slot />
   </div>
 </template>
   

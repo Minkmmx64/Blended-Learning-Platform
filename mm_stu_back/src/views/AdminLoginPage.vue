@@ -1,5 +1,11 @@
 <template>
-  <LoginLayout @login="login" @forget="forget" @register="register" :RegistFails="RegistFails" :LoginFails="LoginFails" />
+  <LoginLayout
+    :regist-fails="RegistFails"
+    :login-fails="LoginFails"
+    @login="login"
+    @forget="forget"
+    @register="register"
+  />
 </template>
   
 <script setup lang="ts">

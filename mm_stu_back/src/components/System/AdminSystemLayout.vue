@@ -8,15 +8,19 @@
       :default-active="currentMenu"
       :default-openeds="[currentMenu]"
       :unique-opened="true"
-      @select="MenuSelect"
       :collapse-transition="true"
       :collapse="collapse"
-      :style="{ height: '100vh', padding: '0px 0px 0px 0px' }">
+      :style="{ height: '100vh', padding: '0px 0px 0px 0px' }"
+      @select="MenuSelect"
+    >
       <div class="text-center text-white fangzheng select-none flex-row flex-center mt-5 font-20 mb-5">
         <!-- <IconFont icon="setting-filling" class="mr-2" /> -->
         <!-- <span v-if="!collapse" style="font-size: 16px;">{{ title }}</span> -->
       </div>
-      <MainSystemMenu :data="SystemMenus" :collapse="collapse" />
+      <MainSystemMenu
+        :data="SystemMenus"
+        :collapse="collapse"
+      />
       <!-- <el-button @click="MenuGoBack" class="w-full" type="primary">Back -</el-button> -->
     </el-menu>
     <!-- <div
@@ -28,14 +32,18 @@
     </div> -->
     <div class="System-right flex-column text-white">
       <BreadNav 
+        :active="currentMenu"
+        :path="BreadNavPath"
         @togglecollapse="togglecollapse"
         @togglemenu="togglemenu"
-        :active="currentMenu"
-        :path="BreadNavPath"  />
+      />
       <!-- 主页面 -->
       <div class="System-view pl-5 pt-5">
         <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in">
+          <transition
+            name="fade"
+            mode="out-in"
+          >
             <keep-alive>
               <component :is="Component" />
             </keep-alive>

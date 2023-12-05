@@ -6,7 +6,7 @@ export const RootRouterPath  = {
   ["student.info"] : {  
     name: "StudentInfo",
     path: "/StudentInfo",
-    component: () => import("@/views/test/AnimTest.vue"),
+    component: () => import("@/views/admin/info/StudentInfoManager.vue"),
     meta: { isAuth: true }
   } as RouteRecordRaw
 }

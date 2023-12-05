@@ -11,7 +11,7 @@ export class TokenExpireInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest() as Request;
     const res = context.switchToHttp().getResponse() as Response;
-    const Token = req.headers.authorization;
+    const Token = req.headers.authorization.replace("Bearer ", "");
     const [ error ] = JWT.verify(Token);
     if(error) {
       // 需要Token认证的接口添加拦截器

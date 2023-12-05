@@ -1,5 +1,10 @@
 <template>
-  <div @click="emit('refresh')" class="h-full" style="width: 150px;" v-html="Props.code"></div>
+  <div
+    class="h-full"
+    style="width: 150px;"
+    @click="emit('refresh')"
+    v-html="Props.code"
+  />
 </template>
   
 <script setup lang="ts">

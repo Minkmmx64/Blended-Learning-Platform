@@ -1,5 +1,5 @@
 <template>
-  <AdminSystemLayout title="线上线下融合教学平台"/>
+  <AdminSystemLayout title="线上线下融合教学平台" />
 </template>
   
 <script setup lang="ts">

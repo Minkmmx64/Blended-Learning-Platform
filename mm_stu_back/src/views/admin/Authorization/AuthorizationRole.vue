@@ -1,26 +1,49 @@
 <template>
   <div class="w-full h-full scroll">
     <div class="TableHead">
-      <el-row class="mb-10 mt-10" :gutter="20">
+      <el-row
+        class="mb-10 mt-10"
+        :gutter="20"
+      >
         <el-col :span="6">
-          <div class="grid-content ep-bg-purple-dark" >
-            <el-button type="primary" @click="TableProps.handleEditOpen('create')">添加 {{ TableProps.apiname }}</el-button>
+          <div class="grid-content ep-bg-purple-dark">
+            <el-button
+              type="primary"
+              @click="TableProps.handleEditOpen('create')"
+            >
+              添加 {{ TableProps.apiname }}
+            </el-button>
           </div>
         </el-col>
         <el-col :span="6">
-          <el-input v-model="QueryParams.name" placeholder="role name" />
+          <el-input
+            v-model="QueryParams.name"
+            placeholder="role name"
+          />
         </el-col>
         <el-col :span="6">
-          <div class="grid-content ep-bg-purple-dark" >
-            <el-button type="success" @click="TableProps.loadTableDatas()">查询 {{ TableProps.apiname }}</el-button>
-            <el-button type="info" @click="TableProps.handleClearQuery()">
+          <div class="grid-content ep-bg-purple-dark">
+            <el-button
+              type="success"
+              @click="TableProps.loadTableDatas()"
+            >
+              查询 {{ TableProps.apiname }}
+            </el-button>
+            <el-button
+              type="info"
+              @click="TableProps.handleClearQuery()"
+            >
               <IconFont icon="refresh" />
             </el-button>
           </div>
         </el-col>
       </el-row>
     </div>
-    <el-dialog v-model="isEdit" :title="`${EditTxt}-${TableProps.apiname}`" width="30%">
+    <el-dialog
+      v-model="isEdit"
+      :title="`${EditTxt}-${TableProps.apiname}`"
+      width="30%"
+    >
       <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
@@ -28,7 +51,10 @@
           </div>
         </el-col>
         <el-col :span="18">
-          <el-input v-model="EditParams.name" placeholder="role name" />
+          <el-input
+            v-model="EditParams.name"
+            placeholder="role name"
+          />
         </el-col>
       </el-row>
       <el-row class="mb-5 text-center">
@@ -38,7 +64,10 @@
           </div>
         </el-col>
         <el-col :span="18">
-          <el-input v-model="EditParams.remark" placeholder="role remark" />
+          <el-input
+            v-model="EditParams.remark"
+            placeholder="role remark"
+          />
         </el-col>
       </el-row>
       <el-row class="mb-5 text-center">
@@ -55,18 +84,27 @@
             :data="MenuTreeData" 
             :node-key="'id'"
             :default-checked-keys="DefaultCheckedKeys"
-            show-checkbox />
+            show-checkbox
+          />
         </el-col>
       </el-row>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="TableProps.handleEditClose">取消</el-button>
-          <el-button type="primary" @click="TableProps.handleEditConfirm" :loading="EditLoading"> {{ EditTxt }} </el-button>
+          <el-button
+            type="primary"
+            :loading="EditLoading"
+            @click="TableProps.handleEditConfirm"
+          > {{ EditTxt }} </el-button>
         </span>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="isView" :title="`显示-${TableProps.apiname}`" width="30%">
+    <el-dialog
+      v-model="isView"
+      :title="`显示-${TableProps.apiname}`"
+      width="30%"
+    >
       <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
@@ -80,8 +118,8 @@
             :data="MenuTreeData" 
             :node-key="'id'"
             :default-checked-keys="DefaultCheckedKeys"
-            show-checkbox >
-          </el-tree>
+            show-checkbox
+          />
         </el-col>
       </el-row>
       <span class="dialog-footer">
@@ -92,41 +130,122 @@
     <TableContent
       :loading="TableLoading" 
       :total="total" 
+      :DataSource="DataSource"
       @refresh="TableProps.loadTableDatas"
       @handleSizeChange="TableProps.handleSizeChange"
       @handleCurrentChange="TableProps.handleCurrentChange"
       @handleSortChange="TableProps.handleSortChange"
-      :DataSource="DataSource">
-      <el-table-column fixed type="index" width="50" />
-      <el-table-column prop="id" label="ID" header-align="center" align="center" width="50"/>
-      <el-table-column prop="name" label="角色" header-align="center" align="center" width="200" />
-      <el-table-column prop="routers" label="权限" header-align="center" align="center" width="100">
+    >
+      <el-table-column
+        fixed
+        type="index"
+        width="50"
+      />
+      <el-table-column
+        prop="id"
+        label="ID"
+        header-align="center"
+        align="center"
+        width="50"
+      />
+      <el-table-column
+        prop="name"
+        label="角色"
+        header-align="center"
+        align="center"
+        width="200"
+      />
+      <el-table-column
+        prop="routers"
+        label="权限"
+        header-align="center"
+        align="center"
+        width="100"
+      >
         <template #default="{ row }">
-          <el-link type="primary" @click="viewRoleMenus(row)">查看权限</el-link>
+          <el-link
+            type="primary"
+            @click="viewRoleMenus(row)"
+          >
+            查看权限
+          </el-link>
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="描述" header-align="center" align="center" />
-      <el-table-column prop="status" label="状态" sortable header-align="center" align="center" width="150">
+      <el-table-column
+        prop="remark"
+        label="描述"
+        header-align="center"
+        align="center"
+      />
+      <el-table-column
+        prop="status"
+        label="状态"
+        sortable
+        header-align="center"
+        align="center"
+        width="150"
+      >
         <template #default="{ row }">
-          <el-tag v-if="row.status" class="ml-2 select-none" type="success">启用</el-tag>
-          <el-tag v-else class="ml-2 select-none" type="danger">禁用</el-tag>
+          <el-tag
+            v-if="row.status"
+            class="ml-2 select-none"
+            type="success"
+          >
+            启用
+          </el-tag>
+          <el-tag
+            v-else
+            class="ml-2 select-none"
+            type="danger"
+          >
+            禁用
+          </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="create_time" label="创建时间" header-align="center" align="center" width="150" >
+      <el-table-column
+        prop="create_time"
+        label="创建时间"
+        header-align="center"
+        align="center"
+        width="150"
+      >
         <template #default="{ row }">
-          <showTime :date="row.create_time"/>
+          <showTime :date="row.create_time" />
         </template>
       </el-table-column>
-      <el-table-column prop="update_time" label="修改时间" header-align="center" align="center" width="150" >
+      <el-table-column
+        prop="update_time"
+        label="修改时间"
+        header-align="center"
+        align="center"
+        width="150"
+      >
         <template #default="{ row }">
-          <showTime :date="row.update_time"/>
+          <showTime :date="row.update_time" />
         </template>
       </el-table-column>
-      <el-table-column flex="right" label="操作" header-align="center" align="center" width="300">
-        <template #default="{ row }"> <!---->
-          <el-button type="success" @click="TableProps.handleEditOpen('update', row)">编辑</el-button>
+      <el-table-column
+        flex="right"
+        label="操作"
+        header-align="center"
+        align="center"
+        width="300"
+      >
+        <template #default="{ row }">
+          <!---->
+          <el-button
+            type="success"
+            @click="TableProps.handleEditOpen('update', row)"
+          >
+            编辑
+          </el-button>
           <el-divider direction="vertical" />
-          <el-button type="danger" @click="TableProps.handleDelete(row)">删除</el-button>
+          <el-button
+            type="danger"
+            @click="TableProps.handleDelete(row)"
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </TableContent>

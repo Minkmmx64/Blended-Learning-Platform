@@ -1,27 +1,48 @@
 <template>
   <div class="Bread-Nav relative font-14 pl-2 flex-column flex-alg">
     <div class="Bread-Nav-Top w-full flex-row select-none">
-      <IconFont @click="emit('togglecollapse')" class="mr-4 point" icon="back1" />
-      <div class="Bread-Nav-List" v-for="(item,index) in Props.path" :key="index" >
-        <span class="text-primary" v-if="index === 0">{{ item.name }}</span>
+      <IconFont
+        class="mr-4 point"
+        icon="back1"
+        @click="emit('togglecollapse')"
+      />
+      <div
+        v-for="(item,index) in Props.path"
+        :key="index"
+        class="Bread-Nav-List"
+      >
+        <span
+          v-if="index === 0"
+          class="text-primary"
+        >{{ item.name }}</span>
         <template v-else>
-          <span style="font-size: 12px;" >&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+          <span style="font-size: 12px;">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
           <span>{{ item.name }}</span>
         </template>
       </div>
       <UserAvatar />
     </div>
     <div class="Bread-Nav-history font-12 h-full hidden w-full flex-row flex-alg">
-      <template v-for="(item,index) in HistoryPath" :key="index">
+      <template
+        v-for="(item,index) in HistoryPath"
+        :key="index"
+      >
         <div 
-          @click="MenuClick(BreadMenu(item))" 
-          :class="`flex-row relative flex-alg border-box Bread-Nav-item point pl-3 pr-3 ml-4 ${active === BreadMenu(item).key ? 'Bread-Nav-Menu-Select' : ''}`">
-          <div v-if="active === BreadMenu(item).key" class="Bread-Nav-close border-round mr-5 bg-fff"></div>
+          :class="`flex-row relative flex-alg border-box Bread-Nav-item point pl-3 pr-3 ml-4 ${active === BreadMenu(item).key ? 'Bread-Nav-Menu-Select' : ''}`" 
+          @click="MenuClick(BreadMenu(item))"
+        >
+          <div
+            v-if="active === BreadMenu(item).key"
+            class="Bread-Nav-close border-round mr-5 bg-fff"
+          />
           <span>{{ BreadMenu(item).name }}</span>
           <div 
-            @click.stop="CloseMenu(item)" 
             class="Bread-Nav-close-btn border-round flex-row flex-center ml-4" 
-            :style="{ color: `${active === BreadMenu(item).key ? '#fff' : '#000' }`}">x</div>
+            :style="{ color: `${active === BreadMenu(item).key ? '#fff' : '#000' }`}" 
+            @click.stop="CloseMenu(item)"
+          >
+            x
+          </div>
         </div>
       </template>
     </div>

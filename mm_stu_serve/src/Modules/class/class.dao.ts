@@ -1,6 +1,6 @@
 import { DataSource, DeleteResult, InsertResult, SelectQueryBuilder, UpdateResult } from "typeorm";
 import { PaginationQuery } from "../index.type";
-import { ClassCreateDTO, ClassUpdateDTO } from "./class.dto";
+import { ClassCreateDTO, ClassQueryDTO, ClassUpdateDTO } from "./class.dto";
 import { StuClass } from "src/Entity/stu_class.entity";
 import { ToOrder } from "src/common/common";
 
@@ -9,7 +9,7 @@ export class ClassDAO {
 
   public ClassRepository = this.DataSource.getRepository(StuClass);
 
-  public async ClassListsPagination(ClassQuery: PaginationQuery<ClassCreateDTO>): Promise<StuClass[]> {
+  public async ClassListsPagination(ClassQuery: PaginationQuery<ClassQueryDTO>): Promise<StuClass[]> {
 
     const Order = ToOrder(ClassQuery);
     const SelectQueryBuilder: SelectQueryBuilder<StuClass> = this.ClassRepository.createQueryBuilder().select();
