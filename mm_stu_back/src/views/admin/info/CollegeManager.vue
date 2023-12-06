@@ -165,7 +165,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import TableContent from "@/components/display/table/TableContent.vue";
 import { college, CollegeEdit, CollegeQuery } from "@/Request/ApiModules/college";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";

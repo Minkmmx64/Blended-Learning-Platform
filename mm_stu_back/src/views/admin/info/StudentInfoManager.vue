@@ -79,13 +79,6 @@
         width="50"
       />
       <el-table-column
-        prop="name"
-        label="学院"
-        header-align="center"
-        align="center"
-        width="200"
-      />
-      <el-table-column
         prop="remark"
         label="描述"
         header-align="center"
@@ -165,23 +158,21 @@
   </div>
 </template>
 <script lang="ts" setup>
-import TableContent from "@/components/display/table/TableContent.vue";
-import { college, CollegeEdit, CollegeQuery } from "@/Request/ApiModules/college";
+import { stu, StuEdit, StuQuery } from "@/Request/ApiModules/stu";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";
 //添加修改对象
-const EditParams = ref<CollegeEdit>({
-  name: "",
-  remark: ""
+const EditParams = ref({
+
 });
 //查询对象
-const QueryParams = ref<CollegeQuery>({
-  name: ""
+const QueryParams = ref({
+  
 });
 
-const TableProps = useTableFunction<college, CollegeQuery, CollegeEdit>(
-  "学院",
-  college,
+const TableProps = useTableFunction<stu, StuQuery, StuEdit>(
+  "学籍",
+  stu,
   QueryParams,
   EditParams,
   undefined,

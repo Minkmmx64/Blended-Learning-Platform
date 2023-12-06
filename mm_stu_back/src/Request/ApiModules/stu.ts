@@ -5,6 +5,15 @@ export enum Gender {
   nv = '女'
 }
 
+export interface StuEdit {
+
+}
+
+export interface StuQuery {
+
+}
+
+
 export class stu extends AxiosApi {
   constructor(){
     super("/api/stu")

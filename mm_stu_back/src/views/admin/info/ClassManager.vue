@@ -186,7 +186,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import TableContent from "@/components/display/table/TableContent.vue";
 import { classes, ClassEdit, ClassQuery } from "@/Request/ApiModules/class";
 import college from "@/Request/ApiModules/college";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
