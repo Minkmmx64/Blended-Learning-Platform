@@ -13,6 +13,7 @@ export class StuCreateDTO{
 
 export class StuQueryDTO {
   class_id: number;
+  name: string;
 }
 
 export class StuUpdateDTO {

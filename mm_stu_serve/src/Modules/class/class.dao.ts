@@ -12,16 +12,20 @@ export class ClassDAO {
   public async ClassListsPagination(ClassQuery: PaginationQuery<ClassQueryDTO>): Promise<StuClass[]> {
 
     const Order = ToOrder(ClassQuery);
-    const SelectQueryBuilder: SelectQueryBuilder<StuClass> = this.ClassRepository.createQueryBuilder().select();
+    const SelectQueryBuilder: SelectQueryBuilder<StuClass> = this.ClassRepository.createQueryBuilder("class").leftJoinAndSelect("class.college", "mm_stu_stu_college");
 
     if(ClassQuery.name) {
       SelectQueryBuilder
-                        .where("name = :name")
-                        .setParameter("name", ClassQuery.name);
+                        .where("class.name LIKE :name")
+                        .setParameter("name", `%${ClassQuery.name}%`);
+    }
+
+    if(ClassQuery.prop) {
+      SelectQueryBuilder
+                        .orderBy(`class.${ClassQuery.prop}`, Order)
     }
 
     return await SelectQueryBuilder
-                                   .orderBy(ClassQuery.prop, Order)
                                    .skip(ClassQuery.limit * (ClassQuery.offset - 1))
                                    .take(ClassQuery.limit)
                                    .getMany();
@@ -72,7 +76,12 @@ export class ClassDAO {
     return result;
   }
 
-  
+  public async ClassAll(){
+    return await this.ClassRepository
+                     .createQueryBuilder("class")
+                     .leftJoinAndSelect("class.college", "mm_stu_stu_college")
+                     .getMany();
+  }
 
   public async Total() : Promise<number> {
     return await this.ClassRepository

@@ -24,8 +24,8 @@ export class MenuDAO {
     const SelectQueryBuilder: SelectQueryBuilder<RootRouters> = this.MenuRepository.createQueryBuilder().select()
     if(MenuQuery.name){
       SelectQueryBuilder
-                        .where("name = :name")
-                        .setParameter("name", MenuQuery.name);
+                        .where("name LIKE :name")
+                        .setParameter("name", `%${MenuQuery.name}%`);
     }
     if(MenuQuery.pid){
       SelectQueryBuilder

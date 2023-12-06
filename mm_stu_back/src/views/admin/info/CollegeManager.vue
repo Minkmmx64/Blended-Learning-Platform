@@ -1,14 +1,36 @@
 <template>
   <div class="w-full h-full scroll">
     <div class="TableHead">
-      <el-row class="mb-10 mt-10">
-        <el-col :span="24">
+      <el-row class="mb-10 mt-10" :gutter="20">
+        <el-col :span="6">
           <div class="grid-content ep-bg-purple-dark">
             <el-button
               type="primary"
               @click="TableProps.handleEditOpen('create')"
             >
               添加 {{ TableProps.apiname }}
+            </el-button>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <el-input
+            v-model="QueryParams.name"
+            placeholder="class name"
+          />
+        </el-col>
+        <el-col :span="6">
+          <div class="grid-content ep-bg-purple-dark">
+            <el-button
+              type="success"
+              @click="TableProps.loadTableDatas()"
+            >
+              查询 {{ TableProps.apiname }}
+            </el-button>
+            <el-button
+              type="info"
+              @click="TableProps.handleClearQuery()"
+            >
+              <IconFont icon="refresh" />
             </el-button>
           </div>
         </el-col>

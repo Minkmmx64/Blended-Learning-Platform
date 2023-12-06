@@ -1,14 +1,50 @@
 <template>
   <div class="w-full h-full scroll">
     <div class="TableHead">
-      <el-row class="mb-10 mt-10">
-        <el-col :span="24">
+      <el-row class="mb-10 mt-10" :gutter="20">
+        <el-col :span="6">
           <div class="grid-content ep-bg-purple-dark">
             <el-button
               type="primary"
               @click="TableProps.handleEditOpen('create')"
             >
               添加 {{ TableProps.apiname }}
+            </el-button>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <el-input
+            v-model="QueryParams.name"
+            placeholder="class name"
+          />
+        </el-col>
+        <el-col :span="6">
+          <el-select
+            v-model="QueryParams.college_id"
+            class="m-2"
+            placeholder="select college"
+          >
+            <el-option
+              v-for="item in Colleges"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-col>
+        <el-col :span="6">
+          <div class="grid-content ep-bg-purple-dark">
+            <el-button
+              type="success"
+              @click="TableProps.loadTableDatas()"
+            >
+              查询 {{ TableProps.apiname }}
+            </el-button>
+            <el-button
+              type="info"
+              @click="TableProps.handleClearQuery()"
+            >
+              <IconFont icon="refresh" />
             </el-button>
           </div>
         </el-col>
@@ -107,6 +143,13 @@
         width="200"
       />
       <el-table-column
+        prop="college.name"
+        label="所属学院"
+        header-align="center"
+        align="center"
+        width="200"
+      />
+      <el-table-column
         prop="remark"
         label="描述"
         header-align="center"
@@ -196,12 +239,12 @@ import { ElMessage } from "element-plus";
 const EditParams = ref<ClassEdit>({
   name: "",
   remark: "",
-  college_id : 0
+  college_id : undefined
 });
 //查询对象
 const QueryParams = ref<ClassQuery>({
   name: "",
-  college_id: 0
+  college_id: undefined
 });
 //学院列表
 const Colleges = ref<KeyValue[]>([]);
@@ -214,16 +257,21 @@ const TableProps = useTableFunction<classes, ClassQuery, ClassEdit>(
   undefined,
   {
     beforehandleEditOpen(){
-      college.all().then( res => {
-        Colleges.value = res.data.data;
-      }).catch( error => ElMessage.error(error));
+      loadColleges();
     }
   }
 );
 
 const { isEdit, DataSource, TableLoading, total , EditTxt, EditLoading } = TableProps;
 
+const loadColleges = () => {
+  college.all().then( res => {
+    Colleges.value = res.data.data;
+  }).catch( error => ElMessage.error(error));
+}
+
 onMounted( async () => {
   TableProps.loadTableDatas();
+  loadColleges();
 })
 </script>

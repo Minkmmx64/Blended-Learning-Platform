@@ -14,15 +14,15 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/System',
     name: 'System',
-    redirect: '/Admin',
+    redirect: '/Wellcome',
     meta: { isAuth: true },
     component: () => import("@/views/admin/AdminSystem.vue"),
     children: [
       {
-        path: "/Admin",
-        name: "Admin",
+        path: "/Wellcome",
+        name: "Wellcome",
         meta: { isAuth: true },
-        component: () => import("@/views/admin/WelComeView.vue")
+        component: () => import("@/views/admin/WellComeView.vue")
       },
       {
         path: "/PersonalInfo",
@@ -53,6 +53,12 @@ const routes: Array<RouteRecordRaw> = [
         name: "ClassManager",
         meta: { isAuth: true },
         component: () => import("@/views/admin/info/ClassManager.vue")
+      },
+      {
+        path: "/AuthSystemUser",
+        name: "AuthSystemUser",
+        meta: { isAuth: true },
+        component: () => import("@/views/admin/Authorization/AuthSystemUser.vue")
       }
     ]
   },

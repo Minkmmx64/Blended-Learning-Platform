@@ -18,7 +18,7 @@
         <el-col :span="6">
           <el-input
             v-model="QueryParams.name"
-            placeholder="role name"
+            placeholder="menu name"
           />
         </el-col>
         <el-col :span="6">

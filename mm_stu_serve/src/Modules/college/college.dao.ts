@@ -27,8 +27,8 @@ export class CollegeServiceDAO {
     const SelectQueryBuilder: SelectQueryBuilder<StuCollege> = this.StuCollegeRepository.createQueryBuilder().select()
     if(CollegeQuery.name){
       SelectQueryBuilder
-                        .where("name = :name")
-                        .setParameter("name", CollegeQuery.name);
+                        .where("name LIKE :name")
+                        .setParameter("name", `%${CollegeQuery.name}%`);
     }
     
     return await SelectQueryBuilder

@@ -3,7 +3,7 @@ import { ISystemMenus } from "./AdminSystemLayout.type";
 const config = {
   MenuBackColor: "rgb(48,65,86)",
   width: 200,
-  default_menu: 'Admin', //管理首页
+  default_menu: 'Wellcome', //管理首页
 }
 
 /**
@@ -16,8 +16,8 @@ const config = {
 const SystemMenus: ISystemMenus[] = [
   {
     name: "管理首页",
-    route: "Admin",
-    key: "Admin",
+    route: "Wellcome",
+    key: "Wellcome",
     icon: "setting-filling"
   },
   {
@@ -68,6 +68,12 @@ const SystemMenus: ISystemMenus[] = [
         key: "AuthorizationRole",
         route: "AuthorizationRole",
         icon: "users"
+      },
+      {
+        name: "系统用户列表",
+        key: "AuthSystemUser",
+        route: "AuthSystemUser",
+        icon: "lock"
       }
     ]
   },

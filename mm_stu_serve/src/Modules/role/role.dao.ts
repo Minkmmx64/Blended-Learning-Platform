@@ -17,9 +17,10 @@ export class RoleDAO {
 
     if(RoleQuery.name) {
       SelectQueryBuilder
-                        .where("role.name = :name")
-                        .setParameter("name", RoleQuery.name);
+                        .where("role.name LIKE :name")
+                        .setParameter("name", `%${RoleQuery.name}%`);
     }
+    
     if(RoleQuery.prop) {
       SelectQueryBuilder
                         .orderBy("role." + RoleQuery.prop, ToOrder(RoleQuery))

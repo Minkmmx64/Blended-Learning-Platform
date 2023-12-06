@@ -111,7 +111,7 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edi
     }).catch( error => {
       ElMessage.error(error);
       TableLoading.value = false;
-      handleEditClose();
+      EditLoading.value = false;
     });
   }
 
@@ -143,7 +143,7 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edi
   const handleClearQuery = () => {
     for(const k in UserSearchQuery.value) {
       if(typeof UserSearchQuery.value[k] === "number") 
-        (UserSearchQuery.value[k] as any) = 0;
+        (UserSearchQuery.value[k] as any) = undefined;
       else 
         (UserSearchQuery.value[k] as any) = "";
     }

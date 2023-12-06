@@ -12,12 +12,18 @@ export class StuDAO {
   public async StuListsPagination(StuQuery: PaginationQuery<StuQueryDTO>): Promise<StuInfo[]> {
 
     const Order = ToOrder(StuQuery);
-    const SelectQueryBuilder: SelectQueryBuilder<StuInfo> = this.StuRepository.createQueryBuilder().select();
+    const SelectQueryBuilder: SelectQueryBuilder<StuInfo> = this.StuRepository.createQueryBuilder("stu").leftJoinAndSelect("stu.class", "mm_stu_stu_class");
 
     if(StuQuery.class_id) {
       SelectQueryBuilder
-                        .andWhere("class_id = :class_id")
+                        .andWhere("stu.class_id = :class_id")
                         .setParameter("class_id", StuQuery.class_id)
+    }
+
+    if(StuQuery.name) {
+      SelectQueryBuilder
+                        .where("stu.name LIKE :name")
+                        .setParameter("name", `%${StuQuery.name}%`);
     }
 
     return await SelectQueryBuilder

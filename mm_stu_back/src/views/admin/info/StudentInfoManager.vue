@@ -1,14 +1,50 @@
 <template>
   <div class="w-full h-full scroll">
     <div class="TableHead">
-      <el-row class="mb-10 mt-10">
-        <el-col :span="24">
+      <el-row class="mb-10 mt-10" :gutter="20">
+        <el-col :span="6">
           <div class="grid-content ep-bg-purple-dark">
             <el-button
               type="primary"
               @click="TableProps.handleEditOpen('create')"
             >
               添加 {{ TableProps.apiname }}
+            </el-button>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <el-input
+            v-model="QueryParams.name"
+            placeholder="stu name"
+          />
+        </el-col>
+        <el-col :span="6">
+          <el-select
+            v-model="QueryParams.class_id"
+            class="m-2"
+            placeholder="select class"
+          >
+            <el-option
+              v-for="item in Classes"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-col>
+        <el-col :span="6">
+          <div class="grid-content ep-bg-purple-dark">
+            <el-button
+              type="success"
+              @click="TableProps.loadTableDatas()"
+            >
+              查询 {{ TableProps.apiname }}
+            </el-button>
+            <el-button
+              type="info"
+              @click="TableProps.handleClearQuery()"
+            >
+              <IconFont icon="refresh" />
             </el-button>
           </div>
         </el-col>
@@ -19,7 +55,7 @@
       :title="`${EditTxt}-${TableProps.apiname}`"
       width="30%"
     >
-      <el-row class="mb-5 text-center">
+      <!-- <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
             <span>{{ TableProps.apiname }}名称:</span>
@@ -31,20 +67,7 @@
             placeholder="role name"
           />
         </el-col>
-      </el-row>
-      <el-row class="mb-5 text-center">
-        <el-col :span="6">
-          <div class="h-full flex-row flex-center">
-            <span>学院描述:</span>
-          </div>
-        </el-col>
-        <el-col :span="18">
-          <el-input
-            v-model="EditParams.remark"
-            placeholder="role remark"
-          />
-        </el-col>
-      </el-row>
+      </el-row> -->
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="TableProps.handleEditClose">取消</el-button>
@@ -69,7 +92,10 @@
       <el-table-column
         fixed
         type="index"
-        width="50"
+        width="70"
+        header-align="center"
+        align="center"
+        label="序号"
       />
       <el-table-column
         prop="id"
@@ -77,6 +103,84 @@
         header-align="center"
         align="center"
         width="50"
+      />
+      <el-table-column
+        prop="name"
+        label="学生姓名"
+        header-align="center"
+        align="center"
+        width="150"
+      />
+      <el-table-column
+        prop="student"
+        label="学号"
+        header-align="center"
+        align="center"
+        width="150"
+      />
+      <el-table-column
+        prop="class.name"
+        label="班级"
+        header-align="center"
+        align="center"
+        width="250"
+      />
+      <el-table-column
+        prop="gender"
+        label="性别"
+        header-align="center"
+        align="center"
+        width="150"
+      />
+      <el-table-column
+        prop="native"
+        label="籍贯"
+        header-align="center"
+        align="center"
+        width="150"
+      />
+      <el-table-column
+        prop="school"
+        label="学校"
+        header-align="center"
+        align="center"
+        width="300"
+      />
+      <el-table-column
+        prop="age"
+        label="年龄"
+        header-align="center"
+        align="center"
+        width="150"
+      />
+      <el-table-column
+        prop="avatar"
+        label="学籍照片"
+        header-align="center"
+        align="center"
+        width="150"
+      >
+        <template #default="{ row }">
+          <el-image
+            style="width: 50px; height: 50px"
+            :src="row.avatar"
+            :zoom-rate="1.2"
+            :max-scale="7"
+            :min-scale="0.2"
+            :initial-index="4"
+            :preview-teleported="true"
+            :preview-src-list="[row.avatar]"
+            fit="cover"
+            :hide-on-click-modal="true"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="year"
+        label="入学年份"
+        header-align="center"
+        align="center"
+        width="150"
       />
       <el-table-column
         prop="remark"
@@ -132,7 +236,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        flex="right"
+        fixed="right"
         label="操作"
         header-align="center"
         align="center"
@@ -159,15 +263,18 @@
 </template>
 <script lang="ts" setup>
 import { stu, StuEdit, StuQuery } from "@/Request/ApiModules/stu";
+import classes from "@/Request/ApiModules/class";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";
+import { ElMessage } from "element-plus";
 //添加修改对象
 const EditParams = ref({
 
 });
 //查询对象
 const QueryParams = ref({
-  
+  name: "",
+  class_id: undefined
 });
 
 const TableProps = useTableFunction<stu, StuQuery, StuEdit>(
@@ -176,11 +283,25 @@ const TableProps = useTableFunction<stu, StuQuery, StuEdit>(
   QueryParams,
   EditParams,
   undefined,
+  {
+    beforehandleEditOpen(){
+      loadColleges();
+    }
+  }
 );
+
+const Classes = ref([]);
 
 const { isEdit, DataSource, TableLoading, total , EditTxt, EditLoading } = TableProps;
 
+const loadColleges = () => {
+  classes.all().then( res => {
+    Classes.value = res.data.data;
+  }).catch( error => ElMessage.error(error));
+}
+
 onMounted( async () => {
   TableProps.loadTableDatas();
+  loadColleges();
 })
 </script>

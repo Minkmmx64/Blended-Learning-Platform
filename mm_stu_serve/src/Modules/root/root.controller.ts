@@ -46,4 +46,6 @@ export class RootController {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<RootUser>(HttpStatus.RESET_CONTENT, edit).send();
   }
+
+  
 }

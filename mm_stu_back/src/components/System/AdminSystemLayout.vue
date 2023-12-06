@@ -7,7 +7,7 @@
       text-color="#fff"
       :default-active="currentMenu"
       :default-openeds="[currentMenu]"
-      :unique-opened="true"
+      :unique-opened="!true"
       :collapse-transition="true"
       :collapse="collapse"
       :style="{ height: '100vh', padding: '0px 0px 0px 0px' }"

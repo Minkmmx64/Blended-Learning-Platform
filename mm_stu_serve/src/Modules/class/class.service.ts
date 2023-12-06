@@ -53,4 +53,13 @@ export class ClassService {
       return [new Error(error), null];
     }
   }
+
+  public async ClassAll() : ServiceData<StuClass[]> {
+    try {
+      const classes = await this.ClassDAO.ClassAll();
+      return [ null, classes ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
 }
