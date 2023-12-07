@@ -10,6 +10,9 @@ export class StuClass extends BaseAttrColumn {
   @Column({ type: "char", length: 20, comment: "班级名称"})
   name: string;
 
+  @Column({ type: "char", length: 20, comment: "班级编码", unique: true })
+  code: string;
+
   //班级属于哪个学院
   @ManyToOne( type => StuCollege, college => college.classes, { nullable : false })  
   @JoinColumn({

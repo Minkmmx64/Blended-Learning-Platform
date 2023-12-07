@@ -1,6 +1,7 @@
 export class StuCollegeCreateDTO {
   name: string;
   remark?: string;
+  code: string;
 }
 
 export class StuCollegeQueryDTO {

@@ -42,7 +42,8 @@ export class ClassDAO {
                                 college: {
                                   id: CreateClass.college_id
                                 },
-                                remark: CreateClass.remark
+                                remark: CreateClass.remark,
+                                code: CreateClass.code
                              }).execute();
     return result;
   }

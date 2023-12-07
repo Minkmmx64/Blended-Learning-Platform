@@ -4,8 +4,8 @@ import { NotAcceptableException } from "@nestjs/common";
 
 export const StuCreateValid = Joi.object<StuCreateDTO>({
   remark: Joi.string().allow().error(new NotAcceptableException("标签异常")),
-  student: Joi.string().required().allow().error(new NotAcceptableException("学号异常")),
-  school: Joi.string().required().allow().error(new NotAcceptableException("学校异常")),
+  // student: Joi.string().required().allow().error(new NotAcceptableException("学号异常")),
+  // school: Joi.string().required().allow().error(new NotAcceptableException("学校异常")),
   name: Joi.string().required().allow().error(new NotAcceptableException("姓名异常")),
   native: Joi.string().required().allow().error(new NotAcceptableException("籍贯异常")),
   year: Joi.number().required().allow().error(new NotAcceptableException("入学年份异常")),

@@ -71,6 +71,19 @@
       <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
+            <span>{{ TableProps.apiname }}编码:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-input
+            v-model="EditParams.code"
+            placeholder="class code"
+          />
+        </el-col>
+      </el-row>
+      <el-row class="mb-5 text-center">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
             <span>所属学院:</span>
           </div>
         </el-col>
@@ -229,7 +242,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { classes, ClassEdit, ClassQuery } from "@/Request/ApiModules/class";
+import { classes, ClassEdit, ClassQuery, classdata } from "@/Request/ApiModules/class";
 import college from "@/Request/ApiModules/college";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";
@@ -239,7 +252,8 @@ import { ElMessage } from "element-plus";
 const EditParams = ref<ClassEdit>({
   name: "",
   remark: "",
-  college_id : undefined
+  college_id : undefined,
+  code: ""
 });
 //查询对象
 const QueryParams = ref<ClassQuery>({
@@ -259,7 +273,8 @@ const TableProps = useTableFunction<classes, ClassQuery, ClassEdit>(
     beforehandleEditOpen(){
       loadColleges();
     }
-  }
+  },
+  classdata
 );
 
 const { isEdit, DataSource, TableLoading, total , EditTxt, EditLoading } = TableProps;

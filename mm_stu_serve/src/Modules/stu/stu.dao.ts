@@ -42,7 +42,7 @@ export class StuDAO {
                              .values({
                                 remark: CreateStu.remark,
                                 student: CreateStu.student,
-                                school: CreateStu.school,
+                                school: CreateStu.school ?? "浙江理工大学科技与艺术学院",
                                 name: CreateStu.name,
                                 age: CreateStu.age,
                                 avatar: CreateStu.avatar,

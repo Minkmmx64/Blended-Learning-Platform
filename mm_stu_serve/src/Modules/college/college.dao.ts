@@ -14,7 +14,8 @@ export class CollegeServiceDAO {
     try {
       return await this.StuCollegeRepository.insert({
         name: college.name,
-        remark: college.remark
+        remark: college.remark,
+        code: college.code
       });
     } catch (error) {
       return Promise.reject(error);

@@ -7,8 +7,8 @@ import { NotAcceptableException } from "@nestjs/common";
 export const StuCollegeCreateValid = Joi.object<StuCollegeCreateDTO>({
   name : Joi.string().required().error(new NotAcceptableException("学院名称不能为空")),
   remark: Joi.string(),
+  code: Joi.string().required().error(new NotAcceptableException("学院编码不能为空")),
 })
-
 
 export const MenuUpdateValid = Joi.object<CollegeUpdateDTO>({
   id: Joi.number().required().error(new NotAcceptableException("id 异常")),

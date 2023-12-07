@@ -3,6 +3,7 @@ import { AxiosApi } from "../AxiosApis";
 export interface CollegeEdit {
   name?: string;
   remark?: string;
+  code: string;
 }
 
 export interface CollegeQuery {

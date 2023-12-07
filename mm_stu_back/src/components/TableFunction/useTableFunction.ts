@@ -4,6 +4,7 @@ import { Ref, ref } from "vue";
 import { DeleteProps, EditProps, ITableFunction, KeyValue, ListMetaData, Pagination, PaginationQuery, Sorted } from "./index.type";
 import { DataModules } from "@/Request/DataModules/DataModules";
 import { AxiosResponse } from "axios";
+import { DeepClone } from "../Utils/deepClone";
 
 export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edit extends KeyValue>(
   apiname: string,
@@ -13,8 +14,9 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edi
   PaginationQuery?: Sorted & Pagination,  // 分页请求参数 & 用户自定义请求参数
   life ?: {
     beforehandleEditConfirm?: () => void;
-    beforehandleEditOpen?: (row?: KeyValue) => void;
-  }
+    beforehandleEditOpen?: (row?: Edit) => void;
+  },
+  transformData ?: new () => DataModules          // 前后端字段转换   class_id = "class.id" 后端class字段的id属性赋值给class_id
 ) : ITableFunction {
   //分页参数
   const limit = ref(PaginationQuery?.limit ?? 10);
@@ -32,6 +34,9 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edi
   const EditTxt = ref<'修改' | '添加'>('修改');
   const TableLoading = ref(false);
   const EditLoading = ref(false);
+
+  //数据模型
+  const DM = transformData ? new transformData() : new DataModules();
 
   // 当前item id
   const id = ref<number | undefined>();
@@ -93,13 +98,17 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edi
   const handleEditConfirm = () => {
     // 执行回调
     if(life && life.beforehandleEditConfirm) life.beforehandleEditConfirm();
+    const data = DeepClone(UserEditParam.value);
+    
+    for(const K in data) 
+      data[K] = DM.transformClientDataDataToServer(K, data);
     
     EditLoading.value = true;
     let Api: Promise<AxiosResponse<ServerData<any>, any>>;
     if(EditTxt.value === "添加") {
-      Api = useTableApi.post<Edit>("/create", UserEditParam.value );
+      Api = useTableApi.post<Edit>("/create", data );
     } else {
-      Api = useTableApi.put<{ id: number, data: Edit }>("/update", { id: id.value!, data:  UserEditParam.value });
+      Api = useTableApi.put<{ id: number, data: Edit }>("/update", { id: id.value!, data:  data });
     }
     Api.then( res => {
       setTimeout(() => {
@@ -118,15 +127,14 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edi
   const handleEditOpen = (type: EditProps, row?: KeyValue) => {
     if(life && life.beforehandleEditOpen) {
       if(typeof life.beforehandleEditOpen === "function"){
-        life.beforehandleEditOpen(row);
+        life.beforehandleEditOpen(row as Edit);
       }
     }
     isEdit.value = true;
     if(row) {
       id.value = row.id;
       for(const K in UserEditParam.value) {
-        if(row[K])
-          UserEditParam.value[K] = row[K];
+        UserEditParam.value[K] = DM.transformServiceDataToClient(K, row);
       }
     } else {
       for(const K in UserEditParam.value) {

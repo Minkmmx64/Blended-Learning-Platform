@@ -8,6 +8,9 @@ export class StuCollege extends BaseAttrColumn {
   @Column({ type: "char", length: 20, comment: "学院名称"})
   name: string;
 
+  @Column({ type: "char", length: 20, comment: "学院编码", unique: true })
+  code: string;
+
   //学院有哪些班级
   @OneToMany( type => StuClass, StuClass => StuClass.id)  
   classes: StuClass[];

@@ -32,6 +32,7 @@ export class StuController {
   public async StuCreate(
     @Body() body: StuCreateDTO
   ){
+    body.student = "Zb22621123";
     const [error, InsertResult ] = await this.StuService.StuCreate(body);
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());

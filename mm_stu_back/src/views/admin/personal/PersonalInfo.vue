@@ -82,7 +82,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useUserStore } from "@/store";
-import ImageLayout from "@/components/display/img/ImageLayout.vue";
 import { Upload } from '@element-plus/icons-vue'
 import { RootInfoEdit } from "@/Request/ApiModules/root";
 import { ElMessage, UploadRawFile } from "element-plus";
