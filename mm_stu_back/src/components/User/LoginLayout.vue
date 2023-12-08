@@ -53,7 +53,7 @@
               label="记住我......"
               size="large"
             />
-            <div class="flex-row">
+            <!-- <div class="flex-row">
               <IconFont
                 class="text-primary mr-4"
                 icon="unlock"
@@ -65,7 +65,7 @@
               >
                 忘记密码
               </el-link>
-            </div>
+            </div> -->
           </div>
           <div class="w-full flex-row flex-alg mt-20 flex-around">
             <el-button

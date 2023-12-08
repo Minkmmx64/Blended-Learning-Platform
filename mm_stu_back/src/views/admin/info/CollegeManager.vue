@@ -114,6 +114,13 @@
         width="50"
       />
       <el-table-column
+        prop="code"
+        label="学院编码"
+        header-align="center"
+        align="center"
+        width="200"
+      />
+      <el-table-column
         prop="name"
         label="学院"
         header-align="center"

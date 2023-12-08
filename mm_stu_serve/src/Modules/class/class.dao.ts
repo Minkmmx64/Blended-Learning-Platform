@@ -58,7 +58,8 @@ export class ClassDAO {
                                 id: UpdateClass.data.college_id
                               },
                               name: UpdateClass.data.name,
-                              remark: UpdateClass.data.remark
+                              remark: UpdateClass.data.remark,
+                              code: UpdateClass.data.code
                              })
                              .where("id = :id")
                              .setParameter("id", UpdateClass.id)
@@ -84,10 +85,21 @@ export class ClassDAO {
                      .getMany();
   }
 
+  public async getStuCollegeClassById(id: number): Promise<StuClass> {
+    const result = await this.ClassRepository.createQueryBuilder("class")
+                                             .leftJoinAndSelect("class.college", "mm_stu_stu_college")
+                                             .where("class.id = :id")
+                                             .setParameter("id", id)
+                                             .getOne();
+    return result
+  }
+
   public async Total() : Promise<number> {
     return await this.ClassRepository
                                      .createQueryBuilder()
                                      .select()
                                      .getCount();
   }
+
+  
 }

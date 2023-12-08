@@ -1,6 +1,6 @@
 //深拷贝一个对象
 export function DeepClone(obj: any): any {
-  const T = tt(obj);
+  const T = getType(obj);
   let o: any;
   if(T === "[object Array]") {
     o = [];
@@ -17,6 +17,6 @@ export function DeepClone(obj: any): any {
   return obj;
 }
 
-const tt = (v: any) => {
+const getType = (v: any) => {
   return Object.prototype.toString.call(v);
 }

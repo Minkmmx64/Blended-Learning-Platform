@@ -12,6 +12,7 @@
       type="success"
     >
       <el-upload
+        v-if="isEdit"
         ref="uploadRef"
         class="upload-demo mt-5"
         :before-upload="onBeforeUpload"
@@ -129,6 +130,8 @@ const userInfoSave = () => {
           name: user.role.name
         }
       });
+      InfoEdit.value.username = user.username;
+      InfoEdit.value.avatar = user.avatar;
       isLoading.value = false;
     }, 500);
   }).catch(error => ElMessage.error(error))

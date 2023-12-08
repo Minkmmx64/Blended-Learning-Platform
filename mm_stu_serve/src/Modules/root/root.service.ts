@@ -1,11 +1,11 @@
-import { RootInfoDTO, RootLoginDTO, RootLoginUserInfo, RootRegistDTO } from "./root.dto";
+import { RootInfoDTO, RootLoginDTO, RootLoginUserInfo, RootQueryDTO, RootRegistDTO } from "./root.dto";
 import { RootUser } from "src/Entity/root_user.entity";
 import { DataSource, InsertResult } from "typeorm";
 import { RootServiceDAO } from "./root.dao";
 import { JWT, encryption } from "src/utils/crypto";
 import { randomUUID } from "crypto";
 import { Injectable } from "@nestjs/common";
-import { ServiceData } from "../index.type";
+import { ListMetaData, PaginationQuery, ServiceData } from "../index.type";
 
 @Injectable()
 export class RootService {
@@ -87,4 +87,21 @@ export class RootService {
       return [ null, update ];
     } catch (error) { return [ new Error(error), null ]; }
   }
+
+  public async RootListsPagination(RootQuery: PaginationQuery<RootQueryDTO>) : ServiceData<ListMetaData<RootUser[]>> {
+    try {
+      const Roles = await this.RootServiceDAO.RootListsPagination(RootQuery);
+      const res: ListMetaData<RootUser[]> = {
+        list: Roles,
+        meta: {
+          total: await this.RootServiceDAO.Total()
+        }
+      }
+      return [ null, res ];
+    } catch (error) {
+      return [ new Error(error), null ];
+    }
+  }
+
+  
 }

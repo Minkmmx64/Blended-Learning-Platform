@@ -39,16 +39,17 @@ export class CollegeServiceDAO {
                                    .getMany();
   }
 
-  public async UpdateCollegeById(MenuUpdate: CollegeUpdateDTO) {
+  public async UpdateCollegeById(CollegeUpdate: CollegeUpdateDTO) {
     return await this.StuCollegeRepository
                      .createQueryBuilder()
                      .update()
                      .set({
-                       name: MenuUpdate.data.name,
-                       remark: MenuUpdate.data.remark
+                       name: CollegeUpdate.data.name,
+                       remark: CollegeUpdate.data.remark,
+                       code: CollegeUpdate.data.code
                      })
                      .where("id = :id")
-                     .setParameter("id", MenuUpdate.id)
+                     .setParameter("id", CollegeUpdate.id)
                      .execute();
   }
 
@@ -88,6 +89,24 @@ export class CollegeServiceDAO {
                      .select()
                      .getMany();
   }
+
+  // public async getCollegeByCode(code: string) : Promise<StuCollege> {
+  //   const StuCollege = await this.StuCollegeRepository.createQueryBuilder()
+  //                                                     .select()
+  //                                                     .where("code = :code")
+  //                                                     .setParameter("code" ,code)
+  //                                                     .getOne();
+  //   return StuCollege;
+  // }
+
+  // public async getCollegeById(id: number) : Promise<StuCollege> {
+  //   const StuCollege = await this.StuCollegeRepository.createQueryBuilder()
+  //                                                     .select()
+  //                                                     .where("id = :id")
+  //                                                     .setParameter("id" ,id)
+  //                                                     .getOne();
+  //   return StuCollege;
+  // }
 
   public async Total() {
     return await this.StuCollegeRepository

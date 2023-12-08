@@ -4,12 +4,18 @@ import { BaseAttrColumn } from "./BaseAttrColumn";
 import { ClassCourseTeacher } from "./teacher_course_class.entity";
 import { StuSign } from "./stu_sign.entity";
 
-
 @Entity("mm_stu_stu_teacher")
 export class StuTeacher extends BaseAttrColumn {
 
   @Column({type: "char", length: 20, comment: "教师姓名"})
   name: string;
+
+  //学校代码13280 + 姓名缩写 + 随机4位数字
+  @Column({type: "char", length: 255, comment: "职工号", unique: true})
+  code: string;
+
+  @Column({type: "enum", enum: ["已认证", "待认证"], comment: "认证状态", default: "待认证"})
+  authentication: "已认证" | "待认证";
 
   @Column({type: "char", length: 255, comment: "教师简介"})
   profile: string;

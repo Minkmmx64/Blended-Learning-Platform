@@ -93,7 +93,14 @@ export class StuDAO {
     return result;
   }
 
-
+  public async getStudentsByClassId(class_id: number) : Promise<StuInfo[]> {
+    const result = await this.StuRepository.createQueryBuilder()
+                                           .select()
+                                           .where("class_id = :id")
+                                           .setParameter("id", class_id)
+                                           .getMany();
+    return result;
+  }
 
   public async Total() : Promise<number> {
     return await this.StuRepository

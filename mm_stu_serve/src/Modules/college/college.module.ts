@@ -5,7 +5,7 @@ import { StuCollegeService } from "./college.service";
 @Module({
     controllers:[StuCollegeController],
     providers:[StuCollegeService],
-    imports: []
+    imports: [],
+    exports : [StuCollegeService]
 })
-
 export class StuCollegeModule {}

@@ -25,3 +25,7 @@ export interface RootLoginUserInfo {
     [T in keyof RootUser] ?: RootUser[T]
   }
 }
+
+export class RootQueryDTO {
+  
+}

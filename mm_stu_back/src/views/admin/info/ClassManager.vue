@@ -149,6 +149,13 @@
         width="50"
       />
       <el-table-column
+        prop="code"
+        label="班级编号"
+        header-align="center"
+        align="center"
+        width="200"
+      />
+      <el-table-column
         prop="name"
         label="班级"
         header-align="center"

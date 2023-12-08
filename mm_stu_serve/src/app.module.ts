@@ -3,13 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CommonModule } from './Modules/common/common.module';
 import { RootModule } from './Modules/root/root.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { StuCollegeModule } from './Modules/college/college.module';
 import { MenuModule } from './Modules/menu/menu.module';
 import { RoleModule } from './Modules/role/role.module';
 import { ClassModule } from './Modules/class/class.module';
 import { StuModule } from './Modules/stu/stu.module';
-
+import { TeacherModule } from './Modules/teacher/teacher.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -29,7 +29,8 @@ import { StuModule } from './Modules/stu/stu.module';
     MenuModule,
     RoleModule,
     ClassModule,
-    StuModule
+    StuModule,
+    TeacherModule
   ],
   controllers: [AppController],
   providers: [AppService],
