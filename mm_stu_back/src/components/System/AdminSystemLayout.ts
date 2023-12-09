@@ -39,6 +39,12 @@ const SystemMenus: ISystemMenus[] = [
         ]
       },
       {
+        name: "教师管理",
+        key: "TeacherManager",
+        icon: "add_file",
+        route: "TeacherManager"
+      },
+      {
         name: "学院管理",
         route: "CollegeManager",
         key: "CollegeManager",

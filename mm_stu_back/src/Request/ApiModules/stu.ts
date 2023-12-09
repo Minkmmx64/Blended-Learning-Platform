@@ -1,10 +1,6 @@
 import { AxiosApi } from "../AxiosApis";
 import { DataModules } from "../DataModules/DataModules";
-
-export enum Gender {
-  nan = '男',
-  nv = '女'
-}
+import { Gender } from "../index.type";
 
 export interface StuEdit {
   name: string;

@@ -59,7 +59,13 @@ const routes: Array<RouteRecordRaw> = [
         name: "AuthSystemUser",
         meta: { isAuth: true },
         component: () => import("@/views/admin/Authorization/AuthSystemUser.vue")
-      }
+      },
+      {
+        path: "/TeacherManager",
+        name: "TeacherManager",
+        meta: { isAuth: true },
+        component: () => import("@/views/admin/info/TeacherManager.vue")
+      },
     ]
   },
   {
