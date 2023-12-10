@@ -9,8 +9,14 @@ export interface TeacherEdit {
   age: number;
 }
 
+export enum Authentication {
+  wait = "待认证",
+  accept = "已认证"
+}
+
 export interface TeacherQuery {
   name?: string;
+  authentication?: Authentication
 }
 
 export class teacher extends AxiosApi {

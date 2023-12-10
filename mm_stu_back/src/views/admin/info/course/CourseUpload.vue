@@ -15,22 +15,8 @@
         <el-col :span="6">
           <el-input
             v-model="QueryParams.name"
-            placeholder="class name"
+            placeholder="course name"
           />
-        </el-col>
-        <el-col :span="6">
-          <el-select
-            v-model="QueryParams.college_id"
-            class="m-2"
-            placeholder="select college"
-          >
-            <el-option
-              v-for="item in Colleges"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
         </el-col>
         <el-col :span="6">
           <div class="grid-content ep-bg-purple-dark">
@@ -64,42 +50,29 @@
         <el-col :span="18">
           <el-input
             v-model="EditParams.name"
-            placeholder="class name"
+            placeholder="course name"
           />
         </el-col>
       </el-row>
       <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
-            <span>{{ TableProps.apiname }}编码:</span>
+            <span>{{ TableProps.apiname }}照片:</span>
           </div>
         </el-col>
         <el-col :span="18">
-          <el-input
-            v-model="EditParams.code"
-            placeholder="class code"
-          />
-        </el-col>
-      </el-row>
-      <el-row class="mb-5 text-center">
-        <el-col :span="6">
-          <div class="h-full flex-row flex-center">
-            <span>所属学院:</span>
-          </div>
-        </el-col>
-        <el-col :span="18">
-          <el-select
-            v-model="EditParams.college_id"
-            class="m-2"
-            placeholder="select college"
+          <el-upload
+            ref="uploadRef"
+            class="upload-demo mt-5"
+            :before-upload="onBeforeUpload"
           >
-            <el-option
-              v-for="item in Colleges"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
+            <ImageLayout
+              class="mt-5"
+              :width="80"
+              :height="80"
+              :resource="EditParams.avatar"
             />
-          </el-select>
+          </el-upload>
         </el-col>
       </el-row>
       <el-row class="mb-5 text-center">
@@ -111,7 +84,7 @@
         <el-col :span="18">
           <el-input
             v-model="EditParams.remark"
-            placeholder="class remark"
+            placeholder="course remark"
           />
         </el-col>
       </el-row>
@@ -149,26 +122,34 @@
         width="50"
       />
       <el-table-column
-        prop="code"
-        label="班级编号"
-        header-align="center"
-        align="center"
-        width="200"
-      />
-      <el-table-column
         prop="name"
-        label="班级"
+        label="课程名"
         header-align="center"
         align="center"
         width="200"
       />
       <el-table-column
-        prop="college.name"
-        label="所属学院"
+        prop="avatar"
+        label="课程封面"
         header-align="center"
         align="center"
-        width="200"
-      />
+        width="150"
+      >
+        <template #default="{ row }">
+          <el-image
+            style="width: 50px; height: 50px"
+            :src="row.avatar"
+            :zoom-rate="1.2"
+            :max-scale="7"
+            :min-scale="0.2"
+            :initial-index="4"
+            :preview-teleported="true"
+            :preview-src-list="[row.avatar]"
+            fit="cover"
+            :hide-on-click-modal="true"
+          />
+        </template>
+      </el-table-column>
       <el-table-column
         prop="remark"
         label="描述"
@@ -249,51 +230,48 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { classes, ClassEdit, ClassQuery, classdata } from "@/Request/ApiModules/class";
-import college from "@/Request/ApiModules/college";
+import { course, CourseEdit, CourseQuery } from "@/Request/ApiModules/course";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";
-import { KeyValue } from "@/components/TableFunction/index.type";
-import { ElMessage } from "element-plus";
+import common from "@/Request/ApiModules/common";
+import { ElMessage, UploadRawFile } from "element-plus";
 //添加修改对象
-const EditParams = ref<ClassEdit>({
+
+const EditParams = ref<CourseEdit>({
   name: "",
   remark: "",
-  college_id : undefined,
-  code: ""
+  avatar: ""
 });
-//查询对象
-const QueryParams = ref<ClassQuery>({
-  name: "",
-  college_id: undefined
-});
-//学院列表
-const Colleges = ref<KeyValue[]>([]);
 
-const TableProps = useTableFunction<classes, ClassQuery, ClassEdit>(
-  "班级",
-  classes,
+//查询对象
+const QueryParams = ref<CourseQuery>({
+  name: "",
+});
+
+const TableProps = useTableFunction<course, CourseQuery, CourseEdit>(
+  "课程",
+  course,
   QueryParams,
   EditParams,
-  undefined,
-  {
-    beforehandleEditOpen(){
-      loadColleges();
-    }
-  },
-  classdata
+  undefined
 );
 
 const { isEdit, DataSource, TableLoading, total , EditTxt, EditLoading } = TableProps;
 
-const loadColleges = () => {
-  college.all().then( res => {
-    Colleges.value = res.data.data;
-  }).catch( error => ElMessage.error(error));
+const onBeforeUpload = (rawFile: UploadRawFile) => {
+  const data = new FormData();
+  data.append("file", rawFile);
+  common.upload(data).then(res => {
+    setTimeout(() => {
+      const url = res.data.data.url;
+      EditParams.value.avatar = url;
+      ElMessage.success("上传成功!");
+    }, 500);
+  }).catch(error => { ElMessage.error("上传失败!" + error); })
+  return false;
 }
 
 onMounted( async () => {
   TableProps.loadTableDatas();
-  loadColleges();
 })
 </script>

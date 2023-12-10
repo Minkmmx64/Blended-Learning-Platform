@@ -15,8 +15,22 @@
         <el-col :span="6">
           <el-input
             v-model="QueryParams.name"
-            placeholder="class name"
+            placeholder="teacher name"
           />
+        </el-col>
+        <el-col :span="6">
+          <el-select
+            v-model="QueryParams.authentication"
+            class="m-2"
+            placeholder="select authentication"
+          >
+            <el-option
+              v-for="item in Authentication"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
         </el-col>
         <el-col :span="6">
           <div class="grid-content ep-bg-purple-dark">
@@ -50,7 +64,59 @@
         <el-col :span="18">
           <el-input
             v-model="EditParams.name"
-            placeholder="class name"
+            placeholder="teacher name"
+          />
+        </el-col>
+      </el-row>
+      <el-row class="mb-5 text-center">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
+            <span>{{ TableProps.apiname }}性别:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-select
+            v-model="EditParams.gender"
+            class="m-2"
+            placeholder="select gender"
+          >
+            <el-option
+              v-for="item in ['男','女']"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row class="mb-5 text-center">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
+            <span>{{ TableProps.apiname }}年龄:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-input-number
+            v-model="EditParams.age"
+            controls-position="right"
+            class="m-2"
+            placeholder="teacher age"
+          />
+        </el-col>
+      </el-row>
+      <el-row class="mb-5 text-center">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
+            <span>{{ TableProps.apiname }}简介:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-input
+            v-model="EditParams.profile"
+            :rows="2"
+            type="textarea"
+            resize="none"
+            placeholder="teacher profile"
           />
         </el-col>
       </el-row>
@@ -63,7 +129,7 @@
         <el-col :span="18">
           <el-input
             v-model="EditParams.remark"
-            placeholder="class remark"
+            placeholder="teacher remark"
           />
         </el-col>
       </el-row>
@@ -134,7 +200,16 @@
         header-align="center"
         align="center"
         width="200"
-      />
+      >
+        <template #default="{ row }">
+          <el-tag
+            class="ml-2 select-none"
+            :type="row.authentication === '待认证' ? 'warning' : 'success'"
+          >
+            {{ row.authentication }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="remark"
         label="描述"
@@ -189,7 +264,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        flex="right"
+        fixed="right"
         label="操作"
         header-align="center"
         align="center"
@@ -215,7 +290,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { teacher, TeacherEdit, TeacherQuery } from "@/Request/ApiModules/teacher";
+import { teacher, TeacherEdit, TeacherQuery, Authentication } from "@/Request/ApiModules/teacher";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";
 import { Gender } from "@/Request/index.type";
@@ -230,7 +305,8 @@ const EditParams = ref<TeacherEdit>({
 });
 //查询对象
 const QueryParams = ref<TeacherQuery>({
-  name: ""
+  name: "",
+  authentication: undefined
 });
 
 const TableProps = useTableFunction<teacher, TeacherQuery, TeacherEdit>(

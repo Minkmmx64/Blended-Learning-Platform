@@ -10,6 +10,7 @@ import { ClassModule } from './Modules/class/class.module';
 import { StuModule } from './Modules/stu/stu.module';
 import { TeacherModule } from './Modules/teacher/teacher.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CourseModule } from './Modules/course/course.module';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     RoleModule,
     ClassModule,
     StuModule,
-    TeacherModule
+    TeacherModule,
+    CourseModule
   ],
   controllers: [AppController],
   providers: [AppService],

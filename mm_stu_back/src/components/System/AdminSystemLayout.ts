@@ -39,6 +39,19 @@ const SystemMenus: ISystemMenus[] = [
         ]
       },
       {
+        name: "课程管理",
+        key: "CourseManager",
+        icon: "port-array-full",
+        subMenu: [
+          {
+            name: "课程上传",
+            key: "CourseUpload",
+            route: "CourseUpload",
+            icon: "top"
+          }
+        ]
+      },
+      {
         name: "教师管理",
         key: "TeacherManager",
         icon: "add_file",

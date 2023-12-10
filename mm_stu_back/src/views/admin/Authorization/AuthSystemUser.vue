@@ -2,7 +2,7 @@
   <div class="w-full h-full scroll">
     <div class="TableHead">
       <el-row class="mb-10 mt-10" :gutter="20">
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <div class="grid-content ep-bg-purple-dark">
             <el-button
               type="primary"
@@ -11,7 +11,7 @@
               添加 {{ TableProps.apiname }}
             </el-button>
           </div>
-        </el-col>
+        </el-col> -->
         <!-- <el-col :span="6">
           <el-input
             v-model="QueryParams.name"
@@ -193,7 +193,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        flex="right"
+        fixed="right"
         label="操作"
         header-align="center"
         align="center"

@@ -79,7 +79,7 @@
             v-model="EditParams.age"
             controls-position="right"
             class="m-2"
-            placeholder="select year"
+            placeholder="stu age"
           />
         </el-col>
       </el-row>

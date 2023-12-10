@@ -9,6 +9,7 @@ export class TeacherCreateDTO{
 
 export class TeacherQueryDTO {
   name: string;
+  authentication: string;
 }
 
 export class TeacherUpdateDTO {

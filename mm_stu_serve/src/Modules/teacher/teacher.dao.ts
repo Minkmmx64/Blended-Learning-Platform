@@ -20,6 +20,12 @@ export class TeacherDAO {
                         .setParameter("name", `%${TeacherQuery.name}%`);
     }
 
+    if(TeacherQuery.authentication) {
+      SelectQueryBuilder
+                        .andWhere("authentication = :authentication")
+                        .setParameter("authentication", TeacherQuery.authentication);
+    }
+
     return await SelectQueryBuilder
                                    .orderBy(TeacherQuery.prop, Order)
                                    .skip(TeacherQuery.limit * (TeacherQuery.offset - 1))

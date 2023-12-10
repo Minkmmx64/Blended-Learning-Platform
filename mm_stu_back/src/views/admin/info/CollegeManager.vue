@@ -181,7 +181,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        flex="right"
+        fixed="right"
         label="操作"
         header-align="center"
         align="center"

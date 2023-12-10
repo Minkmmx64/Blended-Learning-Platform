@@ -66,6 +66,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { isAuth: true },
         component: () => import("@/views/admin/info/TeacherManager.vue")
       },
+      {
+        path: "/CourseUpload",
+        name: "CourseUpload",
+        meta: { isAuth: true },
+        component: () => import("@/views/admin/info/course/CourseUpload.vue")
+      }
     ]
   },
   {

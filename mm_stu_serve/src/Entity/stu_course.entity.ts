@@ -10,6 +10,9 @@ export class StuCourse extends BaseAttrColumn {
   @Column({type: "char", length: 20, comment: "课程名称"})
   name: string;
 
+  @Column({type: "char", length: 255, comment: "课程封面"})
+  avatar: string;
+
   @ManyToMany(type => StuTeacher, StuTeacher => StuTeacher.courses)
   teachers: StuTeacher[]
 
