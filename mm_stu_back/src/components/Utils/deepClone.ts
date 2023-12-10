@@ -1,7 +1,7 @@
 //深拷贝一个对象
 export function DeepClone(obj: any): any {
   const T = getType(obj);
-  let o: any;
+  let o = obj;
   if(T === "[object Array]") {
     o = [];
     for(let i = 0; i < obj.length; i ++){
@@ -14,7 +14,7 @@ export function DeepClone(obj: any): any {
       o[K] = DeepClone(obj[K]);
     }
   }
-  return obj;
+  return o;
 }
 
 const getType = (v: any) => {

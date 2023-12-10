@@ -40,8 +40,7 @@ export class DataModules {
           console.log(error);
         }
       }
-    } 
-
+    }
     return serviceData[serviceKey];
   }
 

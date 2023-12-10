@@ -262,6 +262,7 @@ const TableProps = useTreeTableFunction<menu, MenuQuery, MenuEdit>(
   { childrenKey: "child", hasChildrenKey: "hashChild" },
   EditParams
 );
+
 const { isEdit, DataSource, TableLoading, total, TreeTableKey , EditTxt, EditLoading } = TableProps;
 
 onMounted(() => {

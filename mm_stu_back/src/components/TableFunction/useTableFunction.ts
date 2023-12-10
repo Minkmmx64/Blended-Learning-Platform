@@ -102,7 +102,6 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edi
     
     for(const K in data) 
       data[K] = DM.transformClientDataDataToServer(K, data);
-    
     EditLoading.value = true;
     let Api: Promise<AxiosResponse<ServerData<any>, any>>;
     if(EditTxt.value === "添加") {

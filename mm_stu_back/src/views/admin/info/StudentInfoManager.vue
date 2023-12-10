@@ -250,7 +250,7 @@
         label="籍贯"
         header-align="center"
         align="center"
-        width="150"
+        width="200"
       />
       <el-table-column
         prop="school"

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { StuChapter } from "./stu_chapter.entity";
 
@@ -17,5 +17,8 @@ export class StuCourseResource extends BaseAttrColumn {
   type: string;
 
   @ManyToOne( type => StuChapter, StuChapter => StuChapter.id)
+  @JoinColumn({
+    name: "chapter_id"
+  })
   chapter: StuChapter;
 }

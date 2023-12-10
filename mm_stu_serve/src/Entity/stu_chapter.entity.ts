@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { StuCourseResource } from "./stu_course_resource.entity";
 import { StuCourse } from "./stu_course.entity";
@@ -12,13 +12,20 @@ export class StuChapter extends BaseAttrColumn {
   @Column({type: "char", length: 255, comment: "封面", nullable: true})
   cover: string;
 
-  @Column({type: "int", comment: "封面", nullable: true})
+  @Column({type: "int", comment: "父章节id", nullable: true})
   @ManyToOne( type => StuChapter, StuChapter => StuChapter.id)
+  @JoinColumn({
+    name: "pid"
+  })
   pid: number;
 
   @OneToMany( type => StuCourseResource, StuCourseResource => StuCourseResource.id)
   resources: StuCourseResource[];
   
+  @Column({type: "int", comment: "课程id", nullable: true})
   @ManyToOne( type => StuCourse, StuCourse => StuCourse.id)
+  @JoinColumn({
+    name: "course"
+  })
   course: StuCourse;
 }

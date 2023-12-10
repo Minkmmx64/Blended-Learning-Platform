@@ -48,6 +48,12 @@ const SystemMenus: ISystemMenus[] = [
             key: "CourseUpload",
             route: "CourseUpload",
             icon: "top"
+          },
+          {
+            name: "章节管理",
+            key: "ChapterManager",
+            route: "ChapterManager",
+            icon: "add-behavor-port"
           }
         ]
       },
