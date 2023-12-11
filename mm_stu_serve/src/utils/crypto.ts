@@ -1,6 +1,6 @@
 import * as crypto from "crypto";
 import * as jwt from "jsonwebtoken";
-import { TokenDTO } from "src/Modules/common/common.dto";
+import { TokenDTO } from "src/Modules/admin/common/common.dto";
 const algorithm = "aes-256-cbc";
 
 const initVectorBufferData = [

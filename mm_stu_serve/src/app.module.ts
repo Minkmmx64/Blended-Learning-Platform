@@ -1,16 +1,18 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CommonModule } from './Modules/common/common.module';
-import { RootModule } from './Modules/root/root.module';
-import { StuCollegeModule } from './Modules/college/college.module';
-import { MenuModule } from './Modules/menu/menu.module';
-import { RoleModule } from './Modules/role/role.module';
-import { ClassModule } from './Modules/class/class.module';
-import { StuModule } from './Modules/stu/stu.module';
-import { TeacherModule } from './Modules/teacher/teacher.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CourseModule } from './Modules/course/course.module';
+import { RootModule } from './Modules/admin/root/root.module';
+import { CommonModule } from './Modules/admin/common/common.module';
+import { StuCollegeModule } from './Modules/admin/college/college.module';
+import { MenuModule } from './Modules/admin/menu/menu.module';
+import { RoleModule } from './Modules/admin/role/role.module';
+import { ClassModule } from './Modules/admin/class/class.module';
+import { StuModule } from './Modules/admin/stu/stu.module';
+import { TeacherModule } from './Modules/admin/teacher/teacher.module';
+import { CourseModule } from './Modules/admin/course/course.module';
+import { WXModule } from './Modules/wx/wx.module';
+
 
 @Module({
   imports: [
@@ -32,7 +34,8 @@ import { CourseModule } from './Modules/course/course.module';
     ClassModule,
     StuModule,
     TeacherModule,
-    CourseModule
+    CourseModule,
+    WXModule
   ],
   controllers: [AppController],
   providers: [AppService],
