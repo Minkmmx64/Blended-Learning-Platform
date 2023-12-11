@@ -63,4 +63,13 @@ export class CourseController {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<DeleteResult>(HttpStatus.ACCEPTED, DeleteResult).send();
   }
+
+  @Get("/all")
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async CourseAll(){
+    const [ error, course ] = await this.CourseService.CourseAll();
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<StuCourse[]>(HttpStatus.ACCEPTED, course).send();
+  }
 }

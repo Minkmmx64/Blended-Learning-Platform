@@ -53,4 +53,13 @@ export class CourseService{
       return [new Error(error), null];
     }
   }
+
+  public async CourseAll() : ServiceData<StuCourse[]> {
+    try {
+      const college = await this.CourseDAO.CourseAll();
+      return [ null, college ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
 }

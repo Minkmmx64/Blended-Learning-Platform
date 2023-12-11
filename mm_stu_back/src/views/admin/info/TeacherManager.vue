@@ -145,6 +145,29 @@
       </template>
     </el-dialog>
 
+    <!-- 添加教师关联 -->
+    <el-dialog
+      v-model="isAddRealCourse"
+      title="关联课程"
+      width="30%"
+    >
+      {{ AddRealCourseIds }}
+      <div class="teacher-manager-course-add shadow-info border-info select-none text-success point">
+        添加课程
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="isAddRealCourse = false">取消</el-button>
+          <el-button
+            type="primary"
+            :loading="EditLoading"
+            @click="commitRealCourse"
+          > 提交 </el-button>
+        </span>
+      </template>
+    </el-dialog>
+    <!-- 添加教师关联 -->
+
     <TableContent
       :loading="TableLoading" 
       :total="total" 
@@ -182,10 +205,10 @@
       />
       <el-table-column
         prop="gender"
-        label="教师性别"
+        label="性别"
         header-align="center"
         align="center"
-        width="200"
+        width="80"
       />
       <el-table-column
         prop="profile"
@@ -199,7 +222,7 @@
         label="教师认证状态"
         header-align="center"
         align="center"
-        width="200"
+        width="120"
       >
         <template #default="{ row }">
           <el-tag
@@ -215,6 +238,7 @@
         label="描述"
         header-align="center"
         align="center"
+        width="200"
       />
       <el-table-column
         prop="status"
@@ -272,6 +296,13 @@
       >
         <template #default="{ row }">
           <el-button
+            type="primary"
+            @click="addRealCourse(row)"
+          >
+            添加关联课程
+          </el-button>
+          <el-divider direction="vertical" />
+          <el-button
             type="success"
             @click="TableProps.handleEditOpen('update', row)"
           >
@@ -291,9 +322,11 @@
 </template>
 <script lang="ts" setup>
 import { teacher, TeacherEdit, TeacherQuery, Authentication } from "@/Request/ApiModules/teacher";
+import course from "@/Request/ApiModules/course";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";
 import { Gender } from "@/Request/index.type";
+import { KeyValue } from "@/components/TableFunction/index.type";
 
 //添加修改对象
 const EditParams = ref<TeacherEdit>({
@@ -319,7 +352,32 @@ const TableProps = useTableFunction<teacher, TeacherQuery, TeacherEdit>(
 
 const { isEdit, DataSource, TableLoading, total , EditTxt, EditLoading } = TableProps;
 
+const isAddRealCourse = ref(false);
+const AddRealCourseIds = ref([]);
+
+const addRealCourse = (row : KeyValue) => {
+  isAddRealCourse.value = true;
+  AddRealCourseIds.value = row.courses.map( course => course.id);
+}
+
+const commitRealCourse = () => {
+  console.log("commitRealCourse");
+}
+
 onMounted( async () => {
   TableProps.loadTableDatas();
 })
 </script>
+
+<style lang="scss" scoped>
+.teacher-manager-course-add {
+  width: 100px;
+  height: 30px;
+  border-style: dashed;
+  border-width: 1px;
+  border-color: $info;
+  margin: 0 auto;
+  line-height: 30px;
+  text-align: center;
+}
+</style>

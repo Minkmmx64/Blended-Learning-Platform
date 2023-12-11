@@ -27,6 +27,9 @@ export class course extends AxiosApi {
     super("/api/course");
   }
 
+  public async all(){
+    return this.get("/all", { date: new Date().getTime() })
+  }
 }
 
 export default new course();

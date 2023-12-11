@@ -68,7 +68,12 @@ export class CourseDAO {
     return result;
   }
 
-
+  public async CourseAll(){
+    return await this.CourseRepository
+                     .createQueryBuilder()
+                     .select()
+                     .getMany();
+  }
 
   public async Total() : Promise<number> {
     return await this.CourseRepository

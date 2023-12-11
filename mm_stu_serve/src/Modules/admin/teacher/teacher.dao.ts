@@ -12,22 +12,26 @@ export class TeacherDAO {
   public async TeacherListsPagination(TeacherQuery: PaginationQuery<TeacherQueryDTO>): Promise<StuTeacher[]> {
 
     const Order = ToOrder(TeacherQuery);
-    const SelectQueryBuilder: SelectQueryBuilder<StuTeacher> = this.TeacherRepository.createQueryBuilder().select();
+    const SelectQueryBuilder: SelectQueryBuilder<StuTeacher> = this.TeacherRepository.createQueryBuilder("teacher").leftJoinAndSelect("teacher.courses", "mm_stu_stu_course");
 
     if(TeacherQuery.name) {
       SelectQueryBuilder
-                        .andWhere("name LIKE :name")
+                        .andWhere("teacher.name LIKE :name")
                         .setParameter("name", `%${TeacherQuery.name}%`);
     }
 
     if(TeacherQuery.authentication) {
       SelectQueryBuilder
-                        .andWhere("authentication = :authentication")
+                        .andWhere("teacher.authentication = :authentication")
                         .setParameter("authentication", TeacherQuery.authentication);
     }
 
+    if(TeacherQuery.prop) {
+      SelectQueryBuilder
+                        .orderBy("teacher." + TeacherQuery.prop, Order)
+    }
+
     return await SelectQueryBuilder
-                                   .orderBy(TeacherQuery.prop, Order)
                                    .skip(TeacherQuery.limit * (TeacherQuery.offset - 1))
                                    .take(TeacherQuery.limit)
                                    .getMany();
