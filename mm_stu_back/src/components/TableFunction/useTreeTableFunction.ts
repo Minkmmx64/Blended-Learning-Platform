@@ -4,6 +4,7 @@ import { ElMessage } from "element-plus";
 import { ChildProps, DeleteProps, EditProps, ITableFunction, KeyValue, ListMetaData, Pagination, PaginationQuery, Sorted, lazyFunc } from "./index.type";
 import { DataModules } from "@/Request/DataModules/DataModules";
 import { AxiosResponse } from "axios";
+import { DeepClone } from "../Utils/deepClone";
 
 interface IuseTreeTableFunction {
   //加载子树
@@ -33,7 +34,12 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
   UserSearchQuery: Ref<Query>,
   child: ChildProps,
   UserEditParam: Ref<Edit>,                   // 用户添加&编辑表单
-  PaginationQuery?: Sorted & Pagination  // 分页请求参数 & 用户自定义请求参数
+  PaginationQuery?: Sorted & Pagination,  // 分页请求参数 & 用户自定义请求参数
+  life ?: {
+    beforehandleEditConfirm?: () => void;
+    beforehandleEditOpen?: (row?: Edit) => void;
+  },
+  transformData ?: new () => DataModules          // 前后端字段转换   class_id = "class.id" 后端class字段的id属性赋值给class_id
 ) : IuseTreeTableFunction & ITableFunction {
   //分页参数
   const limit = ref(PaginationQuery?.limit ?? 10);
@@ -77,13 +83,19 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
   }
   //排除一些参数
   const editBuildr = () => {
-    const edit = {} as Edit;
-    for(const K in UserEditParam.value) {
+
+    const data = DeepClone(UserEditParam.value);
+
+    const edit = {} as any;
+    for(const K in data) {
       if(K !== "pid") 
-        edit[K] = UserEditParam.value[K];
+        edit[K] = DM.transformClientDataDataToServer(K, data);
     }
     return edit;
   }
+
+  //数据模型
+  const DM = transformData ? new transformData() : new DataModules();
 
   //表格加载数据
   const loadTableDatas = () => {
@@ -109,7 +121,7 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
     setTimeout( async() => {
       const data = await loadTreeNodeChildData(row);
       resolve(data);
-    }, 500);
+    }, 100);
   }
 
   //通过pid加载子树
@@ -146,6 +158,7 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
          }
           resolve(data);
         }
+        
       }, 500);
     }).catch( error => ElMessage.error(error));
   }
@@ -171,6 +184,10 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
 
   //提交修改，添加
   const handleEditConfirm = () => {
+
+    // 执行回调
+    if(life && life.beforehandleEditConfirm) life.beforehandleEditConfirm();
+
     EditLoading.value = true;
     let Api: Promise<AxiosResponse<ServerData<any>, any>>;
     if(EditTxt.value === "添加") {
@@ -197,11 +214,18 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
   }
 
   const handleEditOpen = (type: EditProps, row?: KeyValue) => {
+    
+    if(life && life.beforehandleEditOpen) {
+      if(typeof life.beforehandleEditOpen === "function"){
+        life.beforehandleEditOpen(row as Edit);
+      }
+    }
+
     isEdit.value = true;
     if(row) {
       id.value = row.id;
       for(const K in UserEditParam.value) {
-        UserEditParam.value[K] = row[K];
+        UserEditParam.value[K] = DM.transformServiceDataToClient(K, row);
         if(K === "pid") UserEditParam.value[K] = row["id"];
       }
     } else {
@@ -217,7 +241,7 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
   const handleClearQuery = () => {
     for(const k in UserSearchQuery.value) {
       if(typeof UserSearchQuery.value[k] === "number") 
-        (UserSearchQuery.value[k] as any) = 0;
+        (UserSearchQuery.value[k] as any) = undefined;
       else 
         (UserSearchQuery.value[k] as any) = "";
     }

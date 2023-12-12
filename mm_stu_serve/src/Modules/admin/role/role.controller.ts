@@ -62,4 +62,13 @@ export class RoleController {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<DeleteResult>(HttpStatus.RESET_CONTENT, del).send();
   }
+
+  @Get("/all")
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async CollegeAll(){
+    const [ error, college ] = await this.RoleService.RoleAll();
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<RootRole[]>(HttpStatus.ACCEPTED, college).send();
+  }
 }

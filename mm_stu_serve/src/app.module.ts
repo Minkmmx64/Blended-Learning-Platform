@@ -12,6 +12,7 @@ import { StuModule } from './Modules/admin/stu/stu.module';
 import { TeacherModule } from './Modules/admin/teacher/teacher.module';
 import { CourseModule } from './Modules/admin/course/course.module';
 import { WXModule } from './Modules/wx/wx.module';
+import { ChapterModule } from './Modules/admin/chapter/chapter.module';
 
 
 @Module({
@@ -35,7 +36,8 @@ import { WXModule } from './Modules/wx/wx.module';
     StuModule,
     TeacherModule,
     CourseModule,
-    WXModule
+    WXModule,
+    ChapterModule
   ],
   controllers: [AppController],
   providers: [AppService],

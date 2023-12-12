@@ -37,8 +37,19 @@ const login = async (e: Record<keyof User.LoginProps, string>) => {
           const useUser = useUserStore();
           useUser.setUser(user);
           useUser.setToken(token);
-          ElMessage.success("登录成功");
-          AdminLogin.push({ name: 'System' });
+          /**
+           * 加载权限表
+           */
+          ElMessage.info("加载权限表");
+           Root.auth(user.role.id).then( res => {
+            setTimeout(() => {
+              ElMessage.success("加载成功");
+              const routers = res.data.data;
+              useUser.setAuths(routers);
+              ElMessage.success("登录成功");
+              AdminLogin.push({ name: 'System' });
+            }, 500);
+           })
         }
       } catch (error) {
         console.log(error);

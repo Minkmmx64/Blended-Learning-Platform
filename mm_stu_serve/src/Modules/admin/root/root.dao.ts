@@ -1,6 +1,6 @@
 import { RootUser } from "src/Entity/root_user.entity";
 import { DataSource, SelectQueryBuilder } from "typeorm";
-import { RootInfoDTO, RootQueryDTO } from "./root.dto";
+import { RootInfoDTO, RootQueryDTO, RootUpdateDTO } from "./root.dto";
 import { PaginationQuery } from "../../index.type";
 import { ToOrder } from "src/common/common";
 
@@ -53,4 +53,20 @@ export class RootServiceDAO {
                      .select()
                      .getCount();
   }
+
+  public async RootUserRoleUpdate(RootUpdate: RootUpdateDTO) {
+    const UpdateResult = await this.RootUserRepository
+                                                      .createQueryBuilder()
+                                                      .update()
+                                                      .set({
+                                                        role: {
+                                                          id: RootUpdate.data.role
+                                                        }
+                                                      })
+                                                      .where("id = :id")
+                                                      .setParameter("id", RootUpdate.id)
+                                                      .execute();
+    return UpdateResult;
+  }
+
 }

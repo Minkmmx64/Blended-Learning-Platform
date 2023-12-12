@@ -4,9 +4,9 @@ import { RouteRecordRaw } from 'vue-router'
 export const RootRouterPath  = {
   //学籍管理
   ["student.info"] : {  
-    name: "StudentInfo",
-    path: "/StudentInfo",
+    name: "StudenInfotManager",
+    path: "/StudenInfotManager",
     component: () => import("@/views/admin/info/StudentInfoManager.vue"),
-    meta: { isAuth: true }
+    meta: { isAuth: true, key: "StudenInfotManager" }
   } as RouteRecordRaw
 }

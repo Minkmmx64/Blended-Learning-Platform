@@ -57,6 +57,21 @@
           />
         </el-col>
       </el-row> -->
+        <el-col :span="6">
+          <el-select
+            v-model="EditParams.role"
+            class="m-2"
+            placeholder="select course"
+          >
+            <el-option
+              v-for="item in Roles"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+              :disabled="item.disabled"
+            />
+          </el-select>
+        </el-col>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="TableProps.handleEditClose">取消</el-button>
@@ -197,22 +212,22 @@
         label="操作"
         header-align="center"
         align="center"
-        width="300"
+        width="200"
       >
         <template #default="{ row }">
           <el-button
             type="success"
             @click="TableProps.handleEditOpen('update', row)"
           >
-            编辑
+            分配角色
           </el-button>
-          <el-divider direction="vertical" />
+          <!--  <el-divider direction="vertical" />
           <el-button
             type="danger"
             @click="TableProps.handleDelete(row)"
           >
             删除
-          </el-button>
+          </el-button> -->
         </template>
       </el-table-column>
     </TableContent>
@@ -220,22 +235,34 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { root } from "@/Request/ApiModules/root";
+import { root , rootdata} from "@/Request/ApiModules/root";
+import role from "@/Request/ApiModules/role";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
+import { ElMessage } from "element-plus";
+
 const QueryParams = ref({
 
 });
 
 const EditParams = ref({
-
+  role: undefined
 })
 
-const TableProps = useTableFunction("系统用户", root, QueryParams, EditParams )
+const TableProps = useTableFunction("系统用户", root, QueryParams, EditParams, undefined, undefined, rootdata )
 
 const { isEdit, DataSource, TableLoading, total , EditTxt, EditLoading } = TableProps;
 
+const Roles = ref([]);
+
+const roleAll = () => {
+  role.all().then( res => {
+    Roles.value = res.data.data;
+  }).catch( error => ElMessage.error(error));
+}
+
 onMounted(() => {
   TableProps.loadTableDatas();
+  roleAll();
 })
 </script>
   

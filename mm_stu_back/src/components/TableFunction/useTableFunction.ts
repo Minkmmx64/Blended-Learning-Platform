@@ -98,6 +98,7 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edi
   const handleEditConfirm = () => {
     // 执行回调
     if(life && life.beforehandleEditConfirm) life.beforehandleEditConfirm();
+
     const data = DeepClone(UserEditParam.value);
     
     for(const K in data) 
@@ -129,6 +130,7 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edi
         life.beforehandleEditOpen(row as Edit);
       }
     }
+    
     isEdit.value = true;
     if(row) {
       id.value = row.id;

@@ -22,7 +22,7 @@ const SystemMenus: ISystemMenus[] = [
   },
   {
     name: "信息管理",
-    key: "BaseManager",
+    key: "InfoManager",
     icon: "configue",
     subMenu : [
       {
@@ -32,8 +32,8 @@ const SystemMenus: ISystemMenus[] = [
         subMenu: [
           {
             name: "学籍管理",
-            route: "StudentInfo",
-            key: "StudentInfo",
+            route: "StudenInfotManager",
+            key: "StudenInfotManager",
             icon: "file-common"
           }
         ]
@@ -45,8 +45,8 @@ const SystemMenus: ISystemMenus[] = [
         subMenu: [
           {
             name: "课程上传",
-            key: "CourseUpload",
-            route: "CourseUpload",
+            key: "CourseInfoManager",
+            route: "CourseInfoManager",
             icon: "top"
           },
           {
@@ -54,6 +54,18 @@ const SystemMenus: ISystemMenus[] = [
             key: "ChapterManager",
             route: "ChapterManager",
             icon: "add-behavor-port"
+          },
+          {
+            name: "课表管理",
+            key: "ClassTableManager",
+            route: "ClassTableManager",
+            icon: "docunment"
+          },
+          {
+            name: "资源管理",
+            key: "CourseResourceManager",
+            route: "CourseResourceManager",
+            icon: "decline-filling"
           }
         ]
       },
@@ -79,38 +91,38 @@ const SystemMenus: ISystemMenus[] = [
   },
   {
     name: "权限系统",
-    key: "Authorization",
+    key: "AuthorizationManager",
     icon: "port-dictionary-full",
     subMenu: [
       {
         name: "菜单列表",
-        key: "AuthorizationMenu",
+        key: "AuthorizationMenuManager",
         icon: "port-dictionary-left",
-        route: "AuthorizationMenu"
+        route: "AuthorizationMenuManager"
       },
       {
         name: "角色列表",
-        key: "AuthorizationRole",
-        route: "AuthorizationRole",
+        key: "AuthorizationRoleManager",
+        route: "AuthorizationRoleManager",
         icon: "users"
       },
       {
         name: "系统用户列表",
-        key: "AuthSystemUser",
-        route: "AuthSystemUser",
+        key: "SystemUserManager",
+        route: "SystemUserManager",
         icon: "lock"
       }
     ]
   },
   {
     name: "个人管理",
-    key: "Personal",
+    key: "AdminManager",
     icon: "GitHub",
     subMenu: [
       {
         name: "个人信息",
-        key: "PersonalInfo",
-        route: "PersonalInfo",
+        key: "AdminInfoManager",
+        route: "AdminInfoManager",
         icon: "image-text"
       }
     ]

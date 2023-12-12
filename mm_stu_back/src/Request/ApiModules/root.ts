@@ -1,4 +1,5 @@
 import { AxiosApi } from "../AxiosApis";
+import { DataModules } from "../DataModules/DataModules";
 
 export interface RootRegistDTO {
   username : string;
@@ -36,6 +37,15 @@ export interface RootInfoEdit {
   rusername:string;
 }
 
+export class rootdata extends DataModules {
+  clientKey = {
+    role: {
+      type: 'object',
+      deep: "role.id"
+    }
+  };
+}
+
 export class root extends AxiosApi {
   constructor(){
     super("/api/root");
@@ -48,8 +58,13 @@ export class root extends AxiosApi {
   public login(data : RootLoginDTO) {
     return this.post<RootLoginDTO,LoginResponseData>("/login", data);
   }
+
   public info(data: RootInfoEdit) {
     return this.put("/info", data);
+  }
+
+  public auth(id: number) {
+    return this.get("/auth", { id });
   }
 }
 

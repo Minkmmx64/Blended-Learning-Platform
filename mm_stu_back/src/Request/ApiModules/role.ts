@@ -1,4 +1,5 @@
 import { AxiosApi } from "../AxiosApis";
+import { DataModules } from "../DataModules/DataModules";
 
 export interface RoleEdit {
   name?: string;
@@ -13,6 +14,10 @@ export interface RoleQuery {
 export class role extends AxiosApi {
   constructor(){
     super("/api/role");
+  }
+
+  public all(){
+    return this.get("/all");
   }
 }
 

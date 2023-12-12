@@ -1,16 +1,21 @@
-import { RootInfoDTO, RootLoginDTO, RootLoginUserInfo, RootQueryDTO, RootRegistDTO } from "./root.dto";
+import { RootInfoDTO, RootLoginDTO, RootLoginUserInfo, RootQueryDTO, RootRegistDTO, RootUpdateDTO } from "./root.dto";
 import { RootUser } from "src/Entity/root_user.entity";
-import { DataSource, InsertResult } from "typeorm";
+import { DataSource, InsertResult, UpdateResult } from "typeorm";
 import { RootServiceDAO } from "./root.dao";
 import { JWT, encryption } from "src/utils/crypto";
 import { randomUUID } from "crypto";
 import { Injectable } from "@nestjs/common";
 import { ListMetaData, PaginationQuery, ServiceData } from "../../index.type";
+import { RootRouters } from "src/Entity/root_routers.entity";
+import { RoleService } from "../role/role.service";
 
 @Injectable()
 export class RootService {
 
-  constructor(public DataSource: DataSource){}
+  constructor(
+    public DataSource: DataSource,
+    private readonly RoleService: RoleService  
+  ){}
 
   public RootServiceDAO = new RootServiceDAO(this.DataSource);
 
@@ -33,7 +38,7 @@ export class RootService {
                             password: encryption(root.password),
                             phone: root.phone,
                             role: {
-                              id: 1
+                              id: 4
                             }
                           })
                           .execute();
@@ -103,5 +108,21 @@ export class RootService {
     }
   }
 
+  public async RootUserRoleUpdate(RootUpdate: RootUpdateDTO) : ServiceData<UpdateResult> {
+    try {
+      const UpdateResult = await this.RootServiceDAO.RootUserRoleUpdate(RootUpdate);
+      return [ null , UpdateResult];
+    } catch (error) {
+      return [ new Error(error), null ];
+    }
+  }
   
+  public async AuthMenuList(role_id: number) : ServiceData<RootRouters[]> {
+    try {
+      const Auths = await this.RoleService.RoleDAO.getAuthRoutersByRoleId(role_id);
+      return [ null, Auths ]
+    } catch (error) {
+      return [ new Error(error), null ];
+    }
+  }
 }

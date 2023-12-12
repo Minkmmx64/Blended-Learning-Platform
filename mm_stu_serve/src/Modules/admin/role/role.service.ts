@@ -53,4 +53,14 @@ export class RoleService {
       return [ new Error(error), null ];
     }
   }
+
+  public async RoleAll() : ServiceData<RootRole[]> {
+    try {
+      const college = await this.RoleDAO.RoleAll();
+      return [ null, college ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
+
 }

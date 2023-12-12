@@ -19,6 +19,13 @@ export class RootInfoDTO {
   avatar: string;
 }
 
+export class RootUpdateDTO {
+  id: number;
+  data: {
+    role: number;
+  }
+}
+
 export interface RootLoginUserInfo {
   token: string;
   user: {

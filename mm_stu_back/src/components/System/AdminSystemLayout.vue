@@ -18,7 +18,7 @@
         <!-- <span v-if="!collapse" style="font-size: 16px;">{{ title }}</span> -->
       </div>
       <MainSystemMenu
-        :data="SystemMenus"
+        :data="User.TransformAuthMenu()"
         :collapse="collapse"
       />
       <!-- <el-button @click="MenuGoBack" class="w-full" type="primary">Back -</el-button> -->
@@ -56,10 +56,13 @@
 
 <script setup lang="ts">
 import { toRefs, Directive, onUnmounted, onMounted } from 'vue';
-import { SystemMenus, config } from "./AdminSystemLayout";
+import { config } from "./AdminSystemLayout";
 import MainSystemMenu from './child/MainSystemMenu.vue';
 import BreadNav from "./child/BreadNav.vue";
 import { useBreadNav, useMenu } from './child/hook';
+import { useUserStore } from "@/store/index";
+
+const User = useUserStore();
 
 interface IProps { title: string; }
 const Props = withDefaults(defineProps<IProps>(), { title: "" } )

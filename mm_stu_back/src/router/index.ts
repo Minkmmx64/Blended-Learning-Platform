@@ -1,5 +1,5 @@
 import { useUserStore } from '@/store'
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus';
 import { RootRouterPath } from './root';
 
@@ -21,62 +21,74 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/Wellcome",
         name: "Wellcome",
-        meta: { isAuth: true },
+        meta: { isAuth: true, key: "Wellcome" },
         component: () => import("@/views/admin/WellComeView.vue")
       },
       {
-        path: "/PersonalInfo",
-        name: "PersonalInfo",
-        meta: { isAuth: true },
+        path: "/AdminInfoManager",
+        name: "AdminInfoManager",
+        meta: { isAuth: true, key: "AdminInfoManager" },
         component: () => import("@/views/admin/personal/PersonalInfo.vue")
       },
       {
-        path: "/AuthorizationMenu",
-        name: "AuthorizationMenu",
-        meta: { isAuth: true },
+        path: "/AuthorizationMenuManager",
+        name: "AuthorizationMenuManager",
+        meta: { isAuth: true, key: "AuthorizationMenuManager" },
         component: () => import("@/views/admin/Authorization/AuthorizationMenu.vue")
       },
       {
-        path: "/AuthorizationRole",
-        name: "AuthorizationRole",
-        meta: { isAuth: true },
+        path: "/AuthorizationRoleManager",
+        name: "AuthorizationRoleManager",
+        meta: { isAuth: true, key: "AuthorizationRoleManager" },
         component: () => import("@/views/admin/Authorization/AuthorizationRole.vue")
       },
       {
         path: "/CollegeManager",
         name: "CollegeManager",
-        meta: { isAuth: true },
+        meta: { isAuth: true , key: "CollegeManager" },
         component: () => import("@/views/admin/info/CollegeManager.vue")
       },
       {
         path: "/ClassManager",
         name: "ClassManager",
-        meta: { isAuth: true },
+        meta: { isAuth: true, key: "ClassManager" },
         component: () => import("@/views/admin/info/ClassManager.vue")
       },
       {
-        path: "/AuthSystemUser",
-        name: "AuthSystemUser",
-        meta: { isAuth: true },
+        path: "/SystemUserManager",
+        name: "SystemUserManager",
+        meta: { isAuth: true, key: "SystemUserManager" },
         component: () => import("@/views/admin/Authorization/AuthSystemUser.vue")
       },
       {
         path: "/TeacherManager",
         name: "TeacherManager",
-        meta: { isAuth: true },
+        meta: { isAuth: true, key: "TeacherManager" },
         component: () => import("@/views/admin/info/TeacherManager.vue")
       },
       {
-        path: "/CourseUpload",
-        name: "CourseUpload",
-        meta: { isAuth: true },
+        path: "/CourseInfoManager",
+        name: "CourseInfoManager",
+        meta: { isAuth: true, key: "CourseInfoManager" },
         component: () => import("@/views/admin/info/course/CourseUpload.vue")
       },
       {
         path: "/ChapterManager",
         name: "ChapterManager",
-        meta: { isAuth: true },
-        component: () => import("@/views/admin/info/course/ChapterManager.vue")
+        meta: { isAuth: true, key: "ChapterManager" },
+        component: () => import("@/views/admin/info/course/ChapterManager.vue"),
+      },
+      {
+        path: "/ClassTableManager",
+        name: "ClassTableManager",
+        meta: { isAuth: true, key: "ClassTableManager" },
+        component: () => import("@/views/admin/info/course/ClassTableManager.vue")
+      },
+      {
+        path: "/CourseResourceManager",
+        name: "CourseResourceManager",
+        meta: { isAuth: true, key: "CourseResourceManager" },
+        component: () => import("@/views/admin/info/course/CourseResourceManager.vue")
       }
     ]
   },
@@ -98,9 +110,11 @@ router.addRoute("System", RootRouterPath["student.info"])
 
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
-  const { getToken } = useUserStore();
+  const currentRouterName = useRouter().currentRoute.value.fullPath.replaceAll(/[\/\\]*/g, "")
+  
+  const User = useUserStore();
   if (to.name === "Home") {
-    if(getToken) {
+    if(User.getToken) {
       ElMessage.info("已经登录了");
       console.log(from);
       next("/System")
@@ -109,7 +123,15 @@ router.beforeEach(async (to, from, next) => {
     // 需要验证登录
     if (to.meta.isAuth) {
       //验证Token有效性
-      if (getToken) next();
+      if (User.getToken) {
+        if(to.meta.key){
+          if(User.getAuths.find( auth => auth.key === to.meta.key)) next();
+          else {
+            ElMessage.error("没有访问权限");
+            next(currentRouterName)
+          }
+        } else next();
+      }
       else {
         ElMessage.error("请登录");
         next("/Home");

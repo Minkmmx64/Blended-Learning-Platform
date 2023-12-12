@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="'h-full iconfont ' + Props.icon"
+    :class="'iconfont ' + Props.icon"
     :style="{ fontSize: size + 'px' }"
   />
 </template>

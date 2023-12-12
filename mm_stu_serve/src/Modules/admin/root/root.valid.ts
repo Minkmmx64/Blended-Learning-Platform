@@ -1,5 +1,5 @@
 import * as Joi from "joi";
-import { RootInfoDTO, RootLoginDTO, RootRegistDTO } from "./root.dto";
+import { RootInfoDTO, RootLoginDTO, RootRegistDTO, RootUpdateDTO } from "./root.dto";
 import { Rules } from "src/utils/regex";
 import { NotAcceptableException } from "@nestjs/common";
 
@@ -28,4 +28,11 @@ export const RootInfoSchema = Joi.object<RootInfoDTO>({
   ),
   label: Joi.allow(),
   username: Joi.string().required().regex(Rules.username.rule).error(new NotAcceptableException("用户名不能为空")),
+})
+
+export const RootUpdateValid = Joi.object<RootUpdateDTO>({
+  id: Joi.number().required().error(new NotAcceptableException("id 异常")),
+  data: {
+    role: Joi.number().required().error(new NotAcceptableException("角色id 异常")),
+  }
 })

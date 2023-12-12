@@ -110,10 +110,28 @@ export class RoleDAO {
                      .execute();
   }
 
+  public async RoleAll() {
+    return await this.RoleRepository
+                                    .createQueryBuilder()
+                                    .select()
+                                    .getMany();
+  }
+
   public async Total(): Promise<number> {
     return await this.RoleRepository
                      .createQueryBuilder()
                      .select()
                      .getCount();
+  }
+
+  public async getAuthRoutersByRoleId(role_id: number) {
+
+    const SelectQueryBuilder: SelectQueryBuilder<RootRole> = this.RoleRepository.createQueryBuilder("role").leftJoinAndSelect("role.routers", "mm_stu_root_routers");
+
+    const { routers } = await SelectQueryBuilder
+                                          .andWhere("role.id = :role")
+                                          .setParameter("role", role_id)
+                                          .getOne();
+    return  routers;
   }
 }

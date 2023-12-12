@@ -90,6 +90,7 @@ import common from "@/Request/ApiModules/common";
 import root from "@/Request/ApiModules/root";
 
 const User = useUserStore();
+
 const InfoEdit = ref<RootInfoEdit>({
   username: User.getUser.username,
   avatar: User.getUser.avatar,
