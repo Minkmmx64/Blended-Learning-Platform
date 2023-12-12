@@ -1,8 +1,9 @@
 import { DataSource, DeleteResult, InsertResult, SelectQueryBuilder, UpdateResult } from "typeorm";
 import { PaginationQuery } from "../../index.type";
-import { TeacherCreateDTO, TeacherQueryDTO, TeacherUpdateDTO } from "./teacher.dto";
+import { RealCourseDTO, TeacherCreateDTO, TeacherQueryDTO, TeacherUpdateDTO } from "./teacher.dto";
 import { ToOrder } from "src/common/common";
 import { StuTeacher } from "src/Entity/stu_teacer.entity";
+import { StuCourse } from "src/Entity/stu_course.entity";
 
 export class TeacherDAO {
   constructor(protected DataSource: DataSource){}
@@ -84,7 +85,37 @@ export class TeacherDAO {
     return result;
   }
 
-
+  public async RealCourse(RealCourse: RealCourseDTO) : Promise<void> {
+    const queryRunner = this.DataSource.createQueryRunner();
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+      // 先加载之前的课程
+      const data = await this.TeacherRepository
+                             .createQueryBuilder(null, queryRunner)
+                             .relation(StuTeacher, "courses")
+                             .of(RealCourse.id)
+                             .loadMany<StuCourse>();
+      // 删除之前的课程
+      await this.TeacherRepository
+                .createQueryBuilder(null, queryRunner)
+                .relation(StuTeacher, "courses")
+                .of(RealCourse.id)
+                .remove(data);
+      // 重新添加教师课程关系
+      await this.TeacherRepository
+                .createQueryBuilder(null, queryRunner)
+                .relation(StuTeacher, "courses")
+                .of(RealCourse.id)
+                .add(RealCourse.course);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new Error(error);
+    } finally {
+      await queryRunner.release();
+    }
+  }
 
   public async Total() : Promise<number> {
     return await this.TeacherRepository

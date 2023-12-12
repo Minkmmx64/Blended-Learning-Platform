@@ -7,8 +7,8 @@ import { AuthGuard } from "src/guard/auth.gurad";
 import { TokenExpireInterceptor } from "src/guard/token.interceptor";
 import { ValidationPipe } from "src/utils/pipes";
 import { TeacherService } from "./teacher.service";
-import { TeacherCreateDTO, TeacherUpdateDTO, TeacherQueryDTO } from "./teacher.dto";
-import { TeacherCreateValid, TeacherUpdateValid } from "./teacher.valid";
+import { TeacherCreateDTO, TeacherUpdateDTO, TeacherQueryDTO, RealCourseDTO } from "./teacher.dto";
+import { RealCourseValid, TeacherCreateValid, TeacherUpdateValid } from "./teacher.valid";
 import { StuTeacher } from "src/Entity/stu_teacer.entity";
 @Controller("teacher")
 export class TeacherController {
@@ -63,5 +63,19 @@ export class TeacherController {
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<DeleteResult>(HttpStatus.ACCEPTED, DeleteResult).send();
+  }
+
+  @Post("/real")
+  @UseGuards(new AuthGuard())
+  @UseInterceptors(new TokenExpireInterceptor())
+  @UsePipes(new ValidationPipe(RealCourseValid))
+  public async RealCourse(
+    @Body() body: RealCourseDTO
+  ) {
+    body.course = body.course.filter( c_id => typeof c_id === "number" );
+    const [ error , success ] = await this.TeacherService.RealCourse(body);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<void>(HttpStatus.ACCEPTED, success).send();
   }
 }

@@ -54,7 +54,7 @@ export class CommonService {
       const md5 = await ReadFile(file);
       const fileSuff = Rules.suff.rule.exec(file.originalname)[0];
       const fileName = `${md5}.${fileSuff}`;
-      const filePath = path.join(__dirname, "..", "..", "static", "image", fileName);
+      const filePath = path.join(__dirname, "..", "..","..", "static", "image", fileName);
       fs.writeFileSync(filePath,file.buffer, { flag: "w+" });
       return [ null, "http://localhost:8080/image/" + md5 + "." + fileSuff ];
     } catch (error) {

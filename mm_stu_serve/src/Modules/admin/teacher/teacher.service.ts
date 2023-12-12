@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { DataSource, DeleteResult, InsertResult, UpdateResult } from "typeorm";
 import { ListMetaData, PaginationQuery, ServiceData } from "../../index.type";
 import { TeacherDAO } from "./teacher.dao";
-import { TeacherCreateDTO, TeacherUpdateDTO, TeacherQueryDTO } from "./teacher.dto";
+import { TeacherCreateDTO, TeacherUpdateDTO, TeacherQueryDTO, RealCourseDTO } from "./teacher.dto";
 import { StuTeacher } from "src/Entity/stu_teacer.entity";
 import * as pinyin from "pinyin";
 
@@ -59,6 +59,15 @@ export class TeacherService{
     try {
       const DeleteResult = await this.TeacherDAO.DeleteTeacherById(id);
       return [ null, DeleteResult ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
+
+  public async RealCourse( RealCourse :RealCourseDTO) : ServiceData<void> {
+    try {
+      await this.TeacherDAO.RealCourse(RealCourse);
+      return [ null,  (void 0) ];
     } catch (error) {
       return [new Error(error), null];
     }

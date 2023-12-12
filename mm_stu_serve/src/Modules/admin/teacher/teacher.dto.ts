@@ -16,3 +16,8 @@ export class TeacherUpdateDTO {
   id: number;
   data: TeacherCreateDTO;
 }
+
+export class RealCourseDTO {
+  id: number;
+  course: number[];
+}

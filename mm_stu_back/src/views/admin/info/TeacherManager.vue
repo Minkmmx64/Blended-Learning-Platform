@@ -147,16 +147,35 @@
 
     <!-- 添加教师关联 -->
     <el-dialog
+      class="scroll"
       v-model="isAddRealCourse"
       title="关联课程"
       width="30%"
+      style="height: 500px;"
     >
-      {{ AddRealCourseIds }}
-      <div class="teacher-manager-course-add shadow-info border-info select-none text-success point">
+      <template v-for="(item, index) in AddRealCourseIds">
+        <el-row class="mt-5 flex-row flex-alg">
+          <el-select
+            v-model="AddRealCourseIds[index]"
+            class="m-2"
+            placeholder="select course"
+          >
+            <el-option
+              v-for="item in Courses"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+              :disabled="item.disabled"
+            />
+          </el-select>
+          <div class="badge-hover select-none point" @click="removeRealCourse(index)">x</div>
+        </el-row>
+      </template>
+      <div @click="addRealCourse" class="teacher-manager-course-add shadow-info border-info select-none text-success point">
         添加课程
       </div>
       <template #footer>
-        <span class="dialog-footer">
+        <span class="dialog-footer footer">
           <el-button @click="isAddRealCourse = false">取消</el-button>
           <el-button
             type="primary"
@@ -297,7 +316,7 @@
         <template #default="{ row }">
           <el-button
             type="primary"
-            @click="addRealCourse(row)"
+            @click="OpenAddRealCourse(row)"
           >
             添加关联课程
           </el-button>
@@ -321,12 +340,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { teacher, TeacherEdit, TeacherQuery, Authentication } from "@/Request/ApiModules/teacher";
+import Teacher,{ teacher, TeacherEdit, TeacherQuery, Authentication } from "@/Request/ApiModules/teacher";
 import course from "@/Request/ApiModules/course";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { Gender } from "@/Request/index.type";
 import { KeyValue } from "@/components/TableFunction/index.type";
+import { ElMessage } from "element-plus";
 
 //添加修改对象
 const EditParams = ref<TeacherEdit>({
@@ -354,18 +374,60 @@ const { isEdit, DataSource, TableLoading, total , EditTxt, EditLoading } = Table
 
 const isAddRealCourse = ref(false);
 const AddRealCourseIds = ref([]);
+const Courses = ref([]);
+const TeacherId = ref(0);
 
-const addRealCourse = (row : KeyValue) => {
+const loadCourse = async () => {
+  const req = await course.all();
+  Courses.value = req.data.data;
+}
+
+const OpenAddRealCourse = (row : KeyValue) => {
   isAddRealCourse.value = true;
   AddRealCourseIds.value = row.courses.map( course => course.id);
+  TeacherId.value = row.id;
+}
+
+const addRealCourse = () => {
+  AddRealCourseIds.value.push(undefined);
 }
 
 const commitRealCourse = () => {
-  console.log("commitRealCourse");
+  EditLoading.value = true;
+  Teacher.real(AddRealCourseIds.value, TeacherId.value).then( res => {
+    setTimeout(() => {
+      EditLoading.value = false;
+      isAddRealCourse.value = false;
+      ElMessage.success("关联课程成功");
+      TableProps.loadTableDatas();
+    }, 500);
+  }).catch( error => {
+    ElMessage.error(error);
+    EditLoading.value = false;
+  })
 }
+
+const removeRealCourse = (id: number) => {
+  AddRealCourseIds.value.splice(id, 1)
+}
+
+watch(
+  () => [AddRealCourseIds.value],
+  () => {
+    if(Courses.value && Courses.value.length) {
+      for(let i = 0 ; i < Courses.value.length; i ++) {
+        if(AddRealCourseIds.value.includes(Courses.value[i].id))
+          Courses.value[i].disabled = true;
+        else Courses.value[i].disabled = false;
+      }
+    }
+  },
+  { deep: true }
+)
 
 onMounted( async () => {
   TableProps.loadTableDatas();
+  loadCourse();
 })
 </script>
 
@@ -376,8 +438,20 @@ onMounted( async () => {
   border-style: dashed;
   border-width: 1px;
   border-color: $info;
-  margin: 0 auto;
+  margin: 10px auto;
   line-height: 30px;
   text-align: center;
+  background-color: #fff;
 }
+.badge-hover{
+  width: 20px;
+  margin-left: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color:  $info;
+  color: #fff;
+  text-align: center;
+  line-height: 20px;
+}
+
 </style>

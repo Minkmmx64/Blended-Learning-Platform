@@ -1,5 +1,5 @@
 import * as Joi from "joi";
-import { TeacherCreateDTO, TeacherUpdateDTO } from "./teacher.dto"; 
+import { RealCourseDTO, TeacherCreateDTO, TeacherUpdateDTO } from "./teacher.dto"; 
 import { NotAcceptableException } from "@nestjs/common";
 
 export const TeacherCreateValid = Joi.object<TeacherCreateDTO>({
@@ -13,4 +13,9 @@ export const TeacherCreateValid = Joi.object<TeacherCreateDTO>({
 export const TeacherUpdateValid = Joi.object<TeacherUpdateDTO>({
   id: Joi.number().required().error(new NotAcceptableException("id不能为空")),
   data: TeacherCreateValid
+})
+
+export const RealCourseValid = Joi.object<RealCourseDTO>({
+  id: Joi.number().required().error(new NotAcceptableException("id不能为空")),
+  course: Joi.array().allow(),
 })
