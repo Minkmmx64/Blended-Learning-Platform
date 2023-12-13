@@ -16,7 +16,7 @@
 .point{ cursor: pointer; }
 .text-overflow{ text-overflow: ellipsis;}
 .scroll { overflow-x: hidden; overflow-y: scroll; }
-.scroll::-webkit-scrollbar-track { /*滚动条里面轨道*/ background: #545c64; }
+.scroll::-webkit-scrollbar-track { /*滚动条里面轨道*/ background: $info; }
 @font-face { font-family: "Fangzheng"; src: url("@/assets/ttf/fangzheng.TTF"); }
 .scroll::-webkit-scrollbar { /*滚动条整体样式*/ width: 1px;  /*高宽分别对应横竖滚动条的尺寸*/ /** height: 1px; */ }
 .relative{ position: relative; }

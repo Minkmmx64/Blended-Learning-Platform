@@ -116,7 +116,6 @@ router.beforeEach(async (to, from, next) => {
   if (to.name === "Home") {
     if(User.getToken) {
       ElMessage.info("已经登录了");
-      console.log(from);
       next("/System")
     } else next();
   } else {
@@ -125,7 +124,7 @@ router.beforeEach(async (to, from, next) => {
       //验证Token有效性
       if (User.getToken) {
         if(to.meta.key){
-          if(User.getAuths.find( auth => auth.key === to.meta.key)) next();
+          if(User.getAuths.find( auth => auth.key === to.meta.key) || User.getUser.role.id === 1) next();
           else {
             ElMessage.error("没有访问权限");
             next(currentRouterName)

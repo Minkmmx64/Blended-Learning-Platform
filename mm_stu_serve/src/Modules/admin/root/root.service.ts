@@ -38,7 +38,7 @@ export class RootService {
                             password: encryption(root.password),
                             phone: root.phone,
                             role: {
-                              id: 4
+                              id: 1
                             }
                           })
                           .execute();

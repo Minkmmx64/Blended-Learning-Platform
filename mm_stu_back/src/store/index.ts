@@ -48,6 +48,7 @@ export const useUserStore = defineStore("User",{
         }
         return res;
       }
+      if(this.User.role.id === 1) return SystemMenus;
       return dfs(SystemMenus);
       //return SystemMenus;
     }

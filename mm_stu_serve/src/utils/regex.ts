@@ -12,7 +12,7 @@ export const Rules = {
     msg : "请输入正确手机格式"
   },
   img : {
-    rule: new RegExp(/(http|https):\/\/([a-z0-9A-Z]{1,}(\:[0-9]{1,6})?)(\.[a-z0-9A-Z]{1,})*((\/[a-z0-9A-Z]{1,}){1,})([^/]*)(?=\.png|\.jpg|\.jpeg)(\.png|\.jpg|\.jpeg)$/),
+    rule: new RegExp(/(http|https):\/\/([a-z0-9A-Z]{1,}(\:[0-9]{1,6})?)(\.[a-z0-9A-Z]{1,})*((\/[a-z0-9A-Z]{1,}){1,})([^/]*)(?=\.png|\.jpg|\.jpeg|\.webp)(\.png|\.jpg|\.jpeg|\.webp)$/),
     msg : "图片格式非法"
   },
   suff: {
