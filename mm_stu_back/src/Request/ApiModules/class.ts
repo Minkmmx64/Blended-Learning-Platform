@@ -24,6 +24,14 @@ export class classdata extends DataModules {
   
 }
 
+interface UpdateClassTableDTO {
+  list: {
+    teacher_id: number;
+    course_id: number;
+    json: string;
+  }[];
+}
+
 export class classes extends AxiosApi {
   constructor(){
     super("/api/class");
@@ -36,6 +44,10 @@ export class classes extends AxiosApi {
 
   public async classTable(class_id: number) {
     return this.get("/table/" + class_id);
+  }
+
+  public async update(class_id: number, update: UpdateClassTableDTO) {
+    return this.put("/table/" + class_id, update);
   }
 }
 

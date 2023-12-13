@@ -96,6 +96,6 @@ export class ClassController {
     const [ error, result ] = await this.ClassService.UpdateClassTable(Param.id, Body);
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
-    } else return new HttpResponse<ClassCourseTeacher | InsertResult>(HttpStatus.ACCEPTED, result).send();
+    } else return new HttpResponse<boolean>(HttpStatus.ACCEPTED, result).send();
   }
 }

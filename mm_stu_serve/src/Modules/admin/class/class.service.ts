@@ -73,12 +73,12 @@ export class ClassService {
     }
   }
 
-  public async UpdateClassTable(class_table_id: number, Body: UpdateClassTableDTO) : ServiceData<ClassCourseTeacher | InsertResult> {
+  public async UpdateClassTable(class_table_id: number, Body: UpdateClassTableDTO) : ServiceData<boolean> {
     try {
-      const result = await this.ClassDAO.UpdateClassTable(class_table_id, Body);
-      return [ null, result]
+      await this.ClassDAO.UpdateClassTable(class_table_id, Body);
+      return [ null, true ]
     } catch (error) {
-      return [new Error(error), null];
+      return [new Error(error), false ];
     }
   }
 }

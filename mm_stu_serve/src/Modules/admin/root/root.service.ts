@@ -47,6 +47,8 @@ export class RootService {
       } catch (error) {
         queryRunner.rollbackTransaction();
         return [ new Error(error) , null];
+      } finally {
+        queryRunner.release();
       }
     } catch (error) {
       return [ new Error(error), null];

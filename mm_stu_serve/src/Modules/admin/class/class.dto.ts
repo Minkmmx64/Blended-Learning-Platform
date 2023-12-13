@@ -16,9 +16,9 @@ export class ClassQueryDTO {
 }
 
 export class UpdateClassTableDTO {
-  id: number;
-  class_id: number;
-  teacher_id: number;
-  course_id: number;
-  json: string;
+  list: {
+    teacher_id: number;
+    course_id: number;
+    json: string;
+  }[];
 }

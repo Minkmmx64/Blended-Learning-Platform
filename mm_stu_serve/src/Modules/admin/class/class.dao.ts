@@ -115,32 +115,41 @@ export class ClassDAO {
                                      .getCount();
   }
 
-  public async UpdateClassTable(class_table_id: number, Body: UpdateClassTableDTO) : Promise<ClassCourseTeacher | InsertResult> {
-    const find = await this.ClassCourseTeacherRepository
-                           .createQueryBuilder()
-                           .select()
-                           .where("teacher_id = :teacher_id")
-                           .setParameter("teacher_id", Body.teacher_id)
-                           .andWhere("course_id = :course_id")
-                           .setParameter("course_id", Body.course_id)
-                           .andWhere("class_id = :class_id")
-                           .setParameter("class_id", Body.class_id)
-                           .getOne();
-    if(find) {
-      find.datejsonarray = Body.json;
-      return await this.ClassCourseTeacherRepository.save(find);
-    } else {
-      return await this.ClassCourseTeacherRepository
-                       .createQueryBuilder()
-                       .insert()
-                       .values({
-                         class_id: Body.class_id,
-                         course_id: Body.course_id,
-                         teacher_id: Body.teacher_id,
-                         datejsonarray: Body.json
-                       })
-                       .execute();
+  public async UpdateClassTable(class_id: number, Body: UpdateClassTableDTO) : Promise<void> {
+   // 先删除该班级的所有课程表
+   console.log(Body);
+
+   const queryRunner = this.DataSource.createQueryRunner();
+   try {
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    await this.ClassCourseTeacherRepository
+              .createQueryBuilder(null, queryRunner)
+              .delete()
+              .where("class_id = :class_id")
+              .setParameter("class_id", class_id)
+              .execute();
+    for(let i = 0; i < Body.list.length; i ++) {
+      const object = Body.list[i];
+      await this.ClassCourseTeacherRepository
+                .createQueryBuilder(null, queryRunner)
+                .insert()
+                .values({
+                  class_id: class_id,
+                  teacher_id: object.teacher_id,
+                  datejsonarray: object.json,
+                  course_id: object.course_id
+                })
+                .execute();
     }
+    await queryRunner.commitTransaction();
+    return void 0;
+   } catch (error) {
+    await queryRunner.rollbackTransaction();
+    throw new Error(error);
+   } finally {
+    await queryRunner.release();
+   }
   }
   
 }
