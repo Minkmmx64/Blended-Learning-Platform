@@ -117,6 +117,14 @@ export class TeacherDAO {
     }
   }
 
+  
+  public async TeacherAll(){
+    return await this.TeacherRepository
+                     .createQueryBuilder("teacher")
+                     .leftJoinAndSelect("teacher.courses", "mm_stu_stu_course")
+                     .getMany();
+  }
+
   public async Total() : Promise<number> {
     return await this.TeacherRepository
                                      .createQueryBuilder()

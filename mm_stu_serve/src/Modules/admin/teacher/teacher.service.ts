@@ -72,4 +72,14 @@ export class TeacherService{
       return [new Error(error), null];
     }
   }
+
+  
+  public async TeacherAll() : ServiceData<StuTeacher[]> {
+    try {
+      const classes = await this.TeacherDAO.TeacherAll();
+      return [ null, classes ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
 }

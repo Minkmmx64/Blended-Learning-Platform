@@ -1,5 +1,5 @@
 import * as Joi from "joi";
-import { ClassCreateDTO, ClassUpdateDTO } from "./class.dto";
+import { ClassCreateDTO, ClassUpdateDTO, UpdateClassTableDTO } from "./class.dto";
 import { NotAcceptableException } from "@nestjs/common";
 
 
@@ -13,4 +13,15 @@ export const ClassCreateValid = Joi.object<ClassCreateDTO>({
 export const ClassUpdateValid = Joi.object<ClassUpdateDTO>({
   id: Joi.number().required().error(new NotAcceptableException("id不能为空")),
   data: ClassCreateValid
+})
+
+export const ClassTableValid = Joi.object<{ id: number }>({
+  id: Joi.number().required().error(new NotAcceptableException("id不能为空"))
+})
+
+export const UpdateClassTableValid = Joi.object<UpdateClassTableDTO>({
+  json: Joi.string(),
+  teacher_id: Joi.number().required().error(new NotAcceptableException("teacher_id不能为空")),
+  course_id: Joi.number().required().error(new NotAcceptableException("course_id不能为空")),
+  class_id: Joi.number().required().error(new NotAcceptableException("class_id不能为空")),
 })

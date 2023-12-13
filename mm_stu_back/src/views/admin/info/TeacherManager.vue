@@ -386,6 +386,7 @@ const OpenAddRealCourse = (row : KeyValue) => {
   isAddRealCourse.value = true;
   AddRealCourseIds.value = row.courses.map( course => course.id);
   TeacherId.value = row.id;
+  loadCourse();
 }
 
 const addRealCourse = () => {

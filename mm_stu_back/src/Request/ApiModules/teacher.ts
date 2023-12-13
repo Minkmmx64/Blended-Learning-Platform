@@ -27,6 +27,10 @@ export class teacher extends AxiosApi {
   public async real(course: number[], id: number) {
     return this.post("/real", { course, id });
   }
+
+  public async all() {
+    return this.get("/all");
+  }
 }
 
 export default new teacher();

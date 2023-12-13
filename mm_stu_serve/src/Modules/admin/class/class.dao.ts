@@ -1,13 +1,16 @@
 import { DataSource, DeleteResult, InsertResult, SelectQueryBuilder, UpdateResult } from "typeorm";
 import { PaginationQuery } from "../../index.type";
-import { ClassCreateDTO, ClassQueryDTO, ClassUpdateDTO } from "./class.dto";
+import { ClassCreateDTO, ClassQueryDTO, ClassUpdateDTO, UpdateClassTableDTO } from "./class.dto";
 import { StuClass } from "src/Entity/stu_class.entity";
 import { ToOrder } from "src/common/common";
+import { ClassCourseTeacher } from "src/Entity/teacher_course_class.entity";
 
 export class ClassDAO {
   constructor(protected DataSource: DataSource){}
 
   public ClassRepository = this.DataSource.getRepository(StuClass);
+
+  public ClassCourseTeacherRepository = this.DataSource.getRepository(ClassCourseTeacher);
 
   public async ClassListsPagination(ClassQuery: PaginationQuery<ClassQueryDTO>): Promise<StuClass[]> {
 
@@ -94,6 +97,17 @@ export class ClassDAO {
     return result
   }
 
+  public async ClassTable(class_id: number): Promise<ClassCourseTeacher[]> {
+    return await this.ClassCourseTeacherRepository
+                     .createQueryBuilder("ClassCourseTeacher")
+                     .leftJoinAndSelect("ClassCourseTeacher.course", "mm_stu_stu_course")
+                     .leftJoinAndSelect("ClassCourseTeacher.teacher", "mm_stu_stu_teacher")
+                     .leftJoinAndSelect("ClassCourseTeacher.class", "mm_stu_stu_class")
+                     .where("ClassCourseTeacher.class_id = :class_id")
+                     .setParameter("class_id", class_id)
+                     .getMany();
+  }
+
   public async Total() : Promise<number> {
     return await this.ClassRepository
                                      .createQueryBuilder()
@@ -101,5 +115,32 @@ export class ClassDAO {
                                      .getCount();
   }
 
+  public async UpdateClassTable(class_table_id: number, Body: UpdateClassTableDTO) : Promise<ClassCourseTeacher | InsertResult> {
+    const find = await this.ClassCourseTeacherRepository
+                           .createQueryBuilder()
+                           .select()
+                           .where("teacher_id = :teacher_id")
+                           .setParameter("teacher_id", Body.teacher_id)
+                           .andWhere("course_id = :course_id")
+                           .setParameter("course_id", Body.course_id)
+                           .andWhere("class_id = :class_id")
+                           .setParameter("class_id", Body.class_id)
+                           .getOne();
+    if(find) {
+      find.datejsonarray = Body.json;
+      return await this.ClassCourseTeacherRepository.save(find);
+    } else {
+      return await this.ClassCourseTeacherRepository
+                       .createQueryBuilder()
+                       .insert()
+                       .values({
+                         class_id: Body.class_id,
+                         course_id: Body.course_id,
+                         teacher_id: Body.teacher_id,
+                         datejsonarray: Body.json
+                       })
+                       .execute();
+    }
+  }
   
 }

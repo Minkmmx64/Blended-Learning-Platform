@@ -33,6 +33,10 @@ export class classes extends AxiosApi {
    public async all() {
     return this.get("/all");
   }
+
+  public async classTable(class_id: number) {
+    return this.get("/table/" + class_id);
+  }
 }
 
 export default new classes();

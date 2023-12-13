@@ -1,6 +1,6 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Post, Put, Query, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
 import { ListMetaData, PaginationQuery } from "../../index.type";
-import { ClassCreateDTO, ClassQueryDTO, ClassUpdateDTO } from "./class.dto";
+import { ClassCreateDTO, ClassQueryDTO, ClassUpdateDTO, UpdateClassTableDTO } from "./class.dto";
 import { ClassService } from "./class.service";
 import { HttpResponse } from "src/response/response";
 import { StuClass } from "src/Entity/stu_class.entity";
@@ -8,7 +8,8 @@ import { DeleteResult, InsertResult, UpdateResult } from "typeorm";
 import { AuthGuard } from "src/guard/auth.gurad";
 import { TokenExpireInterceptor } from "src/guard/token.interceptor";
 import { ValidationPipe } from "src/utils/pipes";
-import { ClassCreateValid, ClassUpdateValid } from "./class.valid";
+import { ClassCreateValid, ClassTableValid, ClassUpdateValid, UpdateClassTableValid } from "./class.valid";
+import { ClassCourseTeacher } from "src/Entity/teacher_course_class.entity";
 
 @Controller("class")
 export class ClassController {
@@ -72,5 +73,29 @@ export class ClassController {
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<StuClass[]>(HttpStatus.ACCEPTED, classes).send();
+  }
+
+  @Get("/table/:id")
+  @UseInterceptors(new TokenExpireInterceptor())
+  @UsePipes(new ValidationPipe(ClassTableValid))
+  public async ClassTable(
+    @Param() Param: { id: number }
+  ) {
+    const [ error, ClassTables ] = await this.ClassService.ClassTable(Param.id);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<ClassCourseTeacher[]>(HttpStatus.ACCEPTED, ClassTables).send();
+  }
+
+  @Put("/table/:id")
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async UpdateClassTable(
+    @Body(new ValidationPipe(UpdateClassTableValid)) Body: UpdateClassTableDTO,
+    @Param(new ValidationPipe(ClassTableValid)) Param: { id: number }
+  ) {
+    const [ error, result ] = await this.ClassService.UpdateClassTable(Param.id, Body);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<ClassCourseTeacher | InsertResult>(HttpStatus.ACCEPTED, result).send();
   }
 }

@@ -78,4 +78,13 @@ export class TeacherController {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<void>(HttpStatus.ACCEPTED, success).send();
   }
+
+  @Get("/all")
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async TeacherAll(){
+    const [ error, classes ] = await this.TeacherService.TeacherAll();
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<StuTeacher[]>(HttpStatus.ACCEPTED, classes).send();
+  }
 }
