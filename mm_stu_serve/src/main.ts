@@ -6,6 +6,7 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import * as path from "path";
 
 async function bootstrap() {
+  
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
     origin: [
@@ -33,7 +34,7 @@ async function bootstrap() {
   app.useStaticAssets(path.join(__dirname,"static", "image"), {
     prefix: "/image"
   })
-
+  
   await app.listen(8080);
 }
 

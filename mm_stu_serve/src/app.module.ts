@@ -17,26 +17,28 @@ import { ShopEntity } from './Entity/wx/shop';
 import { ShopModule } from './Modules/wx/shop/shop.module';
 import { ClassifyEntity } from './Entity/wx/classify';
 import { ClassifyModule } from './Modules/wx/classify/classify.module';
+import * as dotenv from "dotenv";
+dotenv.config();
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       "type": "mysql",
-      "host": "localhost",
-      "port": 3306,
-      "username": "root",
-      "password": "123456",
-      "database": "mm_stu",
+      "host": process.env.MYSQL_HOST,
+      "port": parseInt(process.env.MYSQL_PORT),
+      "username": process.env.MYSQL_NAME,
+      "password": process.env.MYSQL_PASSWORD,
+      "database": process.env.MYSQL_DATABASE_1,
       "entities": ["./src/**/*.entity{.ts,.js}"],
       "synchronize": true
     }),
     TypeOrmModule.forRoot({
       "type": "mysql",
-      "host": "localhost",
-      "port": 3306,
-      "username": "root",
-      "password": "123456",
-      "database": "mm_wx",
+      "host": process.env.MYSQL_HOST,
+      "port": parseInt(process.env.MYSQL_PORT),
+      "username":  process.env.MYSQL_NAME,
+      "password": process.env.MYSQL_PASSWORD,
+      "database": process.env.MYSQL_DATABASE_2,
       "entities": [ShopEntity, ClassifyEntity, ClassifyEntity],
       "synchronize": true,
       "name": "WXConnection"

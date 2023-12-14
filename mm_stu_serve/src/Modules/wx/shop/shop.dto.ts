@@ -10,6 +10,7 @@ export class ShopCreateDTO{
 
 export class ShopQueryDTO {
   name: string;
+  classify_id: number;
 }
 
 export class ShopUpdateDTO {

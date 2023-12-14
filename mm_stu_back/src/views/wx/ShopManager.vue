@@ -13,6 +13,20 @@
           </div>
         </el-col>
         <el-col :span="6">
+          <el-select
+            v-model="QueryParams.classify_id"
+            class="m-2"
+            placeholder="select classify"
+          >
+            <el-option
+              v-for="item in Classify"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-col>
+        <el-col :span="6">
           <el-input
             v-model="QueryParams.name"
             placeholder="shop name"
@@ -206,7 +220,7 @@
         label="价格"
         header-align="center"
         align="center"
-        width="200"
+        width="100"
       />
       <el-table-column
         prop="stock"
@@ -226,6 +240,7 @@
         label="描述"
         header-align="center"
         align="center"
+        width="200"
       />
       <el-table-column
         prop="status"
@@ -327,7 +342,8 @@ const loadClassify = () => {
 
 //查询对象
 const QueryParams = ref({
-  name: ""
+  name: "",
+  classify_id: undefined
 });
 
 const TableProps = useTableFunction<shop>(

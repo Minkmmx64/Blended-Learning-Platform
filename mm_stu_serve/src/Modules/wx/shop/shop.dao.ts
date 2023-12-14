@@ -24,6 +24,12 @@ export class ShopDAO {
                         .setParameter("name", `%${ShopQuery.name}%`)
     }
 
+    if(ShopQuery.classify_id) {
+      SelectQueryBuilder
+                        .andWhere("shop.classify_id = :classify_id")
+                        .setParameter("classify_id", ShopQuery.classify_id)
+    }
+
     if(ShopQuery.prop) {
       SelectQueryBuilder
                                    .orderBy("shop." + ShopQuery.prop, Order)
