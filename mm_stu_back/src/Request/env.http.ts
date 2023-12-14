@@ -1,18 +1,17 @@
 const URL = {
-  dev : {
-    uri : "http://192.168.159.40", // api url
-    port : 3000
+  development : {
+    uri : "http://localhost", // api url
+    port : 8080
   }, 
-  local: {
-    uri : "http://localhost",
+  production: {
+    uri : "http://124.220.176.205",
     port: 8080
   }
 }
-
-const local = true;
+// try_files $uri $uri/ /index.html;
 // view url http://192.168.159.25:3000
 
 export const baseURL = {
   //Api Url
-  Api : local ? URL.local : URL.dev 
+  Api : process.env.NODE_ENV === "production" ? URL.production : URL.development 
 }
