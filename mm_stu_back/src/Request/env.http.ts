@@ -13,5 +13,5 @@ const URL = {
 
 export const baseURL = {
   //Api Url
-  Api : process.env.NODE_ENV === "production" ? URL.production : URL.development 
+  Api : process.env.NODE_ENV === "development" ? URL.production : URL.development 
 }

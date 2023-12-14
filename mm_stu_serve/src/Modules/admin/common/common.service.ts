@@ -8,6 +8,7 @@ import { ReadFile } from "src/common/common";
 import * as path from "path";
 import { Rules } from "src/utils/regex";
 import * as fs from "node:fs";
+import * as dotenv from "dotenv";
 @Injectable()
 export class CommonService {
 
@@ -50,13 +51,14 @@ export class CommonService {
 
 
   public async FileUpload(file : Express.Multer.File): Promise<[Error, string]> {
+    dotenv.config();
     try {
       const md5 = await ReadFile(file);
       const fileSuff = Rules.suff.rule.exec(file.originalname)[0];
       const fileName = `${md5}.${fileSuff}`;
       const filePath = path.join(__dirname, "..", "..","..", "static", "image", fileName);
       fs.writeFileSync(filePath,file.buffer, { flag: "w+" });
-      return [ null, "http://localhost:8080/image/" + md5 + "." + fileSuff ];
+      return [ null, `http://${process.env.MYSQL_HOST}:8080/image/` + md5 + "." + fileSuff ];
     } catch (error) {
       return [new Error(error), null]; 
     }
