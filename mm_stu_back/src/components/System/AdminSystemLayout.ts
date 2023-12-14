@@ -115,6 +115,25 @@ const SystemMenus: ISystemMenus[] = [
     ]
   },
   {
+    name: "微信商城",
+    key: "WXShopping",
+    icon: "image-text",
+    subMenu: [
+      {
+        name: "商品管理",
+        key: "ShopManager",
+        icon: "modular",
+        route: "ShopManager"
+      },
+      {
+        name: "分类管理",
+        key: "ClassifyManager",
+        icon: "layout-filling",
+        route: "ClassifyManager"
+      }
+    ]
+  },
+  {
     name: "个人管理",
     key: "AdminManager",
     icon: "GitHub",

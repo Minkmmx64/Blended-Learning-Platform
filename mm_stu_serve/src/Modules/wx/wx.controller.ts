@@ -1,8 +1,11 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import * as https from "https";
+import { WXService } from "./wx.service";
 
 @Controller("wx")
 export class WXController {
+
+  constructor(private readonly WXService: WXService){}
 
   @Post("/code")
   public async code(
@@ -31,4 +34,6 @@ export class WXController {
     const data = await request();
     return data;
   }
+
+
 }

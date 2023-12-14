@@ -89,6 +89,18 @@ const routes: Array<RouteRecordRaw> = [
         name: "CourseResourceManager",
         meta: { isAuth: true, key: "CourseResourceManager" },
         component: () => import("@/views/admin/info/course/CourseResourceManager.vue")
+      },
+      {
+        path: "/ShopManager",
+        name: "ShopManager",
+        meta: { isAuth: true, key: "ShopManager" },
+        component: () => import("@/views/wx/ShopManager.vue")
+      },
+      {
+        path: "/ClassifyManager",
+        name: "ClassifyManager",
+        meta: { isAuth: true, key: "ClassifyManager" },
+        component: () => import("@/views/wx/ClassifyManager.vue")
       }
     ]
   },

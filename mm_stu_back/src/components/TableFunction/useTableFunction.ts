@@ -6,7 +6,7 @@ import { DataModules } from "@/Request/DataModules/DataModules";
 import { AxiosResponse } from "axios";
 import { DeepClone } from "../Utils/deepClone";
 
-export function useTableFunction<T extends AxiosApi, Query extends KeyValue, Edit extends KeyValue>(
+export function useTableFunction<T extends AxiosApi, Query extends KeyValue = KeyValue, Edit extends KeyValue = KeyValue>(
   apiname: string,
   TableApi: new () => T,
   UserSearchQuery: Ref<Query>,                // 用户查询参数

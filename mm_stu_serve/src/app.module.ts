@@ -13,7 +13,10 @@ import { TeacherModule } from './Modules/admin/teacher/teacher.module';
 import { CourseModule } from './Modules/admin/course/course.module';
 import { WXModule } from './Modules/wx/wx.module';
 import { ChapterModule } from './Modules/admin/chapter/chapter.module';
-
+import { ShopEntity } from './Entity/wx/shop';
+import { ShopModule } from './Modules/wx/shop/shop.module';
+import { ClassifyEntity } from './Entity/wx/classify';
+import { ClassifyModule } from './Modules/wx/classify/classify.module';
 
 @Module({
   imports: [
@@ -27,6 +30,17 @@ import { ChapterModule } from './Modules/admin/chapter/chapter.module';
       "entities": ["./src/**/*.entity{.ts,.js}"],
       "synchronize": true
     }),
+    TypeOrmModule.forRoot({
+      "type": "mysql",
+      "host": "localhost",
+      "port": 3306,
+      "username": "root",
+      "password": "123456",
+      "database": "mm_wx",
+      "entities": [ShopEntity, ClassifyEntity, ClassifyEntity],
+      "synchronize": true,
+      "name": "WXConnection"
+    }),
     RootModule,
     CommonModule,
     StuCollegeModule,
@@ -36,8 +50,13 @@ import { ChapterModule } from './Modules/admin/chapter/chapter.module';
     StuModule,
     TeacherModule,
     CourseModule,
+    ChapterModule,
+
+
+    /** %%%%%%%%%%%%% wx %%%%%%%%%%%%% */
     WXModule,
-    ChapterModule
+    ShopModule,
+    ClassifyModule
   ],
   controllers: [AppController],
   providers: [AppService],

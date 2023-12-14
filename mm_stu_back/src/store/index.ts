@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { UserInfo } from '@/Request/ApiModules/root';
 import { SystemMenus } from "@/components/System/AdminSystemLayout";
 import { MenuItem } from '@/components/System/AdminSystemLayout.type';
+import { ElMessage } from 'element-plus';
 const nullUser: UserInfo = { username: "未登录", avatar: "", label: "",
   role: {
     id: -1,
@@ -25,7 +26,11 @@ export const useUserStore = defineStore("User",{
   actions: {
     setUser(User: UserInfo){ this.User = User; },
     setToken(Token: string){ this.Token = Token; },
-    clearInfo() { this.User = nullUser; this.Token = ""; },
+    clearInfo() { 
+      this.User = nullUser; this.Token = "";
+      sessionStorage.setItem("Data", null);
+      ElMessage.info("正在退出...")
+    },
     setAvatar(url: string){ this.User.avatar = url },
     setAuths(auths: []) { this.auths = auths; },
     TransformAuthMenu() {
