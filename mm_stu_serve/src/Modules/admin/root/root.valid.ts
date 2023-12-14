@@ -22,10 +22,7 @@ export const RootLoginSchema = Joi.object<RootLoginDTO>({
 
 export const RootInfoSchema = Joi.object<RootInfoDTO>({
   rusername : Joi.string().required().regex(Rules.username.rule).error(new NotAcceptableException(Rules.username.msg)),
-  avatar: Joi.alternatives().try(
-    Joi.string().valid(null,""),
-    Joi.string().required().regex(Rules.img.rule).error(new NotAcceptableException(Rules.img.msg))
-  ),
+  avatar: Joi.string().required().allow().error(new NotAcceptableException("头像异常")),
   label: Joi.allow(),
   username: Joi.string().required().regex(Rules.username.rule).error(new NotAcceptableException("用户名不能为空")),
 })
