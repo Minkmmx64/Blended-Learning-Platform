@@ -17,6 +17,9 @@ export class ShopEntity extends BaseAttrColumn {
   @Column({ type: "int", comment: "商品库存" })
   stock: number;
 
+  @Column({ type: "char", length: 255,  comment: "商品详情",  nullable: true, default: "[]" })
+  detail: string;
+
   @ManyToOne( type => ClassifyEntity, classify => classify.id, { nullable: false})
   @JoinColumn({
     name: "classify_id"

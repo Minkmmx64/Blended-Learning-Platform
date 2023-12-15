@@ -55,7 +55,8 @@ export class ShopDAO {
                               remark: CreateShop.remark,
                               classify: {
                                 id: CreateShop.classify_id
-                              }
+                              },
+                              detail: JSON.stringify(CreateShop.detail)
                              }).execute();
     return result;
   }
@@ -72,7 +73,8 @@ export class ShopDAO {
                               remark: UpdateShop.data.remark,
                               classify: {
                                 id: UpdateShop.data.classify_id
-                              }
+                              },
+                              detail: JSON.stringify(UpdateShop.data.detail)
                              })
                              .where("id = :id")
                              .setParameter("id", UpdateShop.id)

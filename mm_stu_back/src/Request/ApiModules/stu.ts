@@ -27,7 +27,7 @@ export class studata extends DataModules {
       deep: "class.id"
     },
     native: {
-      type: "array",
+      type: "splitarray",
       deep: ","
     }
   }

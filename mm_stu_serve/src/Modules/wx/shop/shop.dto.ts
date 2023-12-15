@@ -6,6 +6,7 @@ export class ShopCreateDTO{
   prices: number;
   remark: string;
   classify_id: number;
+  detail: string[];
 }
 
 export class ShopQueryDTO {

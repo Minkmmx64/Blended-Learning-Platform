@@ -153,6 +153,33 @@
           />
         </el-col>
       </el-row>
+      <template v-for="(item, index) in EditParams.detail" :key="index">
+        <el-row class="mb-1 text-center flex-center">
+          <el-col :span="6">
+            <div class="h-full flex-row flex-center">
+              <span>{{ TableProps.apiname }}详情:</span>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <el-upload
+              ref="uploadRef"
+              class="upload-demo mt-5"
+              :before-upload="raw => onBeforeUpload(raw, index)"
+            >
+              <ImageLayout
+                class="mt-5"
+                :width="80"
+                :height="80"
+                :resource="item"
+              />
+            </el-upload>
+          </el-col>
+          <el-col :span="6">
+            <el-button @click="delDetail(index)" type="danger">删除</el-button>
+          </el-col>
+        </el-row>
+      </template>
+      <div class="w-full flex-row flex-center"><el-button type="success" @click="addDetail">添加详情</el-button></div>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="TableProps.handleEditClose">取消</el-button>
@@ -164,7 +191,6 @@
         </span>
       </template>
     </el-dialog>
-
     <TableContent
       :loading="TableLoading" 
       :total="total" 
@@ -234,7 +260,30 @@
         label="所属分类"
         header-align="center"
         align="center"
+        width="200"
       />
+      <el-table-column
+        prop="detail"
+        label="查看详情"
+        header-align="center"
+        align="center"
+        width="100"
+      >
+        <template #default="{ row }">
+          <el-image
+            style="width: 50px; height: 50px"
+            :src="getlist(row.detail)[0]"
+            :zoom-rate="1.2"
+            :max-scale="7"
+            :min-scale="0.2"
+            :initial-index="4"
+            :preview-teleported="true"
+            :preview-src-list="getlist(row.detail)"
+            fit="cover"
+            :hide-on-click-modal="true"
+          />
+        </template>
+      </el-table-column>
       <el-table-column
         prop="remark"
         label="描述"
@@ -316,8 +365,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { shop } from "@/Request/ApiModules/wx/shop";
-import classify, { classifydata } from "@/Request/ApiModules/wx/classify";
+import { shop, shopdata } from "@/Request/ApiModules/wx/shop";
+import classify from "@/Request/ApiModules/wx/classify";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";
 import { ElMessage, UploadRawFile } from "element-plus";
@@ -330,6 +379,7 @@ const EditParams = ref({
   prices: undefined,
   stock: undefined,
   classify_id: undefined,
+  detail: []
 });
 
 const Classify = ref([]);
@@ -346,6 +396,22 @@ const QueryParams = ref({
   classify_id: undefined
 });
 
+const addDetail = () => {
+  EditParams.value.detail.push(undefined);
+}
+
+const delDetail = (pos: number) => {
+  EditParams.value.detail.splice(pos, 1);
+}
+
+const getlist = (detail: string) => {
+  try {
+    return JSON.parse(detail);
+  } catch (error) {
+    return [];
+  }
+}
+
 const TableProps = useTableFunction<shop>(
   "商品",
   shop,
@@ -353,18 +419,18 @@ const TableProps = useTableFunction<shop>(
   EditParams,
   undefined,
   undefined,
-  classifydata
+  shopdata
 );
 
 const { isEdit, DataSource, TableLoading, total , EditTxt, EditLoading } = TableProps;
 
-const onBeforeUpload = (rawFile: UploadRawFile) => {
+const onBeforeUpload = (rawFile: UploadRawFile, pos: number) => {
   const data = new FormData();
   data.append("file", rawFile);
   common.upload(data).then(res => {
     setTimeout(() => {
       const url = res.data.data.url;
-      EditParams.value.avatar = url;
+      EditParams.value.detail[pos] = url;
       ElMessage.success("上传成功!");
     }, 500);
   }).catch(error => { ElMessage.error("上传失败!" + error); })

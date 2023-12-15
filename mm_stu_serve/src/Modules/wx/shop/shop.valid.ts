@@ -7,7 +7,8 @@ export const ShopCreateValid = Joi.object<ShopCreateDTO>({
   prices: Joi.number().allow(),
   stock: Joi.number().allow(),
   avatar: Joi.string().allow(),
-  classify_id: Joi.number().required()
+  classify_id: Joi.number().required(),
+  detail: Joi.array().allow()
 })
 
 export const ShopUpdateValid = Joi.object<ShopUpdateDTO>({

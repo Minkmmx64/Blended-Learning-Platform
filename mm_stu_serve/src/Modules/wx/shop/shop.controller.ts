@@ -32,6 +32,7 @@ export class ShopController {
   public async ShopCreate(
     @Body() body: ShopCreateDTO
   ){
+    body.detail = body.detail.filter( d => d !== null && d !== undefined);
     const [error, InsertResult ] = await this.ShopService.ShopCreate(body);
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
@@ -46,6 +47,7 @@ export class ShopController {
   public async ShopUpdate(
     @Body() body: ShopUpdateDTO
   ){
+    body.data.detail = body.data.detail.filter( d => d !== null && d !== undefined);
     const [ error, UpdateResult ] = await this.ShopService.ShopUpdate(body);
     if(error) {
       throw new BadRequestException(new HttpResponse<UpdateResult>(HttpStatus.BAD_REQUEST, UpdateResult,  error.message).send());

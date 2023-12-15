@@ -28,16 +28,26 @@ export class DataModules {
     // 服务端到客户端key的映射
     // class_id = { type : "object", deep : "class.id" }  表示客户端的class_id 字段依赖于 且 服务端serviceKey是object类型 serviceData.class.id
     if(this.clientKey[serviceKey]) {
+      console.log(serviceData, serviceKey);
+      
       if(this.clientKey[serviceKey].type === "object") {
         let data = serviceData;
         (this.clientKey[serviceKey].deep as string).split(".").map( k => data = data[k]);
         return data;
-      } else if(this.clientKey[serviceKey].type === "array") {
+      } else if(this.clientKey[serviceKey].type === "splitarray") {
         try {
           const data = (serviceData[serviceKey] as string).split(this.clientKey[serviceKey].deep);
           return data;
         } catch (error) {
           console.log(error);
+        }
+      } else if(this.clientKey[serviceKey].type === "JSON") {
+        try {
+          const data = JSON.parse(serviceData[serviceKey]);
+          console.log(data);
+          return data;
+        } catch (error) {
+
         }
       }
     }
