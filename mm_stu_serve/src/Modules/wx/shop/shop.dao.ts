@@ -5,6 +5,7 @@ import { ToOrder } from "src/common/common";
 import { ShopEntity } from "src/Entity/wx/shop";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Injectable } from "@nestjs/common";
+import { WXClientShopQueryDTO } from "../wxclient/wxclient.dto";
 
 @Injectable()
 export class ShopDAO {
@@ -100,5 +101,22 @@ export class ShopDAO {
                                      .createQueryBuilder()
                                      .select()
                                      .getCount();
+  }
+
+  public async ShopAll(shop: WXClientShopQueryDTO) : Promise<ShopEntity[]> {
+    const SelectQueryBuilder: SelectQueryBuilder<ShopEntity> = this.ShopRepository.createQueryBuilder("shop").leftJoinAndSelect("shop.classify", "classify");
+
+    if(shop.id) {
+      SelectQueryBuilder
+                        .andWhere("shop.id = :id")
+                        .setParameter("id", shop.id);
+    }
+
+    if(shop.classify_id) {
+      SelectQueryBuilder
+                        .andWhere("shop.classify_id = :classify_id")
+                        .setParameter("classify_id", shop.classify_id);
+    }
+    return await SelectQueryBuilder.getMany();
   }
 }

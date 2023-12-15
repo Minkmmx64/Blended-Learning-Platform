@@ -4,6 +4,7 @@ import { ListMetaData, PaginationQuery, ServiceData } from "../../index.type";
 import { ShopDAO } from "./shop.dao";
 import { ShopCreateDTO, ShopUpdateDTO, ShopQueryDTO } from "./shop.dto";
 import { ShopEntity } from "src/Entity/wx/shop";
+import { WXClientShopQueryDTO } from "../wxclient/wxclient.dto";
 
 @Injectable()
 export class ShopService{
@@ -46,6 +47,15 @@ export class ShopService{
     try {
       const DeleteResult = await this.ShopDAO.DeleteShopById(id);
       return [ null, DeleteResult ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
+
+  public async ShopAll(query: WXClientShopQueryDTO) : ServiceData<ShopEntity[]> {
+    try {
+      const shops = await this.ShopDAO.ShopAll(query);
+      return [ null, shops ];
     } catch (error) {
       return [new Error(error), null];
     }

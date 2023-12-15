@@ -1,13 +1,5 @@
-
-export class WXClientCreateDTO{
-
+export class WXClientShopQueryDTO {
+  id?: number;
+  classify_id?: number;
 }
 
-export class WXClientQueryDTO {
-
-}
-
-export class WXClientUpdateDTO {
-  id: number;
-  data: WXClientCreateDTO;
-}
