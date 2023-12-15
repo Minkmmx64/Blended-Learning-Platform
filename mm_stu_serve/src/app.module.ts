@@ -18,6 +18,7 @@ import { ShopModule } from './Modules/wx/shop/shop.module';
 import { ClassifyEntity } from './Entity/wx/classify';
 import { ClassifyModule } from './Modules/wx/classify/classify.module';
 import * as dotenv from "dotenv";
+import { WXClientModule } from './Modules/wx/wxclient/wxclient.module';
 dotenv.config();
 
 @Module({
@@ -58,7 +59,8 @@ dotenv.config();
     /** %%%%%%%%%%%%% wx %%%%%%%%%%%%% */
     WXModule,
     ShopModule,
-    ClassifyModule
+    ClassifyModule,
+    WXClientModule
   ],
   controllers: [AppController],
   providers: [AppService],

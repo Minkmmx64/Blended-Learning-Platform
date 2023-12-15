@@ -55,3 +55,34 @@ docker 初次进入 mysql 容器时需要修改密码
 docker exec [option]
 -i
 ```
+
+# 查看npm 镜像源
+```shell
+npm config get registry
+npm config set registry https://registry.npm.taobao.org
+npm config set registry https://registry.npmjs.org
+```
+
+# windows 远程传输文件
+```shell
+scp -v -r 文件夹名 远程用户名@弹性ip：目录名
+-v查看传输过程，-r递归传输 -C压缩传输后再传输完成后解压
+```
+
+# 运行nestjs项目
+```shell
+nohup ts-node -r tsconfig-paths/register src/main.ts &
+
+#docker 部署nginx
+docker run -p 80:80 \
+-v /etc/node/bi-shu/web/:/etc/nginx/web \
+-v /etc/node/bi-shu/web/ngxin.conf:/etc/nginx/nginx.conf \
+-d a6bd71f48f68
+
+#docker 部署mysql
+docker run -p 3306:3306 \
+-e MYSQL_ROOT_PASSWORD=123456 \
+-v /etc/mysql/conf.d/:/etc/mysql/conf.d \
+-v /etc/mysql/data/:/var/lib/mysql \
+-d  f7fdab215ab7
+```
