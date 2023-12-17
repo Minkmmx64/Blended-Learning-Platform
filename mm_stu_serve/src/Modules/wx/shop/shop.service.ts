@@ -55,6 +55,9 @@ export class ShopService{
   public async ShopAll(query: WXClientShopQueryDTO) : ServiceData<ShopEntity[]> {
     try {
       const shops = await this.ShopDAO.ShopAll(query);
+      shops.forEach( data => {
+        data.detail = JSON.parse(data.detail);
+      })
       return [ null, shops ];
     } catch (error) {
       return [new Error(error), null];
