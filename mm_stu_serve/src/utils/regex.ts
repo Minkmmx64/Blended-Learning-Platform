@@ -4,7 +4,7 @@ export const Rules = {
     msg : "用户名数字字母下划线4-20字符"
   },
   password : {
-    rule: new RegExp(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=[^0-9a-zA-Z]).{4,20}/),
+    rule: new RegExp(/((?=.*[^0-9a-zA-Z])(?=.*[a-zA-Z])(?=.*[0-9])).{4,20}/),
     msg : "密码包含大小写数字和特殊字符4-20字符"
   },
   phone : {
