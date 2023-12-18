@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { BaseAttrColumn } from "../BaseAttrColumn";
 import { ClassifyEntity } from "./classify";
+import { OrderEntity } from "./order";
 
 @Entity({ database: "mm_wx", name: "shop" })
 export class ShopEntity extends BaseAttrColumn {
@@ -25,4 +26,7 @@ export class ShopEntity extends BaseAttrColumn {
     name: "classify_id"
   })
   classify: ClassifyEntity;
+
+  @OneToMany( type => OrderEntity, order => order.id)
+  orders: OrderEntity[]
 }

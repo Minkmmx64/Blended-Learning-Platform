@@ -19,6 +19,7 @@ import { ClassifyEntity } from './Entity/wx/classify';
 import { ClassifyModule } from './Modules/wx/classify/classify.module';
 import * as dotenv from "dotenv";
 import { WXClientModule } from './Modules/wx/wxclient/wxclient.module';
+import { OrderEntity } from './Entity/wx/order';
 dotenv.config();
 
 @Module({
@@ -40,7 +41,7 @@ dotenv.config();
       "username":  process.env.MYSQL_NAME,
       "password": process.env.MYSQL_PASSWORD,
       "database": process.env.MYSQL_DATABASE_2,
-      "entities": [ShopEntity, ClassifyEntity, ClassifyEntity],
+      "entities": [ShopEntity, ClassifyEntity, OrderEntity],
       "synchronize": true,
       "name": "WXConnection"
     }),
