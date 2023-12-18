@@ -11,10 +11,10 @@ export class OrderEntity extends BaseAttrColumn {
   @Column({ type: "int", comment: "购买数量"})
   count: number;
 
-  @Column({ type: "int", comment: "实际支付"})
+  @Column({ type: "float", comment: "实际支付"})
   payment: number;
 
-  @Column({ type: "enum", enum: ["待支付", "已支付"], comment: "订单状态"})
+  @Column({ type: "enum", enum: ["待支付", "已支付", "待付款"], comment: "订单状态"})
   pay_status: string;
 
   @Column({ type: "char", length: 255, comment: "用户openId"})
@@ -23,6 +23,4 @@ export class OrderEntity extends BaseAttrColumn {
   @ManyToOne(type => ShopEntity, shop => shop.id)
   @JoinColumn({ name: "shop_id" })
   shop: ShopEntity;
-
-  
 }

@@ -8,6 +8,7 @@ import { OrderCreateDTO, WXClientShopQueryDTO } from "./wxclient.dto";
 import { ShopEntity } from "src/Entity/wx/shop";
 import { OrderService } from "../order/order.service";
 import { InsertResult } from "typeorm";
+import { OrderEntity } from "src/Entity/wx/order";
 
 @Controller("wx/client")
 export class WXClientController {
@@ -45,5 +46,16 @@ export class WXClientController {
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<InsertResult[]>(HttpStatus.ACCEPTED, InsertResult).send();
+  }
+
+  @Get("/order/list")
+  public async OrderList(
+    @Query("openid") openid: string,
+    @Query("status") status: string
+  ) {
+    const [ error, orders ] = await this.OrderService.OrderList(openid, status);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<OrderEntity[]>(HttpStatus.ACCEPTED, orders).send();
   }
 }
