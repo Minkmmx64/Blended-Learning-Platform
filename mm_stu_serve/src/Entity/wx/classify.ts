@@ -11,6 +11,6 @@ export class ClassifyEntity extends BaseAttrColumn {
   @Column({ type: "char", length: 255, comment: "分类封面" })
   avatar: string;
 
-  @OneToMany( type => ShopEntity, shop => shop.id)
+  @OneToMany( type => ShopEntity, shop => shop.classify)
   shops: ShopEntity[]
 }

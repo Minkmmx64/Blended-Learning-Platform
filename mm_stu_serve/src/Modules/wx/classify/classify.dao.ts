@@ -84,8 +84,14 @@ export class ClassifyDAO {
                      .getMany();
   }
 
-  public async PlatformShop(){
-    const SelectQueryBuilder: SelectQueryBuilder<ClassifyEntity> = this.ClassifyRepository.createQueryBuilder("classify").leftJoinAndSelect("classify.shops", "shop");
-    return await SelectQueryBuilder.getMany();
+  public async PlatformShop() : Promise<any> {
+    const SelectQueryBuilder = await this.ClassifyRepository
+                                                      .createQueryBuilder("classify")
+                                                      .innerJoinAndSelect("classify.shops", "shop")
+                                                      .select(["classify.name", "COUNT(classify.id) as classify_count"])
+                                                      .groupBy("classify.id")
+                                                      .getRawMany();
+                                                      
+    return SelectQueryBuilder;
   }
 }
