@@ -11,8 +11,8 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       "http://localhost:3000",
-      "http://minkmm.top",
-      "http://124.220.176.205:3000"
+      "http://*:3000",
+      "http://124.220.176.205"
     ],
     credentials: true,
   });
