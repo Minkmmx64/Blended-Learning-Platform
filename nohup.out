@@ -1,0 +1,44 @@
+node:internal/modules/cjs/loader:1080
+  throw err;
+  ^
+
+Error: Cannot find module './main.ts'
+Require stack:
+- /etc/node/bi-shu/src/imaginaryUncacheableRequireResolveScript
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1077:15)
+    at Function.resolve (node:internal/modules/cjs/helpers:127:19)
+    at requireResolveNonCached (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:549:16)
+    at getProjectSearchDir (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:519:40)
+    at phase3 (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:267:27)
+    at bootstrap (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:47:30)
+    at main (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:33:12)
+    at Object.<anonymous> (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:579:5)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/etc/node/bi-shu/src/imaginaryUncacheableRequireResolveScript' ]
+}
+
+Node.js v18.17.1
+node:internal/modules/cjs/loader:1080
+  throw err;
+  ^
+
+Error: Cannot find module './main.ts'
+Require stack:
+- /etc/node/bi-shu/src/imaginaryUncacheableRequireResolveScript
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1077:15)
+    at Function.resolve (node:internal/modules/cjs/helpers:127:19)
+    at requireResolveNonCached (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:549:16)
+    at getProjectSearchDir (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:519:40)
+    at phase3 (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:267:27)
+    at bootstrap (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:47:30)
+    at main (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:33:12)
+    at Object.<anonymous> (/etc/node/nvm-0.38.0/versions/node/v18.17.1/lib/node_modules/ts-node/dist/bin.js:579:5)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/etc/node/bi-shu/src/imaginaryUncacheableRequireResolveScript' ]
+}
+
+Node.js v18.17.1
