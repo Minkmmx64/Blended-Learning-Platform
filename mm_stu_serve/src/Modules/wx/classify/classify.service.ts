@@ -60,4 +60,13 @@ export class ClassifyService{
       return [new Error(error), null];
     }
   }
+
+  public async PlatformShop() : ServiceData<ClassifyEntity[]> {
+    try {
+      const PlatformShop = await this.ClassifyDAO.PlatformShop();
+      return [ null, PlatformShop ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
 }

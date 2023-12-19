@@ -58,4 +58,12 @@ export class WXClientController {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<OrderEntity[]>(HttpStatus.ACCEPTED, orders).send();
   }
+
+  @Get("/platform")
+  public async PlatformShop(){
+    const [ error, Platform ] = await this.ClassifyService.PlatformShop();
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse(HttpStatus.ACCEPTED, Platform).send();
+  }
 }

@@ -83,4 +83,9 @@ export class ClassifyDAO {
                      .select()
                      .getMany();
   }
+
+  public async PlatformShop(){
+    const SelectQueryBuilder: SelectQueryBuilder<ClassifyEntity> = this.ClassifyRepository.createQueryBuilder("classify").leftJoinAndSelect("classify.shops", "shop");
+    return await SelectQueryBuilder.getMany();
+  }
 }
