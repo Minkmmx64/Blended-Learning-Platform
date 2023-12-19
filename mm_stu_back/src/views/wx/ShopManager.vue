@@ -78,7 +78,7 @@
           <el-upload
             ref="uploadRef"
             class="upload-demo mt-5"
-            :before-upload="onBeforeUpload"
+            :before-upload="onBeforeUploadAvatar"
           >
             <ImageLayout
               class="mt-5"
@@ -431,6 +431,19 @@ const onBeforeUpload = (rawFile: UploadRawFile, pos: number) => {
     setTimeout(() => {
       const url = res.data.data.url;
       EditParams.value.detail[pos] = url;
+      ElMessage.success("上传成功!");
+    }, 500);
+  }).catch(error => { ElMessage.error("上传失败!" + error); })
+  return false;
+}
+
+const onBeforeUploadAvatar = (rawFile: UploadRawFile) => {
+  const data = new FormData();
+  data.append("file", rawFile);
+  common.upload(data).then(res => {
+    setTimeout(() => {
+      const url = res.data.data.url;
+      EditParams.value.avatar = url;
       ElMessage.success("上传成功!");
     }, 500);
   }).catch(error => { ElMessage.error("上传失败!" + error); })

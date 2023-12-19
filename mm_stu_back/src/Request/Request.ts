@@ -13,7 +13,7 @@ const RequestWhitePath = [
 
 const instance = Axios.create({
   baseURL: baseURL.Api.uri + ":" + baseURL.Api.port,
-  timeout: 2000,
+  timeout: 10000,
   headers: { "auth": "mjw" },
   withCredentials: true,
 });
