@@ -14,8 +14,8 @@
         </el-col>
         <el-col :span="6">
           <el-input
-              v-model="QueryParams.name"
-              placeholder="car name"
+              v-model="QueryParams.servename"
+              placeholder="serve servename"
           />
         </el-col>
         <el-col :span="6">
@@ -49,8 +49,34 @@
         </el-col>
         <el-col :span="18">
           <el-input
-              v-model="EditParams.name"
-              placeholder="car name"
+              v-model="EditParams.servename"
+              placeholder="serve servename"
+          />
+        </el-col>
+      </el-row>
+      <el-row class="mb-5 text-center">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
+            <span>{{ TableProps.apiname }}接待人:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-input
+              v-model="EditParams.waiter"
+              placeholder="serve waiter"
+          />
+        </el-col>
+      </el-row>
+      <el-row class="mb-5 text-center">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
+            <span>{{ TableProps.apiname }}收费标准:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-input-number
+              v-model="EditParams.fee"
+              placeholder="serve fee"
           />
         </el-col>
       </el-row>
@@ -88,8 +114,20 @@
           width="50"
       />
       <el-table-column
-          prop="name"
-          label="车辆品牌"
+          prop="servename"
+          label="服务名称"
+          header-align="center"
+          align="center"
+      />
+      <el-table-column
+          prop="waiter"
+          label="接待人"
+          header-align="center"
+          align="center"
+      />
+      <el-table-column
+          prop="fee"
+          label="收费标准"
           header-align="center"
           align="center"
       />
@@ -129,22 +167,24 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { car } from "@/Request/ApiModules/mongodb/car";
+import { serve } from "@/Request/ApiModules/mongodb/serve";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";
 
 //添加修改对象
 const EditParams = ref({
-  name:""
+  servename: "",
+  waiter: "",
+  fee: undefined
 });
 //查询对象
 const QueryParams = ref({
-  name: ""
+  servename: ""
 });
 
 const TableProps = useTableFunction(
-    "车辆",
-    car,
+    "服务",
+    serve,
     QueryParams,
     EditParams,
     undefined,

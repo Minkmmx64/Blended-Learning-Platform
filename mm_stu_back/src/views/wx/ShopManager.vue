@@ -365,11 +365,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { shop, shopdata } from "@/Request/ApiModules/wx/shop";
+import {shop, shopdata} from "@/Request/ApiModules/wx/shop";
 import classify from "@/Request/ApiModules/wx/classify";
-import { useTableFunction } from "@/components/TableFunction/useTableFunction";
-import { onMounted, ref } from "vue";
-import { ElMessage, UploadRawFile } from "element-plus";
+import {useTableFunction} from "@/components/TableFunction/useTableFunction";
+import {onMounted, ref} from "vue";
+import {ElMessage, UploadRawFile} from "element-plus";
 import common from "@/Request/ApiModules/common";
 //添加修改对象
 const EditParams = ref({
@@ -429,8 +429,7 @@ const onBeforeUpload = (rawFile: UploadRawFile, pos: number) => {
   data.append("file", rawFile);
   common.upload(data).then(res => {
     setTimeout(() => {
-      const url = res.data.data.url;
-      EditParams.value.detail[pos] = url;
+      EditParams.value.detail[pos] = res.data.data.url;
       ElMessage.success("上传成功!");
     }, 500);
   }).catch(error => { ElMessage.error("上传失败!" + error); })
@@ -442,8 +441,7 @@ const onBeforeUploadAvatar = (rawFile: UploadRawFile) => {
   data.append("file", rawFile);
   common.upload(data).then(res => {
     setTimeout(() => {
-      const url = res.data.data.url;
-      EditParams.value.avatar = url;
+      EditParams.value.avatar = res.data.data.url;
       ElMessage.success("上传成功!");
     }, 500);
   }).catch(error => { ElMessage.error("上传失败!" + error); })

@@ -15,6 +15,7 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue = Ke
   life ?: {
     beforehandleEditConfirm?: () => void;
     beforehandleEditOpen?: (row?: Edit) => void;
+    afterhandleEditConfirm?: () => void;
   },
   transformData ?: new () => DataModules          // 前后端字段转换   class_id = "class.id" 后端class字段的id属性赋值给class_id
 ) : ITableFunction {
@@ -43,7 +44,7 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue = Ke
 
   //合并查询参数
   const queryBuilder = () => {
-    const query = Object.assign(UserSearchQuery.value, 
+    const query: Query & { offset: number; limit: number; props: string; order: "descending" | "ascending" } = Object.assign(UserSearchQuery.value,
       { 
         limit: limit.value, 
         offset: offset.value, 
@@ -116,6 +117,11 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue = Ke
         EditLoading.value = false;
         handleEditClose();
         loadTableDatas();
+        if(life && life.afterhandleEditConfirm) {
+          if(typeof life.afterhandleEditConfirm === "function"){
+            life.afterhandleEditConfirm();
+          }
+        }
       }, 500);
     }).catch( error => {
       ElMessage.error(error);

@@ -375,14 +375,14 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { stu, StuEdit, StuQuery, studata } from "@/Request/ApiModules/stu";
+import {stu, studata, StuEdit, StuQuery} from "@/Request/ApiModules/stu";
 import classes from "@/Request/ApiModules/class";
-import { useTableFunction } from "@/components/TableFunction/useTableFunction";
-import { onMounted, ref } from "vue";
-import { getYears, TProvinceToElCascader } from "@/utils/common";
-import { ElMessage, UploadRawFile } from "element-plus";
+import {useTableFunction} from "@/components/TableFunction/useTableFunction";
+import {onMounted, ref} from "vue";
+import {getYears, TProvinceToElCascader} from "@/utils/common";
+import {ElMessage, UploadRawFile} from "element-plus";
 import common from "@/Request/ApiModules/common";
-import { Gender } from "@/Request/index.type";
+import {Gender} from "@/Request/index.type";
 //添加修改对象
 const EditParams = ref<StuEdit>({
   name: "",
@@ -428,8 +428,7 @@ const onBeforeUpload = (rawFile: UploadRawFile) => {
   data.append("file", rawFile);
   common.upload(data).then(res => {
     setTimeout(() => {
-      const url = res.data.data.url;
-      EditParams.value.avatar = url;
+      EditParams.value.avatar = res.data.data.url;
       ElMessage.success("上传成功!");
     }, 500);
   }).catch(error => { ElMessage.error("上传失败!" + error); })

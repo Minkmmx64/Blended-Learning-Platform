@@ -77,7 +77,8 @@ export class RootController {
   @UseGuards(new AuthGuard())
   @UseInterceptors(new TokenExpireInterceptor())
   public async AuthMenuList(
-    @Query("id") id: number
+    @Query("id") id: number,
+    @Query() q: any
   ) {
     const [ error, auths ] = await this.RootService.AuthMenuList(id);
     if(error) {

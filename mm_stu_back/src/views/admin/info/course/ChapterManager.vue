@@ -308,12 +308,12 @@
 </template>
 <script lang="ts" setup>
 import TableContent from "@/components/display/table/TableContent.vue";
-import { chapter, ChapterEdit, ChapterQuery, chapterdata } from "@/Request/ApiModules/chapter";
+import {chapter, chapterdata, ChapterEdit, ChapterQuery} from "@/Request/ApiModules/chapter";
 import course from "@/Request/ApiModules/course";
 import common from "@/Request/ApiModules/common";
-import { useTreeTableFunction } from "@/components/TableFunction/useTreeTableFunction";
-import { onMounted, ref } from "vue";
-import { ElMessage, UploadRawFile } from "element-plus";
+import {useTreeTableFunction} from "@/components/TableFunction/useTreeTableFunction";
+import {onMounted, ref} from "vue";
+import {ElMessage, UploadRawFile} from "element-plus";
 
 //添加修改对象
 const EditParams = ref<ChapterEdit>({
@@ -339,9 +339,7 @@ const TableProps = useTreeTableFunction<chapter, ChapterQuery, ChapterEdit>(
   undefined,
   {
     beforehandleEditOpen(row) {
-      if(row !== undefined) {
-        isChooseCouese.value = true;
-      }else isChooseCouese.value = false;
+      isChooseCouese.value = row !== undefined;
     },
   },
   chapterdata
@@ -361,8 +359,7 @@ const onBeforeUpload = (rawFile: UploadRawFile) => {
   data.append("file", rawFile);
   common.upload(data).then(res => {
     setTimeout(() => {
-      const url = res.data.data.url;
-      EditParams.value.cover = url;
+      EditParams.value.cover = res.data.data.url;
       ElMessage.success("上传成功!");
     }, 500);
   }).catch(error => { ElMessage.error("上传失败!" + error); })

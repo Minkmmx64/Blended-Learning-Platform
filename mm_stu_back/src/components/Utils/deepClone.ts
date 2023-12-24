@@ -5,7 +5,7 @@ export function DeepClone(obj: any): any {
   if(T === "[object Array]") {
     o = [];
     for(let i = 0; i < obj.length; i ++){
-      const t = obj[i];
+      //const t = obj[i];
       o[i] = DeepClone(obj[i]);
     }
   }else if(T === "[object Object]") {

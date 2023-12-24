@@ -101,7 +101,31 @@ const routes: Array<RouteRecordRaw> = [
         name: "ClassifyManager",
         meta: { isAuth: true, key: "ClassifyManager" },
         component: () => import("@/views/wx/ClassifyManager.vue")
-      }
+      },
+      {
+        path: "/FacialManager",
+        name: "FacialManager",
+        meta: { isAuth: true, key: "FacialManager" },
+        component: () => import("@/views/car/FacialManager.vue")
+      },
+      {
+        path: "/RecordManager",
+        name: "RecordManager",
+        meta: { isAuth: true, key: "RecordManager" },
+        component: () => import("@/views/car/RecordManager.vue")
+      },
+      {
+        path: "/CarFacialUserManager",
+        name: "CarFacialUserManager",
+        meta: { isAuth: true, key: "CarFacialUserManager" },
+        component: () => import("@/views/car/UserManager.vue")
+      },
+      {
+        path: "/CarManager",
+        name: "CarManager",
+        meta: { isAuth: true, key: "CarManager" },
+        component: () => import("@/views/car/CarManager.vue")
+      },
     ]
   },
   {

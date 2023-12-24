@@ -395,7 +395,7 @@ const addRealCourse = () => {
 
 const commitRealCourse = () => {
   EditLoading.value = true;
-  Teacher.real(AddRealCourseIds.value, TeacherId.value).then( res => {
+  Teacher.real(AddRealCourseIds.value, TeacherId.value).then( () => {
     setTimeout(() => {
       EditLoading.value = false;
       isAddRealCourse.value = false;
@@ -417,9 +417,7 @@ watch(
   () => {
     if(Courses.value && Courses.value.length) {
       for(let i = 0 ; i < Courses.value.length; i ++) {
-        if(AddRealCourseIds.value.includes(Courses.value[i].id))
-          Courses.value[i].disabled = true;
-        else Courses.value[i].disabled = false;
+        Courses.value[i].disabled = AddRealCourseIds.value.includes(Courses.value[i].id);
       }
     }
   },
@@ -428,7 +426,7 @@ watch(
 
 onMounted( async () => {
   TableProps.loadTableDatas();
-  loadCourse();
+  await loadCourse();
 })
 </script>
 

@@ -88,7 +88,7 @@
           <tr align="center" class="course-table-container-item-tr flex-row w-full">
             <template v-if="(typeof item === 'number')">
               <template v-for="(d, dindex) in day" :key="dindex">
-                <td 
+                <td
                   :class="'course-table-container-item-td select-none h-full ' + (dindex !== 0 ? 'course-table-container-item-td-hover point' : '')"
                   @click="SelectClassTablePosition(index, dindex)"
                 >

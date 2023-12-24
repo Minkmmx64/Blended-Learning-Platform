@@ -15,7 +15,7 @@
 
       <!-- login /////////////////////////////////////////////// -->
       <div
-        v-if="LoginStatus == 'login'"
+        v-if="LoginStatus === 'login'"
         class="login-layout-lg pl-10 bg-fff h-full border-base flex-column flex-alg"
         style="width: 60%;"
       >
@@ -118,7 +118,7 @@
 
       <!-- register /////////////////////////////////////////////// -->
       <div
-        v-else-if="LoginStatus == 'register'"
+        v-else-if="LoginStatus === 'register'"
         class="login-layout-lg pl-10 bg-fff h-full border-base flex-column flex-alg"
         style="width: 60%;"
       >

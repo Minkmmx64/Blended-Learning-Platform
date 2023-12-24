@@ -230,11 +230,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { course, CourseEdit, CourseQuery } from "@/Request/ApiModules/course";
-import { useTableFunction } from "@/components/TableFunction/useTableFunction";
-import { onMounted, ref } from "vue";
+import {course, CourseEdit, CourseQuery} from "@/Request/ApiModules/course";
+import {useTableFunction} from "@/components/TableFunction/useTableFunction";
+import {onMounted, ref} from "vue";
 import common from "@/Request/ApiModules/common";
-import { ElMessage, UploadRawFile } from "element-plus";
+import {ElMessage, UploadRawFile} from "element-plus";
 //添加修改对象
 
 const EditParams = ref<CourseEdit>({
@@ -263,8 +263,7 @@ const onBeforeUpload = (rawFile: UploadRawFile) => {
   data.append("file", rawFile);
   common.upload(data).then(res => {
     setTimeout(() => {
-      const url = res.data.data.url;
-      EditParams.value.avatar = url;
+      EditParams.value.avatar = res.data.data.url;
       ElMessage.success("上传成功!");
     }, 500);
   }).catch(error => { ElMessage.error("上传失败!" + error); })

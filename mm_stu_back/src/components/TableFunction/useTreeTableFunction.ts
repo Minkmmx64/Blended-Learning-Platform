@@ -16,9 +16,8 @@ interface IuseTreeTableFunction {
 }
 
 /**
- *  通用树形列表加载器 
+ *  通用树形列表加载器
  *  后端返回数据结构:
- *  @param {
  *  message: "请求消息",
  *  code: "状态码",
  *  data: {
@@ -26,6 +25,14 @@ interface IuseTreeTableFunction {
  *    meta: { ... }
  *  }
  * }
+ * @param apiname
+ * @param TableApi
+ * @param UserSearchQuery
+ * @param child
+ * @param UserEditParam
+ * @param PaginationQuery
+ * @param life
+ * @param transformData
  */
 // 树形列表，指定 子列表props, 指定hasProps 懒加载
 export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue, Edit extends KeyValue = any>(
@@ -145,7 +152,7 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
 
   //删除按钮
   const handleDelete = (deleteNode : DataModules) => {
-    useTableApi.delete<DeleteProps>("/delete", { id: deleteNode.id }).then( res => {
+    useTableApi.delete<DeleteProps>("/delete", { id: deleteNode.id }).then( (res: AxiosResponse<ServerData<any>, any>) => {
       setTimeout( async () => {
         ElMessage.success("删除成功");
         loadTableDatas();

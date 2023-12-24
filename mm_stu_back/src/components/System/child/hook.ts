@@ -65,16 +65,16 @@ const useBreadNav = (MenuWidth: Ref<number>): IuseBreadNav => {
   const collapse = ref(false);
   const selectMenu = (indexPath: string[], index: string) => {
     const MenuItems = [] as ISystemMenus[];
-    let SubMenuGoup = SystemMenus;
+    let SubMenuGroup = SystemMenus;
     for(let i = 0 ; i < indexPath.length; i++){
-      const Menu = SubMenuGoup.find(e => e.key === indexPath[i])!;
+      const Menu = SubMenuGroup.find(e => e.key === indexPath[i])!;
       MenuItems.push({
         name:  Menu.name,
         route: Menu.route,
         key:   Menu.key,
         icon:  Menu.icon,
       });
-      if(Menu.subMenu) SubMenuGoup = Menu.subMenu;
+      if(Menu.subMenu) SubMenuGroup = Menu.subMenu;
     }
     BreadNavPath.value = MenuItems;
     currentMenu.value = index;

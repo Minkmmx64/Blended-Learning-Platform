@@ -134,6 +134,37 @@ const SystemMenus: ISystemMenus[] = [
     ]
   },
   {
+    name: "汽车美容服务",
+    key: "CarFacialSystem",
+    icon: "port-set",
+    subMenu: [
+      {
+        name: "美容服务管理",
+        key: "FacialManager",
+        route: "FacialManager",
+        icon: "shou"
+      },
+      {
+        name: "美容记录管理",
+        key: "RecordManager",
+        route: "RecordManager",
+        icon: "handshake"
+      },
+      {
+        name: "客户管理",
+        key: "CarFacialUserManager",
+        route: "CarFacialUserManager",
+        icon: "customer-service"
+      },
+      {
+        name: "汽车管理",
+        key: "CarManager",
+        route: "CarManager",
+        icon: "caps-unlock-filling"
+      }
+    ]
+  },
+  {
     name: "个人管理",
     key: "AdminManager",
     icon: "GitHub",

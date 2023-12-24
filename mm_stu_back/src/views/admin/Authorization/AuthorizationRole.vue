@@ -343,7 +343,7 @@ const filterProps = (...arg: string[]) => {
 
 const viewRoleMenus = async (row : KeyValue) => {
   isView.value = true;
-  loadAllMenus();
+  await loadAllMenus();
   DefaultCheckedKeys.value = [... leaf(row)];
 }
 

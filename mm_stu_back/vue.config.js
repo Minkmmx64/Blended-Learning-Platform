@@ -17,15 +17,7 @@ module.exports = defineConfig({
   },
   devServer: {
     port: 3000,
-    // proxy: {
-    //   "/api" : {
-    //     target: "http://192.168.159.40:3000",
-    //     changeOrigin : true,
-    //     pathRewrite: {
-    //       "^/api": ""
-    //     }
-    //   }
-    // }
+    
   },
   css: {
     loaderOptions: {

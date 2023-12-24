@@ -16,7 +16,7 @@ import Common from "@/Request/ApiModules/common";
 import Root from "@/Request/ApiModules/root";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
-import { useUserStore } from "@/store/index";
+import { useUserStore } from "@/store";
 
 const AdminLogin = useRouter();
 const LoginFails = ref(false);

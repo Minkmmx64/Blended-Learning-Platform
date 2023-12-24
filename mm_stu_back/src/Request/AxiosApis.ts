@@ -11,8 +11,8 @@ export type ServerData<T> = {
 // 服务端返回的数据data
 export class AxiosApi {
   protected prefix?: string;
-  constructor(pre: string){
-    this.prefix = pre;
+  constructor(pre: string, nginx: string = "/nodeapi"){
+    this.prefix = nginx + pre;
   }
 
   public get<D = any, T = any>(url: string, params?: D, config?: AxiosRequestConfig<any>): Promise<AxiosResponse<ServerData<T>, any>> {

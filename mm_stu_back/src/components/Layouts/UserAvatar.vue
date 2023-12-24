@@ -17,7 +17,6 @@
 </template>
   
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
 import { useUserStore } from "@/store/index";
 import ImageLayout from "../display/img/ImageLayout.vue";
 import { useRouter } from "vue-router";
