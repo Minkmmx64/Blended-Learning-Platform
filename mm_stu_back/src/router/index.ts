@@ -89,43 +89,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "CourseResourceManager",
         meta: { isAuth: true, key: "CourseResourceManager" },
         component: () => import("@/views/admin/info/course/CourseResourceManager.vue")
-      },
-      {
-        path: "/ShopManager",
-        name: "ShopManager",
-        meta: { isAuth: true, key: "ShopManager" },
-        component: () => import("@/views/wx/ShopManager.vue")
-      },
-      {
-        path: "/ClassifyManager",
-        name: "ClassifyManager",
-        meta: { isAuth: true, key: "ClassifyManager" },
-        component: () => import("@/views/wx/ClassifyManager.vue")
-      },
-      {
-        path: "/FacialManager",
-        name: "FacialManager",
-        meta: { isAuth: true, key: "FacialManager" },
-        component: () => import("@/views/car/FacialManager.vue")
-      },
-      {
-        path: "/RecordManager",
-        name: "RecordManager",
-        meta: { isAuth: true, key: "RecordManager" },
-        component: () => import("@/views/car/RecordManager.vue")
-      },
-      {
-        path: "/CarFacialUserManager",
-        name: "CarFacialUserManager",
-        meta: { isAuth: true, key: "CarFacialUserManager" },
-        component: () => import("@/views/car/UserManager.vue")
-      },
-      {
-        path: "/CarManager",
-        name: "CarManager",
-        meta: { isAuth: true, key: "CarManager" },
-        component: () => import("@/views/car/CarManager.vue")
-      },
+      }
     ]
   },
   {
