@@ -115,56 +115,6 @@ const SystemMenus: ISystemMenus[] = [
     ]
   },
   {
-    name: "微信商城",
-    key: "WXShopping",
-    icon: "image-text",
-    subMenu: [
-      {
-        name: "商品管理",
-        key: "ShopManager",
-        icon: "modular",
-        route: "ShopManager"
-      },
-      {
-        name: "分类管理",
-        key: "ClassifyManager",
-        icon: "layout-filling",
-        route: "ClassifyManager"
-      }
-    ]
-  },
-  {
-    name: "汽车美容服务",
-    key: "CarFacialSystem",
-    icon: "port-set",
-    subMenu: [
-      {
-        name: "美容服务管理",
-        key: "FacialManager",
-        route: "FacialManager",
-        icon: "shou"
-      },
-      {
-        name: "美容记录管理",
-        key: "RecordManager",
-        route: "RecordManager",
-        icon: "handshake"
-      },
-      {
-        name: "客户管理",
-        key: "CarFacialUserManager",
-        route: "CarFacialUserManager",
-        icon: "customer-service"
-      },
-      {
-        name: "汽车管理",
-        key: "CarManager",
-        route: "CarManager",
-        icon: "caps-unlock-filling"
-      }
-    ]
-  },
-  {
     name: "个人管理",
     key: "AdminManager",
     icon: "GitHub",
