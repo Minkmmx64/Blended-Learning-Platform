@@ -58,7 +58,7 @@ export class CommonService {
       const fileName = `${md5}.${fileSuff}`;
       const filePath = path.join(__dirname, "..", "..","..", "static", "image", fileName);
       fs.writeFileSync(filePath,file.buffer, { flag: "w+" });
-      return [ null, `http://${process.env.MYSQL_HOST}:8080/image/` + md5 + "." + fileSuff ];
+      return [ null, `http://${process.env.SERVER_HOST}:8080/image/` + md5 + "." + fileSuff ];
     } catch (error) {
       return [new Error(error), null]; 
     }
