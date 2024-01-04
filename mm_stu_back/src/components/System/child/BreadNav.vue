@@ -113,6 +113,7 @@ onMounted(() => {
     0 0 0 #fff ,
     2px 2px 4px rgb(161, 161, 161,.5);
     transition: 500ms all ease;
+    height: 40px;
   }
   .Bread-Nav-item{
     border: 1px solid #d8dce5;

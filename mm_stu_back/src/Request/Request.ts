@@ -35,6 +35,7 @@ instance.interceptors.response.use((response: AxiosResponse<ServerData<any>>) =>
   return response;
 }, (error) => {
   //服务端返回错误
+  console.log(error);
   if (error?.response?.data) {
     const User = useUserStore();
     const code = error.response.status;

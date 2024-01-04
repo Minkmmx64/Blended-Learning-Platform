@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { DataSource, DeleteResult, InsertResult, UpdateResult } from "typeorm";
 import { ListMetaData, PaginationQuery, ServiceData } from "../../index.type";
 import { ChapterDAO } from "./chapter.dao";
-import { ChapterCreateDTO, ChapterUpdateDTO, ChapterQueryDTO } from "./chapter.dto";
+import { ChapterCreateDTO, ChapterUpdateDTO, ChapterQueryDTO, ITreeChapters } from "./chapter.dto";
 import { StuChapter } from "src/Entity/stu_chapter.entity";
 
 @Injectable()
@@ -48,6 +48,31 @@ export class ChapterService{
     try {
       const DeleteResult = await this.ChapterDAO.DeleteChapterById(id);
       return [ null, DeleteResult ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
+
+  public async getChapterByCourseId(courseId: number) : ServiceData<ITreeChapters[]> {
+    try {
+      let Chapters = await this.ChapterDAO.getChapterByCourseId(courseId) as ITreeChapters[];
+      const TreeChapters = [] as ITreeChapters[];
+      Chapters = Chapters.map( chapter => {
+        return { ...chapter,value: chapter.id,label: chapter.name } 
+      })
+      for(const chapter of Chapters) {
+        if(!chapter.pid) {
+          TreeChapters.push(chapter);
+        }
+      }
+      const dfs = (parent: ITreeChapters[]) => {
+        parent.forEach( chapters => {
+          chapters.children = [...Chapters.filter((chapter) => chapter.pid === chapters.id)];
+          dfs(chapters.children);
+        });
+      }
+      dfs(TreeChapters);
+      return [ null, TreeChapters ];
     } catch (error) {
       return [new Error(error), null];
     }

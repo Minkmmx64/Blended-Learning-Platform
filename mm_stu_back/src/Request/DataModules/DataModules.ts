@@ -28,7 +28,7 @@ export class DataModules {
     // 服务端到客户端key的映射
     // class_id = { type : "object", deep : "class.id" }  表示客户端的class_id 字段依赖于 且 服务端serviceKey是object类型 serviceData.class.id
     if(this.clientKey[serviceKey]) {
-      console.log(serviceData, serviceKey);
+      //console.log(serviceData, serviceKey);
       
       if(this.clientKey[serviceKey].type === "object") {
         let data = serviceData;

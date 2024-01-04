@@ -89,6 +89,12 @@ const routes: Array<RouteRecordRaw> = [
         name: "CourseResourceManager",
         meta: { isAuth: true, key: "CourseResourceManager" },
         component: () => import("@/views/admin/info/course/CourseResourceManager.vue")
+      },
+      {
+        path: "/FileUpload",
+        name: "FileUpload",
+        meta: { isAuth: true, key: "FileUpload" },
+        component: () => import("@/views/admin/FileUpload.vue")
       }
     ]
   },

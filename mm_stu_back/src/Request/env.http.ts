@@ -1,7 +1,7 @@
 const URL = {
   development : {
     uri : "http://localhost", // api url
-    port : 80
+    port : 8080
   }, 
   production: {
     uri : "http://124.220.176.205",

@@ -1,18 +1,21 @@
-import { Controller, BadRequestException, Get, Session, Post, Body, HttpStatus, UsePipes, GoneException, Headers, ConflictException, UseInterceptors, UploadedFile } from "@nestjs/common";
+import { Controller, BadRequestException, Get, Session, Post, Body, HttpStatus, UsePipes, GoneException, Headers, ConflictException, UseInterceptors, UploadedFile, Query } from "@nestjs/common";
 import { CommonService } from "./common.service";
 import { HttpResponse } from "src/response/response";
 import { ValidationPipe } from "src/utils/pipes";
 import { CommonSmsValid, CommonTokenValid } from "./common.valid";
-import { SmsDTO, vTokenDTO } from "./common.dto";
+import { IFileUploadStart, SmsDTO, vTokenDTO } from "./common.dto";
 import { JwtPayload } from "jsonwebtoken";
 import { TokenExpireInterceptor } from "src/guard/token.interceptor";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Express } from 'express'
-
+import { RedisService } from "src/Modules/redis/RedisService";
 @Controller("/common")
 export class CommonController {
 
-  constructor(private readonly CommonService: CommonService) { }
+  constructor(
+    private readonly CommonService: CommonService,
+    private readonly RedisService: RedisService
+  ) { }
 
   //获取图形验证码
   @Get("/sms")    
@@ -83,6 +86,37 @@ export class CommonController {
     if(error) throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     return new HttpResponse<{ url : string }>(HttpStatus.ACCEPTED, { url: url }).send();
   }
+
+  @Get("/upload/slice/start")
+  @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
+  public async FileUploadStart(
+    @Query("md5") md5 : string,
+    @Query("filename") filename: string
+  ){
+    const [ error, data ] = await this.CommonService.FileUploadStart(md5, filename);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    }
+      return new HttpResponse<IFileUploadStart>(HttpStatus.ACCEPTED, data).send();
+  }
+
+  @Post("/upload/slice")
+  @UseInterceptors(FileInterceptor("file"))
+  public async FileUploadSlice(
+    @UploadedFile() file: Express.Multer.File,
+    @Body("number") number: number,
+    @Body("md5") md5: string
+  ) {
+    // 1、获取文件位置，以及文件序号,将文件保存到硬盘
+    const [ error, status ] = await this.CommonService.FileUploadSlice(file, number, md5);
+    if(error) throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    return new HttpResponse(HttpStatus.ACCEPTED, status ).send();
+  }
+
+
+
+
+
 
   //测试接口
   @Get("/test")

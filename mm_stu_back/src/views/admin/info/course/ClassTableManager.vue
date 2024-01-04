@@ -92,7 +92,7 @@
                   :class="'course-table-container-item-td select-none h-full ' + (dindex !== 0 ? 'course-table-container-item-td-hover point' : '')"
                   @click="SelectClassTablePosition(index, dindex)"
                 >
-                  <span v-if="dindex === 0">{{ item }} </span>
+                  <span class="flex-column h-full flex-center" v-if="dindex === 0">{{ item }} </span>
                   <tr v-else style="font-size: 14px;" class="flex-column h-full flex-center">
                     <template v-if="Courses.length && readPosition(index, dindex)">
                       <span>{{ readPosition(index, dindex).course }}</span>
@@ -295,8 +295,7 @@ onMounted(() => {
         height: 80px;
         border: 1px solid $info;
         transition: 500ms all ease;
-
-        +.course-table-container-item-td-hover {
+        + .course-table-container-item-td-hover {
           &:hover {
             border-color: $primary;
           }

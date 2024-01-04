@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Post, Put, Query, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
 import { ListMetaData, PaginationQuery } from "../../index.type";
 import { HttpResponse } from "src/response/response";
 import { DeleteResult, InsertResult, UpdateResult } from "typeorm";
@@ -6,7 +6,7 @@ import { AuthGuard } from "src/guard/auth.gurad";
 import { TokenExpireInterceptor } from "src/guard/token.interceptor";
 import { ValidationPipe } from "src/utils/pipes";
 import { ChapterService } from "./chapter.service";
-import { ChapterCreateDTO, ChapterUpdateDTO, ChapterQueryDTO } from "./chapter.dto";
+import { ChapterCreateDTO, ChapterUpdateDTO, ChapterQueryDTO, ITreeChapters } from "./chapter.dto";
 import { ChapterCreateValid, ChapterUpdateValid } from "./chapter.valid";
 import { StuChapter } from "src/Entity/stu_chapter.entity";
 @Controller("chapter")
@@ -62,5 +62,17 @@ export class ChapterController {
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<DeleteResult>(HttpStatus.ACCEPTED, DeleteResult).send();
+  }
+
+  @Get("/:courdeId")
+  @UseGuards(new AuthGuard())
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async getChapterByCourseId(
+    @Param("courdeId") courdeId: number
+  ) {
+    const [ error, Chapters ] = await this.ChapterService.getChapterByCourseId(courdeId);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<ITreeChapters[]>(HttpStatus.ACCEPTED, Chapters).send();
   }
 }

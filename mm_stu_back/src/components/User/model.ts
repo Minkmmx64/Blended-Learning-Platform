@@ -43,7 +43,7 @@ export class UserFrom<T> {
     this.FromArrs.map(Input => {
       this.Froms[Input] = UserFrom.builderObject(Input as User.AnyFrom);
     });
-    return [ reactive(this.Froms), this.builderFromData.bind(this) ];
+    return [ reactive(this.Froms) as FromRecord<T>, this.builderFromData.bind(this) ];
   }
 
   private builderFromData() : Record<IFrom<T>,string>{

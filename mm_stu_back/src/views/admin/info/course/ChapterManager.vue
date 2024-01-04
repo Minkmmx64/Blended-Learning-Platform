@@ -187,7 +187,7 @@
         label="章节名称"
         header-align="center"
         align="center"
-        width="200"
+        width="250"
       />
       <el-table-column
         prop="course.name"
@@ -255,6 +255,7 @@
         label="创建时间"
         header-align="center"
         align="center"
+        sortable
         width="150"
       >
         <template #default="{ row }">

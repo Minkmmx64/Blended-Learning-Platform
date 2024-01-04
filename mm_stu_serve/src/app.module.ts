@@ -13,6 +13,9 @@ import { TeacherModule } from './Modules/admin/teacher/teacher.module';
 import { CourseModule } from './Modules/admin/course/course.module';
 import { ChapterModule } from './Modules/admin/chapter/chapter.module';
 import * as dotenv from "dotenv";
+import { resourceModule } from './Modules/admin/resource/resource.module';
+import { RedisModule } from '@nestjs-modules/ioredis';
+
 dotenv.config();
 
 @Module({
@@ -27,6 +30,14 @@ dotenv.config();
       "entities": ["./src/**/*.entity{.ts,.js}"],
       "synchronize": true
     }),
+    RedisModule.forRoot({
+      type: "single",
+      options: {
+        host: process.env.REDIS_HOST,
+        password: process.env.REDIS_PASSWORD,
+        port: parseInt(process.env.REDIS_PORT),
+      }
+    }),
     RootModule,
     CommonModule,
     StuCollegeModule,
@@ -37,6 +48,7 @@ dotenv.config();
     TeacherModule,
     CourseModule,
     ChapterModule,
+    resourceModule
   ],
   controllers: [AppController],
   providers: [AppService],

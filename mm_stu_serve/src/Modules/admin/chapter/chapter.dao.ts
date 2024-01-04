@@ -41,7 +41,6 @@ export class ChapterDAO {
     }
 
     return await SelectQueryBuilder
-                                   .orderBy(ChapterQuery.prop, Order)
                                    .skip(ChapterQuery.limit * (ChapterQuery.offset - 1))
                                    .take(ChapterQuery.limit)
                                    .getMany();
@@ -123,5 +122,14 @@ export class ChapterDAO {
                                      .select()
                                      .where("pid IS NULL")
                                      .getCount();
+  }
+
+  public async getChapterByCourseId(courseId: number) : Promise<StuChapter[]> {
+    return await this.ChapterRepository
+                    .createQueryBuilder()
+                    .select()
+                    .where("course = :courseId")
+                    .setParameter("courseId", courseId)
+                    .getMany();
   }
 }

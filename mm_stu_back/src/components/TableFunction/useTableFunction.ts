@@ -124,7 +124,7 @@ export function useTableFunction<T extends AxiosApi, Query extends KeyValue = Ke
         }
       }, 500);
     }).catch( error => {
-      ElMessage.error(error);
+      //ElMessage.error(error);
       TableLoading.value = false;
       EditLoading.value = false;
     });

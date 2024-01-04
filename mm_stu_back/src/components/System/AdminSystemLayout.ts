@@ -127,6 +127,12 @@ const SystemMenus: ISystemMenus[] = [
       }
     ]
   },
+  {
+    name: "文件上传",
+    key: "FileUpload",
+    icon: "file",
+    route: "FileUpload"
+  }
 ];
 
 export { SystemMenus , config }

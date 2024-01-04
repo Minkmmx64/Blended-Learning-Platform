@@ -134,10 +134,11 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
   //通过pid加载子树
   const loadTreeNodeChildData = (row: KeyValue) : Promise<KeyValue[]> => {
     return new Promise((resolve, reject) => {
-      useTableApi.get<PaginationQuery<Query>, ListMetaData<DataModules[]>>(`/list?d=${Math.random()}`,{
-        ...queryBuilder(),
+      useTableApi.get< any , ListMetaData<DataModules[]>>(`/list?d=${Math.random()}`,{
         pid: row.id,
-        date: new Date().getTime()
+        date: new Date().getTime(),
+        limit: 999999,
+        offset: 1,
       }).then( res => {
         const ChildData = ref(res.data.data.list as KeyValue[]);
         for(let i = 0 ; i < ChildData.value.length; i++) {
@@ -210,9 +211,10 @@ export function useTreeTableFunction<T extends AxiosApi, Query extends KeyValue,
         loadTableDatas();
       }, 500);
     }).catch( error => {
-      ElMessage.error(error);
+      //ElMessage.error(error);
       TableLoading.value = false;
-      handleEditClose();
+      EditLoading.value = false;
+      //handleEditClose();
     });
   }
 

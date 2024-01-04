@@ -31,11 +31,13 @@ export class chapter extends AxiosApi {
     super("/api/chapter");
   }
 
-  public async all() {
-    return this.get("/all", {
+  public async getChapterByCourseId(courseId: number) {
+    return this.get(`/${courseId}`, {
       date: new Date()
     });
   }
+
+
 }
 
 export default new chapter();

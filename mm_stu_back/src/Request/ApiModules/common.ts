@@ -22,7 +22,19 @@ export class CommonApi extends AxiosApi {
       "headers" : {
         "Content-Type" : "multipart/form-data"
       }
-    } )
+    })
+  }
+
+  public uploadSlice(data: FormData) {
+    return this.post("/upload/slice", data, {
+      "headers" : {
+        "Content-Type" : "multipart/form-data"
+      }
+    })
+  }
+
+  public FileUploadStart(md5: string, filename: string) {
+    return this.get("/upload/slice/start", { date: new Date().toString(), md5, filename });
   }
 
   // public rToken() {

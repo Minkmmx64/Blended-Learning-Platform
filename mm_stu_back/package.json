@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/spark-md5": "^3.0.4",
     "axios": "^1.6.0",
     "circular-dependency-plugin": "^5.2.2",
     "core-js": "^3.8.3",
@@ -20,6 +21,7 @@
     "pinia-plugin-persist": "^1.0.0",
     "qrcode": "^1.5.3",
     "sass-loader": "^13.2.0",
+    "spark-md5": "^3.0.2",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
   },

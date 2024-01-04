@@ -12,3 +12,9 @@ export class TokenDTO {
 export class vTokenDTO {
   token: string;
 }
+
+
+export interface IFileUploadStart {
+  md5: string;
+  chunk: number;
+}
