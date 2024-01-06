@@ -18,3 +18,8 @@ export interface IFileUploadStart {
   md5: string;
   chunk: number;
 }
+
+export interface RedisFileSliceData {
+  suf: string;
+  number: number;
+}

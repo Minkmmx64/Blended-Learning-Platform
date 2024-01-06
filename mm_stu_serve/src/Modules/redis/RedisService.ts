@@ -11,6 +11,19 @@ export class RedisService {
   ){}
 
   public async setKV(key : RedisKey, value: string | Buffer | number ) {
-    this.RedisRepository.set(key, value);
+    return new Promise((resolve, reject) => {
+      try {
+        this.RedisRepository.set(key, value);
+        resolve(undefined);
+      } catch (error) {
+        reject(error);
+      }
+    })
+  }
+
+  public async getKV(key: RedisKey): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.RedisRepository.get(key).then(resolve, reject);
+    });
   }
 }

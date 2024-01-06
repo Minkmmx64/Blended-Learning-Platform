@@ -10,10 +10,10 @@
         Drop file here or <em>click to upload</em>
       </div>
     </el-upload>
-    <div v-if="rawFiles.File" class="upload-file-item flex-column flex-center">
+    <div v-if="File" class="upload-file-item flex-column flex-center">
       <div class="item mt-5 pr-10 pl-10 flex-row flex-between flex-alg">
         <el-tag class="mx-1" size="large">文件名:</el-tag>
-        <span class="select-none"> {{ rawFiles.File?.name }}</span>
+        <span class="select-none"> {{ File.name }}</span>
       </div>
       <div class="item mt-5 pr-10 pl-10 flex-row flex-between flex-alg">
         <el-tag class="mx-1" size="large">文件大小:</el-tag>
@@ -24,8 +24,9 @@
         <el-progress class="ml-5 progress" :percentage="rawFiles.progress ?? 0" />
       </div>
       <div class=" mt-5 pr-10 pl-10 flex-row flex-between flex-alg">
-        <el-button @click="upload" :loading="loading.uploading" class="mt-20" type="success">上传资源</el-button>
-        <el-button v-if="rawFiles.progress" class="mt-20" :loading="loading.deloading" type="danger">暂停上传</el-button>
+        <el-button @click="useAccessUpload" v-if="isStop" class="mt-20" :loading="loading.deloading" type="danger">继续上传</el-button>
+        <el-button @click="StartUpload" v-else :loading="loading.uploading" class="mt-20" type="success">上传资源</el-button>
+        <el-button @click="useStopUpload" v-if="rawFiles.progress" class="mt-20" :loading="loading.deloading" type="danger">暂停上传</el-button>
       </div>
 
     </div>
@@ -68,7 +69,6 @@ import { useElUploadFiles } from "./useElUploadFiles";
 import { UploadFilled } from '@element-plus/icons-vue'
 
 const initRawFiles : IUploadRawFile = {
-  File: null,
   progress: undefined,
   ok: false,
   md5: "",
@@ -77,7 +77,6 @@ const initRawFiles : IUploadRawFile = {
 }
 
 interface IUploadRawFile {
-  File: UploadRawFile | null;
   progress: number | undefined;
   ok: boolean;
   md5: string;
@@ -86,6 +85,7 @@ interface IUploadRawFile {
 }
 
 const rawFiles = ref<IUploadRawFile>(initRawFiles);
+const File = ref<UploadRawFile>();
 
 const loading = ref<Record<string, boolean>>({
   uploading: false,
@@ -93,35 +93,33 @@ const loading = ref<Record<string, boolean>>({
 });
 
 const fileSize = computed(() => {
-  if(rawFiles.value.File) {
-    return (rawFiles.value.File.size / 1024 / 1024).toFixed(2);
+  if(File.value) {
+    return (File.value.size / 1024 / 1024).toFixed(2);
   }else return 0;
 })
 
 const beforeUpload = (rawFile: UploadRawFile) => {
-  rawFiles.value.File = null;
+  File.value = null;
   setTimeout(() => {
-    rawFiles.value.File = rawFile;
+    File.value = rawFile;
   }, 0)
   return false;
 }
 
-const upload = () => {
+const { StartUpload, useStopUpload, isStop, useAccessUpload } = useElUploadFiles(File, {
+  chunk: 4096,
+  onprogress(v) {
+    rawFiles.value.progress = v;
+  },
+  oncalcmd5({ md5, time }) {
+    rawFiles.value.md5 = md5, rawFiles.value.time = time;
+  },
+  oncalcmd5progress(e) {
+    if(typeof e === "string") e = parseFloat(e);
+    rawFiles.value.md5progress = e;
+  }
+});
 
-  useElUploadFiles(rawFiles.value.File, {
-    chunk: 1000,
-    onprogress(v) {
-      rawFiles.value.progress = v;
-    },
-    oncalcmd5({ md5, time }) {
-      rawFiles.value.md5 = md5, rawFiles.value.time = time;
-    },
-    oncalcmd5progress(e) {
-      if(typeof e === "string") e = parseFloat(e);
-      rawFiles.value.md5progress = e;
-    }
-  })
-}
 
 </script>
 

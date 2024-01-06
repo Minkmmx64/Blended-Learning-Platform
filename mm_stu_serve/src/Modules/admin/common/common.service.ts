@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { randomUUID } from "crypto";
 import { JWT } from "src/utils/crypto";
 import { svgCode } from "src/utils/sms";
-import { IFileUploadStart, TokenDTO } from "./common.dto";
+import { IFileUploadStart, RedisFileSliceData, TokenDTO } from "./common.dto";
 import { Express } from 'express'
 import { ReadFile } from "src/common/common";
 import * as path from "path";
@@ -10,6 +10,7 @@ import { Rules } from "src/utils/regex";
 import * as fs from "node:fs";
 import * as dotenv from "dotenv";
 import * as worker_threads from "worker_threads";
+import { RedisService } from "src/Modules/redis/RedisService";
 
 @Injectable()
 export class CommonService {
@@ -19,6 +20,10 @@ export class CommonService {
   private imagePath: string = path.join(__dirname, "..", "..","..", "static", "image");
 
   private fileCreateWorkPath: string = path.join(__dirname, "./file_slice_create_work_thread.js");
+
+  constructor(
+    private readonly RedisService: RedisService
+  ) {}
 
   public async getSmsCode(session: Record<string, any>) : Promise<string> {
     const svg = svgCode({ height: 40 });
@@ -79,7 +84,18 @@ export class CommonService {
        * 判断该md5文件夹下的文件数量，比对判断文件是否上传完整
        */
       const fileSuff = Rules.suff.rule.exec(filename)[0];
-      
+      const unSerializeData = await this.RedisService.getKV(md5);
+      let SerializeData = undefined as RedisFileSliceData;
+      if(unSerializeData) {
+        SerializeData = JSON.parse(unSerializeData) as RedisFileSliceData;
+        SerializeData.number = SerializeData.number + 1;
+      } else {
+        SerializeData = {
+          suf: fileSuff,
+          number: 0
+        }
+        await this.RedisService.setKV(md5, JSON.stringify(SerializeData));
+      }
       try {
         fs.opendirSync(MD5FilePath);
       } catch (error) {
@@ -87,7 +103,7 @@ export class CommonService {
       }
       const result: IFileUploadStart = {
         md5: md5,
-        chunk: 0
+        chunk: SerializeData.number
       }
       return [ null, result ];
     } catch (error) {
@@ -105,8 +121,13 @@ export class CommonService {
             number: number
           }
         });
-        main_thread.on("message", value => {
+        main_thread.on("message", async () => {
           //console.log("创建分片文件完成::",value);
+          //将当前文件传输信息存储到redis
+          const unSerializeData = await this.RedisService.getKV(md5);
+          let SerializeData = JSON.parse(unSerializeData) as RedisFileSliceData;
+          SerializeData.number = Math.max(SerializeData.number + 1, number);
+          await this.RedisService.setKV(md5, JSON.stringify(SerializeData));
         });
         main_thread.on("error", error => console.error("创建分片文件失败::",error))
       return [ null, "ok" ];
