@@ -30,9 +30,13 @@ async function bootstrap() {
     }),
   );
 
-  //静态资源
+  //静态图片资源
   app.useStaticAssets(path.join(__dirname,"static", "image"), {
     prefix: "/image"
+  })
+  //静态文件资源
+  app.useStaticAssets(path.join(__dirname,"static", "file"), {
+    prefix: "/file"
   })
   
   await app.listen(8080);

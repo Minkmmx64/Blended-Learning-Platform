@@ -1,14 +1,15 @@
-import { Controller, BadRequestException, Get, Session, Post, Body, HttpStatus, UsePipes, GoneException, Headers, ConflictException, UseInterceptors, UploadedFile, Query } from "@nestjs/common";
+import { Controller, BadRequestException, Get, Session, Post, Body, HttpStatus, UsePipes, GoneException, Headers, ConflictException, UseInterceptors, UploadedFile, Query, UseGuards } from "@nestjs/common";
 import { CommonService } from "./common.service";
 import { HttpResponse } from "src/response/response";
 import { ValidationPipe } from "src/utils/pipes";
 import { CommonSmsValid, CommonTokenValid } from "./common.valid";
-import { IFileUploadStart, SmsDTO, vTokenDTO } from "./common.dto";
+import { IFileUploadStart, IFileisExist, SmsDTO, vTokenDTO } from "./common.dto";
 import { JwtPayload } from "jsonwebtoken";
 import { TokenExpireInterceptor } from "src/guard/token.interceptor";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Express } from 'express'
 import { RedisService } from "src/Modules/redis/RedisService";
+import { AuthGuard } from "src/guard/auth.gurad";
 @Controller("/common")
 export class CommonController {
 
@@ -78,6 +79,8 @@ export class CommonController {
    * @returns 
    */
   @Post("/upload")
+  @UseGuards(new AuthGuard())
+  @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
   @UseInterceptors(FileInterceptor("file"))
   public async FileUpload(
     @UploadedFile() file: Express.Multer.File,
@@ -97,7 +100,7 @@ export class CommonController {
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     }
-      return new HttpResponse<IFileUploadStart>(HttpStatus.ACCEPTED, data).send();
+      return new HttpResponse<IFileUploadStart | IFileisExist>(HttpStatus.ACCEPTED, data).send();
   }
 
   @Post("/upload/slice")
@@ -109,6 +112,17 @@ export class CommonController {
   ) {
     // 1、获取文件位置，以及文件序号,将文件保存到硬盘
     const [ error, status ] = await this.CommonService.FileUploadSlice(file, number, md5);
+    if(error) throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    return new HttpResponse(HttpStatus.ACCEPTED, status ).send();
+  }
+
+  @Post("/upload/merge") //开始合并文件
+  @UseGuards(new AuthGuard())
+  @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
+  public async MergeFile(
+    @Body("filename") filename: string
+  ) {
+    const [ error, status ] = await this.CommonService.MergeFile(filename);
     if(error) throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     return new HttpResponse(HttpStatus.ACCEPTED, status ).send();
   }

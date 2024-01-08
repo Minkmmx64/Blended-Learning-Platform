@@ -1,3 +1,5 @@
+import { StuFileResource } from "src/Entity/stu_file_resource.entity";
+
 export class SmsDTO {
   code: string;
 }
@@ -17,6 +19,10 @@ export class vTokenDTO {
 export interface IFileUploadStart {
   md5: string;
   chunk: number;
+}
+
+export interface IFileisExist {
+  exist?: StuFileResource
 }
 
 export interface RedisFileSliceData {

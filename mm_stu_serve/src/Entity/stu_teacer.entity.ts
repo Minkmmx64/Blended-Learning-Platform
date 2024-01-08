@@ -11,7 +11,7 @@ export class StuTeacher extends BaseAttrColumn {
   name: string;
 
   //学校代码13280 + 姓名缩写 + 随机4位数字
-  @Column({type: "char", length: 255, comment: "职工号", unique: true})
+  @Column({type: "char", length: 255, comment: "职工号",  unique: true})
   code: string;
 
   @Column({type: "enum", enum: ["已认证", "待认证"], comment: "认证状态", default: "待认证"})

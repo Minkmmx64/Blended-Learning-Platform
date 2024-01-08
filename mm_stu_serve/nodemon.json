@@ -6,7 +6,8 @@
         "logs",
         "pem",
         "node_modules/**/node_modules",
-        "src/**/*.spec.ts"
+        "src/**/*.spec.ts",
+        "src/static/**/*"
     ],
     "verbose": true,
     "execMap": {

@@ -21,10 +21,13 @@ export function MainNavigator() : JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
-        animation: "fade_from_bottom"
+        animation: "fade_from_bottom",
+        headerTitleAlign: "center"
       }}>
         <Stack.Screen name="MainBottomTab" options = {{ headerShown: false }} component={ MainBottomTab } />
-        <Stack.Screen name="LoginScreen" component={ LoginScreen } />
+        <Stack.Screen name="LoginScreen" component={ LoginScreen } options={{
+          headerTitle: "登录"
+        }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

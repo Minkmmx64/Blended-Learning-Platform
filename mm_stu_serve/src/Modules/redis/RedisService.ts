@@ -26,4 +26,10 @@ export class RedisService {
       this.RedisRepository.get(key).then(resolve, reject);
     });
   }
+
+  public async rmKV(key:RedisKey): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.RedisRepository.del(key).then(resolve, reject);
+    });
+  }
 }

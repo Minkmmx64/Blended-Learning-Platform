@@ -17,6 +17,7 @@ export class CommonApi extends AxiosApi {
     return this.post("/vtoken", { token });
   }
 
+  //上传小文件
   public upload(data: FormData) {
     return this.post("/upload", data, {
       "headers" : {
@@ -25,6 +26,7 @@ export class CommonApi extends AxiosApi {
     })
   }
 
+  //上传分片
   public uploadSlice(data: FormData) {
     return this.post("/upload/slice", data, {
       "headers" : {
@@ -33,8 +35,14 @@ export class CommonApi extends AxiosApi {
     })
   }
 
+  //请求开始
   public FileUploadStart(md5: string, filename: string) {
     return this.get("/upload/slice/start", { date: new Date().toString(), md5, filename });
+  }
+
+  //请求合并
+  public MergeFile(filename: string) {
+    return this.post("/upload/merge", { filename });
   }
 
   // public rToken() {

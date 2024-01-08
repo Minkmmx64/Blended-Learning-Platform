@@ -26,8 +26,8 @@ export class CourseController {
   }
 
   @Post("/create")
-  @UseGuards(new AuthGuard())
   @UsePipes(new ValidationPipe(CourseCreateValid))
+  @UseGuards(new AuthGuard())
   @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
   public async CourseCreate(
     @Body() body: CourseCreateDTO

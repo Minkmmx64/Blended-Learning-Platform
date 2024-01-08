@@ -1,17 +1,16 @@
-const addon = require("./build/Release/Main");
-const fs = require("fs");
 const path = require("path");
 
-const name = "b15b5d88d78a656ade7f8a706260aaf6";
-const suf = "mp4";
-const cnt = 291;
+const name = "eb85c1d67ccc58b38e2c1aa53f15cf8f";
+const suf = "zip";
+const cnt = 52;
 
+const addon = require("mergefile/build/Release/Main");
 addon.mm_merge_file({
-  entry_dir: path.join(__dirname, "static", "file"),
-  out_dir: "D:/uuuuuuuu",
-  out_name: name,
-  file_suffix: suf,
-  slice_count:  cnt
+  entry_dir: path.join(__dirname, "static", "file"),  
+  out_dir: "D:/uuuuuuuu",                             //文件输出目录
+  out_name: name,                                     //分片文件夹md5目录
+  file_suffix: suf,                                   //文件后缀
+  slice_count:  cnt                                   //分片大小
 }, () => {
 
 });
@@ -26,7 +25,6 @@ async function writeFileAsync(sourceFilePath, destinationFilePath) {
       const endTime = Date.now();
       const elapsedTime = endTime - startTime;
       k += elapsedTime;
-      //console.log(`File ${sourceFilePath} written to ${destinationFilePath} in ${elapsedTime} ms`);
   } catch (error) {
       console.error(`Error writing file: ${error.message}`);
   }
@@ -34,11 +32,11 @@ async function writeFileAsync(sourceFilePath, destinationFilePath) {
 
 async function writeMultipleFilesAsync(destinationFilePath) {
  for(let i = 0 ; i < cnt; i ++){
-      await writeFileAsync(path.join(__dirname, "static", "file", name, `${i}`), destinationFilePath);
+    writeFileAsync(path.join(__dirname, "static", "file", name, `${i}`), destinationFilePath);
   }
 }
 writeMultipleFilesAsync("D:/uuuuuuuu/tt");
 
-setInterval(() => {
-  console.log(k);
-}, 1000);
+// setInterval(() => {
+//   console.log(k);
+// }, 2000);

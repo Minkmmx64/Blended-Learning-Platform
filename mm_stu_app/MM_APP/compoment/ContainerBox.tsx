@@ -17,9 +17,15 @@ const PlatformViewStyle = StyleSheet.create({
 
 const PlatformView = (Props: BaseScreenProps) : JSX.Element => {
   return <>
-    { isAndroid() ? <View style={PlatformViewStyle.ContainerBox}>{Props.children}</View> 
+    { isAndroid() ? <View style={{
+      ...PlatformViewStyle.ContainerBox,
+      ...Props.style
+    }}>{Props.children}</View> 
                   : 
-                  <SafeAreaView style={PlatformViewStyle.ContainerBox}>{Props.children}</SafeAreaView>
+                  <SafeAreaView style={{
+                    ...PlatformViewStyle.ContainerBox,
+                    ...Props.style
+                  }}>{Props.children}</SafeAreaView>
     }   
   </>
 }
@@ -29,7 +35,7 @@ export function ContainerBox(Props : ContainerBoxProps) : JSX.Element  {
   return(
     <>
       { Props.isFocuse ? <StatusBar {...Props.StatusBarOptions}  /> : <></>}
-      <PlatformView>{Props.children}</PlatformView>
+      <PlatformView style={{...Props.style}}>{Props.children}</PlatformView>
     </>
   );
 }

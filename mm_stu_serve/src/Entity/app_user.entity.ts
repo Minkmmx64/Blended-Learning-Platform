@@ -6,7 +6,7 @@ import { UserSign } from "./relation_user_sign.entity";
 import { StuExam } from "./stu_exam.entity";
 
 @Entity("mm_stu_app_user")
-@Check(`("type" = 'student' AND "student_id" IS NOT NULL AND "teacher_id" IS NULL) OR ("type" = 'teacher' AND "teacher_id" IS NOT NULL AND "student_id" IS NULL)`)
+@Check(`("type" = 'student' AND "student_code" IS NOT NULL AND "teacher_code" IS NULL) OR ("type" = 'teacher' AND "teacher_code" IS NOT NULL AND "student_code" IS NULL)`)
 export class AppUser extends BaseAttrColumn {
 
   @Column({type: "char", length: 255, comment: "用户名"})
@@ -15,21 +15,21 @@ export class AppUser extends BaseAttrColumn {
   @Column({type: "char", length: 255, comment: "密码"})
   password: string;
 
-  @Column({type: "char", length: 255, comment: "头像"})
+  @Column({type: "char", length: 255, comment: "头像", nullable: true})
   avatar: string;
 
-  @Column({type: "char", length: 255, comment: "标签"})
+  @Column({type: "char", length: 255, comment: "标签", nullable: true})
   label: string;
-
+  
   @Column({ type: 'enum', enum: ['student', 'teacher'], comment: "用户类型" })
   type: 'student' | 'teacher';
 
   @OneToOne(type => StuInfo, { nullable: true })
-  @JoinColumn({ name: "student" ,referencedColumnName: "student"})
+  @JoinColumn({ name: "student_code", referencedColumnName: "student"})
   student: StuInfo;
 
   @OneToOne(type => StuTeacher, { nullable: true })
-  @JoinColumn({ name: "teacher"})
+  @JoinColumn({ name:"teacher_code",  referencedColumnName: "code" })
   teacher: StuTeacher;
 
   @OneToMany(type => UserSign, UserSign => UserSign.id)
