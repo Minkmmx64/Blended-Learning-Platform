@@ -5,7 +5,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 //定义 APP Stack 注册的路由
 export type RootStackParamList = {
   MainBottomTab: undefined;
-  LoginScreen: undefined;
+  LoginScreen: undefined; 
+  RegistScreen: undefined;
 }
 
 //定义首页底部选项卡注册的路由

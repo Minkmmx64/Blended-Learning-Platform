@@ -15,6 +15,7 @@ import { ChapterModule } from './Modules/admin/chapter/chapter.module';
 import * as dotenv from "dotenv";
 import { resourceModule } from './Modules/admin/resource/resource.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
+import { AppUserModule } from './Modules/app/user/user.module';
 
 dotenv.config();
 
@@ -48,7 +49,8 @@ dotenv.config();
     TeacherModule,
     CourseModule,
     ChapterModule,
-    resourceModule
+    resourceModule,
+    AppUserModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -12,16 +12,26 @@ export class CourseDAO {
   public async CourseListsPagination(CourseQuery: PaginationQuery<CourseQueryDTO>): Promise<StuCourse[]> {
 
     const Order = ToOrder(CourseQuery);
-    const SelectQueryBuilder: SelectQueryBuilder<StuCourse> = this.CourseRepository.createQueryBuilder().select();
+    const SelectQueryBuilder: SelectQueryBuilder<StuCourse> = this.CourseRepository.createQueryBuilder("course").leftJoinAndSelect("course.college", "mm_stu_stu_college");
 
     if(CourseQuery.name) {
       SelectQueryBuilder
-                        .andWhere("name LIKE :name")
+                        .andWhere("course.name LIKE :name")
                         .setParameter("name", `%${CourseQuery.name}%`)
     }
 
+    if(CourseQuery.college_id) {
+      SelectQueryBuilder
+                        .andWhere("course.college_id = :college_id")
+                        .setParameter("college_id", CourseQuery.college_id)
+    }
+
+    if(CourseQuery.prop) {
+      SelectQueryBuilder
+                                   .orderBy("course." + CourseQuery.prop, Order)
+    }
+
     return await SelectQueryBuilder
-                                   .orderBy(CourseQuery.prop, Order)
                                    .skip(CourseQuery.limit * (CourseQuery.offset - 1))
                                    .take(CourseQuery.limit)
                                    .getMany();
@@ -36,7 +46,10 @@ export class CourseDAO {
                              .values({
                                 name: CreateCourse.name,
                                 avatar: CreateCourse.avatar,
-                                remark: CreateCourse.remark
+                                remark: CreateCourse.remark,
+                                college: {
+                                  id: CreateCourse.college_id
+                                }
                              }).execute();
     return result;
   }
@@ -49,7 +62,10 @@ export class CourseDAO {
                              .set({
                               name: UpdateCourse.data.name,
                               remark: UpdateCourse.data.remark,
-                              avatar: UpdateCourse.data.avatar
+                              avatar: UpdateCourse.data.avatar,
+                              college: {
+                                id: UpdateCourse.data.college_id
+                              }
                              })
                              .where("id = :id")
                              .setParameter("id", UpdateCourse.id)

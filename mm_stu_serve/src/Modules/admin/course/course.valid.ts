@@ -6,7 +6,8 @@ import { NotAcceptableException } from "@nestjs/common";
 export const CourseCreateValid = Joi.object<CourseCreateDTO>({
   remark: Joi.string().allow().error(new NotAcceptableException("备注异常")),
   name: Joi.string().required().error(new NotAcceptableException("课程名异常")),
-  avatar: Joi.string().required().error(new NotAcceptableException("头像异常")),
+  avatar: Joi.string().required().error(new NotAcceptableException("图片异常")),
+  college_id: Joi.number().required()
 });
 
 export const CourseUpdateValid = Joi.object<CourseUpdateDTO>({

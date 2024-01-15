@@ -275,11 +275,11 @@ const loadTeacher = () => {
 }
 
 onMounted(() => {
-  EditParams.value.class_id = 4;
+  EditParams.value.class_id = undefined;
   loadColleges();
   loadTeacher();
   loadCourses();
-  handleQuery();
+  
 })
 </script>
   

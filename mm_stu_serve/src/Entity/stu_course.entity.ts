@@ -1,8 +1,9 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { StuTeacher } from "./stu_teacer.entity";
 import { ClassCourseTeacher } from "./teacher_course_class.entity";
 import { StuChapter } from "./stu_chapter.entity";
+import { StuCollege } from "./stu_college.entity";
 
 @Entity("mm_stu_stu_course")
 export class StuCourse extends BaseAttrColumn {
@@ -21,4 +22,8 @@ export class StuCourse extends BaseAttrColumn {
 
   @OneToMany( type => StuChapter, StuChapter => StuChapter.id)
   chapters: StuChapter[];
+
+  @ManyToOne( type => StuCollege, StuCollege => StuCollege.id)
+  @JoinColumn({ name: "college_id" })
+  college: StuCollege;
 }

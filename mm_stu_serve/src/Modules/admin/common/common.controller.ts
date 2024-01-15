@@ -24,17 +24,18 @@ export class CommonController {
     const code = await this.CommonService.getSmsCode(session);
     return new HttpResponse<string>(HttpStatus.NO_CONTENT, code).send();
   }
-  //提交验证码
+  
+  //提交验证码r
   @Post("/sms") 
   @UsePipes(new ValidationPipe(CommonSmsValid))
-  public vSmsCode(
+  public async vSmsCode(
     @Body() body: SmsDTO,
     @Session() session: Record<string, any>
   ) {
-    const verify = this.CommonService.vSmsCode(body.code, session);
+    const verify = await this.CommonService.vSmsCode(body.code, session);
     if(verify) {
       return new HttpResponse<null>(HttpStatus.NO_CONTENT).send();
-    } else {
+    } else { 
       return new HttpResponse<null>(HttpStatus.FORBIDDEN).send();
     }
   }
@@ -134,8 +135,8 @@ export class CommonController {
 
   //测试接口
   @Get("/test")
-  @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
+  //@UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
   public test(){
-    return new HttpResponse<string>(HttpStatus.ACCEPTED, "ok").send();
+    return new HttpResponse(HttpStatus.ACCEPTED, { mjw: "ok" }).send();
   }
 }

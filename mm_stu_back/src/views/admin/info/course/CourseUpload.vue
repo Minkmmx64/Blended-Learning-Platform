@@ -13,6 +13,20 @@
           </div>
         </el-col>
         <el-col :span="6">
+          <el-select
+            v-model="QueryParams.college_id"
+            class="m-2"
+            placeholder="select college"
+          >
+            <el-option
+              v-for="item in Colleges"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-col>
+        <el-col :span="6">
           <el-input
             v-model="QueryParams.name"
             placeholder="course name"
@@ -78,6 +92,27 @@
       <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
+            <span>所属学院:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-select
+            v-model="EditParams.college_id"
+            class="m-2"
+            placeholder="select college"
+          >
+            <el-option
+              v-for="item in Colleges"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row class="mb-5 text-center">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
             <span>{{ TableProps.apiname }}描述:</span>
           </div>
         </el-col>
@@ -124,6 +159,13 @@
       <el-table-column
         prop="name"
         label="课程名"
+        header-align="center"
+        align="center"
+        width="200"
+      />
+      <el-table-column
+        prop="college.name"
+        label="所属学院"
         header-align="center"
         align="center"
         width="200"
@@ -230,22 +272,27 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {course, CourseEdit, CourseQuery} from "@/Request/ApiModules/course";
+import { course , CourseEdit, CourseQuery, coursedata} from "@/Request/ApiModules/course";
 import {useTableFunction} from "@/components/TableFunction/useTableFunction";
 import {onMounted, ref} from "vue";
 import common from "@/Request/ApiModules/common";
 import {ElMessage, UploadRawFile} from "element-plus";
+import college from "@/Request/ApiModules/college";
+import { KeyValue } from "@/components/TableFunction/index.type";
+
 //添加修改对象
 
 const EditParams = ref<CourseEdit>({
   name: "",
   remark: "",
-  avatar: ""
+  avatar: "",
+  college_id: undefined
 });
 
 //查询对象
 const QueryParams = ref<CourseQuery>({
   name: "",
+  college_id: undefined
 });
 
 const TableProps = useTableFunction<course, CourseQuery, CourseEdit>(
@@ -253,7 +300,9 @@ const TableProps = useTableFunction<course, CourseQuery, CourseEdit>(
   course,
   QueryParams,
   EditParams,
-  undefined
+  undefined,
+  undefined,
+  coursedata
 );
 
 const { isEdit, DataSource, TableLoading, total , EditTxt, EditLoading } = TableProps;
@@ -270,7 +319,17 @@ const onBeforeUpload = (rawFile: UploadRawFile) => {
   return false;
 }
 
+//学院列表
+const Colleges = ref<KeyValue[]>([]);
+
+const loadColleges = () => {
+  college.all().then( res => {
+    Colleges.value = res.data.data;
+  }).catch( error => ElMessage.error(error));
+}
+
 onMounted( async () => {
   TableProps.loadTableDatas();
+  loadColleges();
 })
 </script>
