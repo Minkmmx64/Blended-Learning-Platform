@@ -1,12 +1,15 @@
-import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { StackScreenProps } from "../navigator";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ContainerBox } from "../compoment/ContainerBox";
 import { Column } from "../compoment/flex-box/Column";
 import { rpx } from "../utils/common";
 import { Row } from "../compoment/flex-box/Row";
 import { Color } from "../utils/style";
 import { FromProps, RenderForm } from "../compoment/Form/BaseForm";
+import { SvgXml } from "react-native-svg";
+import common from '../request/api/common';
+import user, { LoginData } from '../request/api/user';
 
 const LoginStyle = StyleSheet.create({
   Login: {
@@ -21,6 +24,13 @@ const LoginStyle = StyleSheet.create({
     height: rpx(60),
     borderRadius: rpx(100),
     marginTop: rpx(20),
+  },
+  Sms: {
+    width: rpx(700),
+    justifyContent: "space-between",
+    marginTop: rpx(40),
+    borderBottomWidth: rpx(1),
+    borderColor: Color.Default
   }
 });
 
@@ -30,29 +40,61 @@ const LoginFromProps: FromProps[] = [
     value: "",
     placeholder: "",
     prop: "username",
-    regexp: /.{1}/
   },
   {
     label: "密码",
     value: "",
     placeholder: "",
     prop: "password",
-    regexp: /.{1}/
+    secure: true
   },
 ];
 
 interface FormRef {
   check: () => boolean;
-  values: () => Object;
+  values: () => LoginData;
 }
 
-export function LoginScreen({ navigation }: StackScreenProps<"LoginScreen">) {
+type LoginScreenProps = StackScreenProps<"LoginScreen">; 
+
+export function LoginScreen({ navigation }: LoginScreenProps) {
 
   const FormRef = useRef<FormRef>(null);
 
-  const UserLogin = () => {
-    if(FormRef.current?.check()) {
-      Alert.alert("验证成功", JSON.stringify(FormRef.current?.values()));
+  const [sms, setSms] = useState("");
+  const [smsText, setSmsText] = useState("");
+
+  const loadSms = async () => {
+    const { data } = await common.getSms();
+    setSms(data);
+  }
+
+  useEffect(() => {
+    loadSms();
+    return () => {
+
+    }
+  }, []);
+
+  const UserLogin = async () => {
+    try {
+      //验证验证码
+      const verify = await common.VSms(smsText);
+      if (verify.code >= 400) {
+        Alert.alert("验证码错误");
+        setSmsText("");
+        loadSms();
+        return;
+      }
+
+      if (FormRef.current?.check()) {
+        const login = FormRef.current?.values();
+        const login_res = await user.login(login);
+        console.log(login_res.data);
+        //登录成功
+      }
+    } catch (error) {
+      Alert.alert("错误", JSON.stringify(error));
     }
   }
 
@@ -60,19 +102,29 @@ export function LoginScreen({ navigation }: StackScreenProps<"LoginScreen">) {
     navigation.navigate("RegistScreen");
   }
 
-  
-
   return (
     <>
       <ContainerBox style={{ marginTop: rpx(200) }}>
         <Column>
           <RenderForm form={LoginFromProps} ref={FormRef} />
+          <Row style={LoginStyle.Sms}>
+            <Text style={{ width: rpx(200), textAlign: "center" }}>验证码:</Text>
+            <TextInput
+              defaultValue={ smsText }
+              onChangeText={text => setSmsText(text)}
+              style={{ flex: 1, marginRight: rpx(30) }} />
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={loadSms}>
+              {sms !== "" ? <SvgXml xml={sms} width={150} height={40} /> : <></>}
+            </TouchableOpacity>
+          </Row>
           <TouchableOpacity
             style={LoginStyle.Regist}
             activeOpacity={0.5}
-            onPress={ UserRegist }
+            onPress={UserRegist}
           >
-            <Row style={{ width: "100%", height: "100%", justifyContent: "flex-end" }}>
+            <Row style={{ width: "100%", height: "100%", justifyContent: "flex-end", marginTop: rpx(40) }}>
               <Text style={{ color: Color.Danger, fontSize: rpx(35), borderBottomWidth: 0.5 }}>没有账号? 去注册</Text>
             </Row>
           </TouchableOpacity>
@@ -90,3 +142,5 @@ export function LoginScreen({ navigation }: StackScreenProps<"LoginScreen">) {
     </>
   );
 }
+
+

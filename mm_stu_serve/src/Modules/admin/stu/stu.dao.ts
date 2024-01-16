@@ -3,7 +3,9 @@ import { DataSource, DeleteResult, InsertResult, SelectQueryBuilder, UpdateResul
 import { PaginationQuery } from "../../index.type";
 import { StuCreateDTO, StuQueryDTO, StuUpdateDTO } from "./stu.dto";
 import { ToOrder } from "src/common/common";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class StuDAO {
   constructor(protected DataSource: DataSource){}
 
@@ -107,5 +109,14 @@ export class StuDAO {
                                      .createQueryBuilder()
                                      .select()
                                      .getCount();
+  }
+
+  public async getStudentByCode(student: string) : Promise<StuInfo> {
+    return await this.StuRepository
+                     .createQueryBuilder()
+                     .select()
+                     .where("student = :student")
+                     .setParameter("student", student)
+                     .getOne();
   }
 }

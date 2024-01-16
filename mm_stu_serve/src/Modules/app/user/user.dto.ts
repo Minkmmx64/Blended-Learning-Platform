@@ -11,3 +11,9 @@ export class RegisterData {
 
   teacher_code : string;
 }
+
+export class LoginData {
+  username: string;
+
+  password: string;
+}

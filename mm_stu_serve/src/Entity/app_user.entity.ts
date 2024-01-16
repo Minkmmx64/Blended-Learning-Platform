@@ -6,7 +6,15 @@ import { UserSign } from "./relation_user_sign.entity";
 import { StuExam } from "./stu_exam.entity";
 
 @Entity("mm_stu_app_user")
-@Check(`("type" = 'student' AND "student_code" IS NOT NULL AND "teacher_code" IS NULL) OR ("type" = 'teacher' AND "teacher_code" IS NOT NULL AND "student_code" IS NULL)`)
+@Check(
+  `(
+    ("type" = 'student' AND "student_code" IS NOT NULL AND "teacher_code" IS NULL) 
+    OR 
+    ("type" = 'teacher' AND "teacher_code" IS NOT NULL AND "student_code" IS NULL)
+  )
+  AND
+  ("teacher_code IS NOT NULL AND "student_code" IS NOT NULL)
+`)
 export class AppUser extends BaseAttrColumn {
 
   @Column({type: "char", length: 255, comment: "用户名"})

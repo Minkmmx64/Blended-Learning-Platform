@@ -1,4 +1,4 @@
-import { MutableRefObject, forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { MutableRefObject, forwardRef, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { Color } from "../../utils/style";
 import { Column } from "../flex-box/Column";
 import { Image, StyleSheet, Text, TextInput } from "react-native";
@@ -16,6 +16,8 @@ export interface FromProps {
   prop: string;
   // 验证
   regexp?: RegExp;
+  // 密码框
+  secure?: boolean
 }
 
 interface _ItemRef {
@@ -72,7 +74,10 @@ export const RenderForm = forwardRef(({ form }: { form: FromProps[] }, ref) => {
     const [text, setText] = useState(props.value);
     const from_icon = () => <Image style={LoginStyle.ItemIcon} source={{ uri: icon }} />
     const regular = (text: string, regex?: RegExp) => {
-      if(!regex) return true;
+      if(!regex) {
+        setColor(Color.Default), setPColor(Color.Default);
+        return true;
+      }
       const ret = regex.test(text);
       if (ret) {
         setColor(Color.Default), setPColor(Color.Default), setIcon(success_icon);
@@ -91,6 +96,7 @@ export const RenderForm = forwardRef(({ form }: { form: FromProps[] }, ref) => {
       <Row style={{ ...LoginStyle.From, borderColor: color }}>
         <Text style={LoginStyle.Label}>{props.label}</Text>
         <TextInput
+          secureTextEntry={props.secure ?? false}
           key={index}
           placeholderTextColor={p_color}
           defaultValue={text}
@@ -99,14 +105,14 @@ export const RenderForm = forwardRef(({ form }: { form: FromProps[] }, ref) => {
           onFocus={() => setColor(Color.Primary)}
           onBlur={() => regular(text, props.regexp)}
           placeholder={props.placeholder} />
-        {p_color !== Color.Info ? from_icon() : <></>}
+        {p_color !== Color.Info && props.regexp ? from_icon() : <></>}
       </Row>
     );
   });
 
   return <>
     <Column>
-      {form.map((props, index) => <_item ref={ItemRefs[index]} key={index} props={props} index={index} />)}
+      { useMemo(() => form.map((props, index) => <_item ref={ItemRefs[index]} key={index} props={props} index={index} />), form) }
     </Column>
   </>
 })

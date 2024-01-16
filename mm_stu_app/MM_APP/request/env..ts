@@ -56,11 +56,13 @@ export class Request {
   protected async tran(data: Promise<Response>) {
     try {
       const res = await data;
-      if (res.ok)
-        return res.json();
+      if (res.ok) {
+        const successMsg = await res.json();
+        console.debug("请求成功:: => [", successMsg, "] <=");
+        return successMsg;
+      }
       else {
         const errMsg = await res.json();
-        Alert.alert("请求错误", JSON.stringify(errMsg));
         return Promise.reject(errMsg);
       }
     } catch (err) {

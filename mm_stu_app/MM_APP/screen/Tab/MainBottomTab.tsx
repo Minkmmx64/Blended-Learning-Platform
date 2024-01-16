@@ -30,7 +30,8 @@ export function MainBottomTab() : JSX.Element {
           SwitchTabImage(focused, require("../../static/tab/index_default.png"), require("../../static/tab/index_activity.png"))
         ,
         headerTitleAlign: "center",
-        tabBarLabel: "首页"
+        tabBarLabel: "首页",
+        headerTitle: "首页"
       }} />
       <Tab.Screen name="CourseScreen" component={ CourseScreen } options={{
         tabBarIcon: ({ focused, color, size }) => 

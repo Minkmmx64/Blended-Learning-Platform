@@ -14,6 +14,12 @@ export interface RegisterData {
   teacher_code?: string;
 }
 
+export interface LoginData {
+  username: string;
+
+  password: string;
+}
+
 export class user extends Request {
   
   constructor(){
@@ -22,6 +28,10 @@ export class user extends Request {
 
   public async regist( data : RegisterData) {
     return this.post("/regist", { ...data });
+  }
+
+  public async login( data: LoginData ) {
+    return this.post("/login", { ...data });
   }
 }
 

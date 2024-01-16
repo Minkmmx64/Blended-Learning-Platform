@@ -8,7 +8,7 @@ function IndexScreen({ }: IndexScreenProps) {
 
   return (
     <ContainerBox>
-      <Button title="发送请求" />
+      
     </ContainerBox>
   )
 }

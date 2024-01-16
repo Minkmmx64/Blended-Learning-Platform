@@ -4,7 +4,9 @@ import { RealCourseDTO, TeacherCreateDTO, TeacherQueryDTO, TeacherUpdateDTO } fr
 import { ToOrder } from "src/common/common";
 import { StuTeacher } from "src/Entity/stu_teacer.entity";
 import { StuCourse } from "src/Entity/stu_course.entity";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class TeacherDAO {
   constructor(protected DataSource: DataSource){}
 
@@ -130,5 +132,14 @@ export class TeacherDAO {
                                      .createQueryBuilder()
                                      .select()
                                      .getCount();
+  }
+
+  public async getTeacherByCode(code: string) : Promise<StuTeacher> {
+    return await this.TeacherRepository
+                     .createQueryBuilder()
+                     .select()
+                     .where("code = :code")
+                     .setParameter("code", code)
+                     .getOne();
   }
 }

@@ -8,6 +8,15 @@ import { Color } from "../utils/style";
 import { Row } from "../compoment/flex-box/Row";
 import { CheckBoxGroup, ICheckBoxValues } from "../compoment/Form/CheckBox";
 import user , { RegisterData } from "../request/api/user";
+import { StackScreenProps } from "../navigator";
+
+interface FormRef {
+  check: () => boolean;
+  values: () => RegisterData & { bpassword: string; };
+}
+
+type RegistScreenProps = StackScreenProps<"RegistScreen">;
+
 const RegistFromProps: FromProps[] = [
   {
     label: "用户名",
@@ -39,11 +48,6 @@ const RegistFromProps: FromProps[] = [
   }
 ];
 
-interface FormRef {
-  check: () => boolean;
-  values: () => RegisterData & { bpassword: string; };
-}
-
 const LoginStyle = StyleSheet.create({
   Regist: {
     width: rpx(500),
@@ -67,7 +71,7 @@ const checkBoxValue: ICheckBoxValues<"student" | "teacher">[] = [
   { name: "我是教师", value: "teacher" }
 ]
 
-export function RegistScreen() {
+export function RegistScreen({ navigation } : RegistScreenProps) {
   const FormRef = useRef<FormRef>(null);
 
   const UserRegist = async () => {
@@ -87,9 +91,13 @@ export function RegistScreen() {
         teacher_code: auth
       };
 
-      const res = await user.regist(data);
-      console.log(res);
-      
+      try {
+        const res = await user.regist(data);
+        console.log("注册成功");
+        navigation.pop();
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
   
