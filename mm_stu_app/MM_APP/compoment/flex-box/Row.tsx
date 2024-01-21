@@ -21,7 +21,7 @@ interface IRow extends BaseScreenProps {
 export function Row(Props: IRow) {
   
   return (
-    <View style={{
+    <View {...Props} style={{
       ...RowStyle.box,
       ...Props.style
     }}>

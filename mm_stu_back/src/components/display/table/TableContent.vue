@@ -3,7 +3,7 @@
     <el-table 
       :key="Props.tableKey" 
       v-loading="loading" 
-      style="width:100%; height: calc(100% - 50px)" 
+      style="width:100%; height: calc(750px)" 
       :data="Props.DataSource"
       row-key="id" 
       lazy
@@ -100,7 +100,7 @@ const handleCurrentChange = (val: number) => {
 .TableContent {
   width: 90%;
   margin: 0 auto;
-  height: calc(100% - 250px);
+  height: calc(800px);
 }
 
 .Pagination {

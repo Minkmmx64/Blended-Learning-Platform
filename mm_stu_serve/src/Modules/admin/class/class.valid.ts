@@ -20,9 +20,5 @@ export const ClassTableValid = Joi.object<{ id: number }>({
 })
 
 export const UpdateClassTableValid = Joi.object<UpdateClassTableDTO>({
-  list: Joi.array().has({
-    course_id: Joi.number().required().error(new NotAcceptableException("course_id不能为空")),
-    teacher_id: Joi.number().required().error(new NotAcceptableException("teacher_id不能为空")),
-    json: Joi.string().required()
-  })
+  list: Joi.array()
 })

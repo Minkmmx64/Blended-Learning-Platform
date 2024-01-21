@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import { StatusBar } from "react-native";
 import { RootStackParamList } from ".";
-import { LoginScreen } from "../screen/LoginScreen";
+import LoginScreen from "../screen/LoginScreen";
 import { MainBottomTab } from "../screen/Tab/MainBottomTab";
 import { RegistScreen } from "../screen/RegistScreen";
 

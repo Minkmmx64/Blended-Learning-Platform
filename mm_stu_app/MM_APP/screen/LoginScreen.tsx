@@ -10,6 +10,10 @@ import { FromProps, RenderForm } from "../compoment/Form/BaseForm";
 import { SvgXml } from "react-native-svg";
 import common from '../request/api/common';
 import user, { LoginData } from '../request/api/user';
+import { connect } from "react-redux";
+import { RootStoreRedux } from "../store";
+import { Dispatch } from "redux";
+import { AppUserReduxProps, setAppUser } from "../store/useAppUserRedux";
 
 const LoginStyle = StyleSheet.create({
   Login: {
@@ -55,10 +59,18 @@ interface FormRef {
   values: () => LoginData;
 }
 
-type LoginScreenProps = StackScreenProps<"LoginScreen">; 
+interface ReduxProps {
+  useAppUserRedux: AppUserReduxProps
+}
 
-export function LoginScreen({ navigation }: LoginScreenProps) {
+interface ReduxDispatch {
+  setUserdata: (data: Partial<AppUserReduxProps>) => void;
+}
 
+type LoginScreenProps = StackScreenProps<"LoginScreen"> & ReduxProps & ReduxDispatch; 
+
+function LoginScreen({ navigation, setUserdata, useAppUserRedux }: LoginScreenProps) {
+  
   const FormRef = useRef<FormRef>(null);
 
   const [sms, setSms] = useState("");
@@ -71,6 +83,7 @@ export function LoginScreen({ navigation }: LoginScreenProps) {
 
   useEffect(() => {
     loadSms();
+    
     return () => {
 
     }
@@ -90,7 +103,10 @@ export function LoginScreen({ navigation }: LoginScreenProps) {
       if (FormRef.current?.check()) {
         const login = FormRef.current?.values();
         const login_res = await user.login(login);
-        console.log(login_res.data);
+        //插入用户登录信息
+        setUserdata(login_res.data);
+        //回退到主页
+        navigation.pop();
         //登录成功
       }
     } catch (error) {
@@ -143,4 +159,16 @@ export function LoginScreen({ navigation }: LoginScreenProps) {
   );
 }
 
+const mapStateToProps = (state : RootStoreRedux, ownProps : LoginScreenProps) => {
+  return {
+    useAppUserRedux: state.useAppUserRedux,
+  };
+};
 
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    setUserdata: (data) => setAppUser(dispatch)(data)
+  } as ReduxDispatch;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

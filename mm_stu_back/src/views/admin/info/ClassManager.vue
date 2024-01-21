@@ -77,6 +77,7 @@
         <el-col :span="18">
           <el-input
             v-model="EditParams.code"
+            :disabled="EditTxt === '修改'"
             placeholder="class code"
           />
         </el-col>

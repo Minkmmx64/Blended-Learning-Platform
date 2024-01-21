@@ -1,6 +1,6 @@
 import { Alert } from "react-native";
 
-export const BaseUrl = "http://192.168.0.106:8080/api";
+export const BaseUrl = "http://app.minkmm.api:8080/api";
 
 
 export class Request {

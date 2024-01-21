@@ -93,10 +93,11 @@
                   @click="SelectClassTablePosition(index, dindex)"
                 >
                   <span class="flex-column h-full flex-center" v-if="dindex === 0">{{ item }} </span>
-                  <tr v-else style="font-size: 14px;" class="flex-column h-full flex-center">
+                  <tr v-else style="font-size: 14px;" class="flex-column h-full flex-center hidden class-table-show-remove relative">
                     <template v-if="Courses.length && readPosition(index, dindex)">
                       <span>{{ readPosition(index, dindex).course }}</span>
                       <span>{{ readPosition(index, dindex).teacher }}</span>
+                      <div @click.stop="removePosition(index, dindex)" class="remove point absolute">x</div>
                     </template>
                   </tr>
                 </td>
@@ -219,7 +220,7 @@ const handCommitClassTable = () => {
       if(times instanceof Array) {
         // 当前坐标已经被安排了课程
         // 删除原来课表id中的课程安排时间
-        const newtimes = times.filter( pos => pos.x !== EditParams.value.point.x && pos.y !== EditParams.value.point.y);
+        const newtimes = times.filter( pos => (pos.x !== EditParams.value.point.x || pos.y !== EditParams.value.point.y));
         if(newtimes.length)
           ClassCourseTableMap.value.set(ClassCourseTableMapId, newtimes);
         else ClassCourseTableMap.value.delete(ClassCourseTableMapId);
@@ -274,16 +275,56 @@ const loadTeacher = () => {
   }).catch( error => ElMessage.error(error));
 }
 
+const removePosition = (x: number, y: number) => {
+  const id = { x: x, y: y };
+  const class_course_teacher_id = ClassCourseTableMapReflect.value.get(JSON.stringify(id));
+  ClassCourseTableMapReflect.value.delete(JSON.stringify(id));
+  const newtimes = ClassCourseTableMap.value.get(class_course_teacher_id).filter( pos => (pos.x !== x || pos.y !== y));
+  const RequestBody = [];
+  if(newtimes.length < 1) {
+    ClassCourseTableMap.value.delete(class_course_teacher_id);
+  } else {
+    ClassCourseTableMap.value.set(class_course_teacher_id, newtimes);
+  }
+  ClassCourseTableMap.value.forEach(( value, key ) => {
+    const { course_id, teacher_id } = JSON.parse(key) as IClassTable;
+    RequestBody.push({ course_id, teacher_id, json: JSON.stringify(value) });
+  });
+  classes.update(EditParams.value.class_id, { list: RequestBody }).then( () => {
+   setTimeout(() => {
+    ElMessage.warning("删除课程表成功");
+   }, 500);
+  }).catch(ElMessage.error)
+}
+
 onMounted(() => {
   EditParams.value.class_id = undefined;
   loadColleges();
   loadTeacher();
   loadCourses();
-  
 })
 </script>
   
 <style lang="scss" scoped>
+.class-table-show-remove {
+  .remove {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #f56c6c;
+    color: #ffffff;
+    text-align: center;
+    line-height: 20px;
+    top: 0px;
+    right: -20px;
+    transition: 100ms all ease;
+  }
+  &:hover {
+    .remove{
+      right: 0px;
+    }
+  }
+}
 .course-table-container {
   width: 60%;
   height: 700px;

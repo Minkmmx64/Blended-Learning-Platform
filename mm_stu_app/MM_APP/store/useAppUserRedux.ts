@@ -2,6 +2,17 @@ import { Action, Dispatch } from "redux";
 
 const SET_DATA = "SET_DATA";
 
+export interface StudentsProps {
+  id: number;
+  student: string;
+  school: string;
+  name: string
+  native: string
+  year: number,
+  gender: string
+  age: number,
+  avatar: string
+}
 
 export interface AppUserReduxProps {
   id: number;
@@ -9,8 +20,9 @@ export interface AppUserReduxProps {
   avatar: string | undefined;
   label: string;
   type: "student" | "teacher" | "unauthorization";
-  student: string;
-  teacher: ""
+  student: StudentsProps | null;
+  teacher: string;
+  phone: string;
 }
 
 const initializeAppUserReduxProps: AppUserReduxProps = {
@@ -19,8 +31,10 @@ const initializeAppUserReduxProps: AppUserReduxProps = {
   avatar: undefined,
   label: "",
   type: "unauthorization",
-  student: "",
-  teacher: ""
+  student: null,
+  teacher: "",
+  phone: "",
+
 }
 
 type MAction<U = unknown> = Action & U;

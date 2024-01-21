@@ -1,0 +1,1 @@
+/// <reference types="element-plus/global.d.ts" />

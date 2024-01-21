@@ -16,6 +16,7 @@ import * as dotenv from "dotenv";
 import { resourceModule } from './Modules/admin/resource/resource.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { AppUserModule } from './Modules/app/user/user.module';
+import { WebSocketModule } from './Modules/ws/websocket.module';
 
 dotenv.config();
 
@@ -50,7 +51,8 @@ dotenv.config();
     CourseModule,
     ChapterModule,
     resourceModule,
-    AppUserModule
+    AppUserModule,
+    WebSocketModule
   ],
   controllers: [AppController],
   providers: [AppService],

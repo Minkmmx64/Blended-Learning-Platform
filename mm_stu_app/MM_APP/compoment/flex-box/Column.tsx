@@ -21,7 +21,7 @@ interface IColumn extends BaseScreenProps {
 export const Column = (Props: IColumn) => {
   
   return (
-    <View style={{
+    <View {...Props} style={{
       ...ColumnStyle.box,
       ...Props.style
     }}>

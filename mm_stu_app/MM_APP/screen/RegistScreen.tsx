@@ -115,7 +115,7 @@ export function RegistScreen({ navigation } : RegistScreenProps) {
   return <>
     <ContainerBox style={{ marginTop: rpx(200) }}>
       <Column>
-        {useMemo(() => <RenderForm form={RegistFromProps} ref={FormRef} />, [RegistFromProps])}
+        <RenderForm form={RegistFromProps} ref={FormRef} />
         <CheckBoxGroup 
           isChecked={0}
           checks={checkBoxValue} 

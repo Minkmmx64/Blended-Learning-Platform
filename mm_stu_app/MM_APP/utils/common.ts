@@ -62,3 +62,12 @@ export const Rules = {
     msg: "文件后缀名"
   }
 }
+
+
+export const sleep = (timeout: number = 1000) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(void 0);
+    }, timeout);
+  })
+}

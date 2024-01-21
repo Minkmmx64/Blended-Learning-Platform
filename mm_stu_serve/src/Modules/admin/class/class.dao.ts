@@ -117,7 +117,7 @@ export class ClassDAO {
 
   public async UpdateClassTable(class_id: number, Body: UpdateClassTableDTO) : Promise<void> {
    // 先删除该班级的所有课程表
-   console.log(Body);
+   //console.log(Body);
 
    const queryRunner = this.DataSource.createQueryRunner();
    try {

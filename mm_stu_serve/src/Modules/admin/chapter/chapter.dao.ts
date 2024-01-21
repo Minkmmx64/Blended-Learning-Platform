@@ -38,6 +38,9 @@ export class ChapterDAO {
     if(ChapterQuery.prop) {
       SelectQueryBuilder
                          .orderBy("chapter." + ChapterQuery.prop, Order)
+    } else {
+      SelectQueryBuilder
+                         .orderBy("chapter.update_time", "ASC")
     }
 
     return await SelectQueryBuilder

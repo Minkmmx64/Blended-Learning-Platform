@@ -1,18 +1,32 @@
 import { combineReducers, legacy_createStore } from "redux";
-import { UserReduxProps, useUserRedux } from "./useUserRedux";
-import { TestReduxProps, useTestRedux } from './useTestRedux'
 import { AppUserReduxProps, useAppUserRedux } from "./useAppUserRedux";
+import { persistReducer, persistStore } from 'redux-persist';
+ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface RootStoreRedux {
-  useUserRedux: UserReduxProps;
-  useTestRedux: TestReduxProps;
   useAppUserRedux: AppUserReduxProps;
 }
 
 const Store = combineReducers({
-  useUserRedux,
-  useTestRedux,
   useAppUserRedux
 })
 
-export default legacy_createStore(Store);
+//设置存储引擎和key
+const persistConfig = {
+  key: 'minkm',
+  storage: AsyncStorage,
+}
+
+const persistedReducer = persistReducer(persistConfig, Store);
+
+const store = legacy_createStore(persistedReducer);
+
+const persistor = persistStore(store);
+
+export default () => {
+  
+  return {
+    store: store,
+    persistor: persistor
+  }
+}
