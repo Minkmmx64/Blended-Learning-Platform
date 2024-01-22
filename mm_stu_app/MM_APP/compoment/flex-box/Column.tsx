@@ -9,7 +9,7 @@ const ColumnStyle = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    width: rpx(750),
+    width: "100%",
     position: "relative"
   }
 })

@@ -8,7 +8,7 @@ const RowStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: rpx(750),
+    width: "100%",
     position: "relative",
     flexWrap: "wrap"
   }
