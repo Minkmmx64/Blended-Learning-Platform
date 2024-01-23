@@ -17,6 +17,7 @@ import { resourceModule } from './Modules/admin/resource/resource.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { AppUserModule } from './Modules/app/user/user.module';
 import { WebSocketModule } from './Modules/ws/websocket.module';
+import { IndexModule } from './Modules/app/index/index.module';
 
 dotenv.config();
 
@@ -52,7 +53,8 @@ dotenv.config();
     ChapterModule,
     resourceModule,
     AppUserModule,
-    WebSocketModule
+    WebSocketModule,
+    IndexModule
   ],
   controllers: [AppController],
   providers: [AppService],

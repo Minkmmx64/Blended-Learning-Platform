@@ -10,12 +10,14 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { Express } from 'express'
 import { RedisService } from "src/Modules/redis/RedisService";
 import { AuthGuard } from "src/guard/auth.gurad";
+import { ChapterService } from "../chapter/chapter.service";
 @Controller("/common")
 export class CommonController {
 
   constructor(
     private readonly CommonService: CommonService,
-    private readonly RedisService: RedisService
+    private readonly RedisService: RedisService,
+    private readonly ChapterService: ChapterService
   ) { }
 
   //获取图形验证码
@@ -136,7 +138,8 @@ export class CommonController {
   //测试接口
   @Get("/test")
   //@UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
-  public test(){
-    return new HttpResponse(HttpStatus.ACCEPTED, { mjw: "ok" }).send();
+  public async test(){
+    const d = await this.ChapterService.getChapterByCourseId(1);
+    return new HttpResponse(HttpStatus.ACCEPTED, d).send();
   }
 }

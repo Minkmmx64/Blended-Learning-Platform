@@ -21,18 +21,28 @@ export class Request {
     })
   }
 
-  protected Fetch(Method: "GET" | "POST", url: string, params?: unknown, TimeOut: number = this.time): Promise<Response> {
+  protected Fetch(Method: "GET" | "POST", url: string, params?: Record<string, any>, TimeOut: number = this.time): Promise<Response> {
     return new Promise((resolve, reject) => {
-      const singalController = new AbortController()
-      fetch(BaseUrl + this.prefix + url, {
+      const singalController = new AbortController();
+      let config = {
         method: Method,
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(params),
         signal: singalController.signal
-      }).then(res => {
+      };
+      let uri = BaseUrl + this.prefix + url;
+      if(Method === "POST") {
+        config = Object.assign(config, { body: JSON.stringify(params) });
+      } else {
+        //get 合并参数
+        if(params) {
+          const query = Object.keys(params).map( key => `${key}=${params[key]}`).join("&")
+          uri = `${uri}?${query}`;
+        }
+      }
+      fetch( uri , config).then(res => {
         resolve(res);
       }).catch(error => {
         reject(new Error(error));
@@ -45,11 +55,11 @@ export class Request {
     })
   }
 
-  protected async get(url: string, params?: unknown, TimeOut: number = this.time) {
+  protected async get(url: string, params?: Record<string, any>, TimeOut: number = this.time) {
     return this.tran(this.Fetch("GET", url, params, TimeOut))
   }
 
-  protected async post(url: string, body?: unknown, TimeOut: number = this.time) {
+  protected async post(url: string, body?: Record<string, any>, TimeOut: number = this.time) {
     return this.tran(this.Fetch("POST", url, body, TimeOut))
   }
 
@@ -71,6 +81,7 @@ export class Request {
       if(error.toString) err_msg = error.toString();
       else err_msg = JSON.stringify(error);
       Alert.alert("请求错误", err_msg);
+      console.error(err_msg);
       return Promise.reject(error);
     }
   }

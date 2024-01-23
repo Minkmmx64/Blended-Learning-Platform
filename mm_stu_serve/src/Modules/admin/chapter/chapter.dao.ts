@@ -133,6 +133,6 @@ export class ChapterDAO {
                     .select()
                     .where("course = :courseId")
                     .setParameter("courseId", courseId)
-                    .getMany();
+                    .getMany()
   }
 }

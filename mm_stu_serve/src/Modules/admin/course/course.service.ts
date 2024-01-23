@@ -1,4 +1,3 @@
-
 import { Injectable } from "@nestjs/common";
 import { DataSource, DeleteResult, InsertResult, UpdateResult } from "typeorm";
 import { ListMetaData, PaginationQuery, ServiceData } from "../../index.type";

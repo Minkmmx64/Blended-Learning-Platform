@@ -1,5 +1,5 @@
-import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { RootTabParamList, StackScreenProps } from '../../navigator';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { RootTabParamList } from '../../navigator';
 import IndexScreen from './IndexScreen';
 import AdminScreen from './AdminScreen';
 import { MessageScreen } from './MessageScreen';
@@ -39,13 +39,15 @@ export function MainBottomTab() : JSX.Element {
         ,
         headerTitleAlign: "center",
         tabBarLabel: "课程",
+        headerTitle: "我的课程"
       }}/>
       <Tab.Screen name="MessageScreen" component={ MessageScreen } options={{
         tabBarIcon: ({ focused, color, size }) => 
           SwitchTabImage(focused, require("../../static/tab/message_default.png"), require("../../static/tab/message_activity.png"))
         ,
         headerTitleAlign: "center",
-        tabBarLabel: "消息"
+        tabBarLabel: "消息",
+        headerTitle: "我的消息"
       }}/>
       <Tab.Screen name="AdminScreen" component={ AdminScreen } options={{
         tabBarIcon: ({ focused, color, size }) => 
@@ -54,7 +56,6 @@ export function MainBottomTab() : JSX.Element {
         headerTitleAlign: "center",
         tabBarLabel: "我的",
         headerShown: false,
-        
       }}/>
     </Tab.Navigator>
   );

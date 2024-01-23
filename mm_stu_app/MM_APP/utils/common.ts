@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Dimensions, Platform } from "react-native";
 
 export function isAndroid() {
@@ -63,11 +64,32 @@ export const Rules = {
   }
 }
 
-
+//延迟函数
 export const sleep = (timeout: number = 1000) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(void 0);
     }, timeout);
   })
+}
+
+
+//函数防抖
+export function debounce<A extends any[], R> (fn: (...args : A) => R, timeout: number) {
+  let time: NodeJS.Timeout | null = null;
+  return function(...args: A) {
+    time = setTimeout(() => {
+      if(time)
+        clearTimeout(time);
+      fn(...args);
+    }, timeout);
+  }
+}
+
+//函数节流
+
+
+// 时间转化成 yyyy-mm-dd
+export function DateTransform(date: string) {
+  return moment(date).format("YYYY-MM-DD");
 }

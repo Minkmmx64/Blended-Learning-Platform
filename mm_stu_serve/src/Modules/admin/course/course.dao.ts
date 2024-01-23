@@ -97,4 +97,13 @@ export class CourseDAO {
                                      .select()
                                      .getCount();
   }
+
+  //加载首页课程
+  public async LoadIndexCourses(offset: number, limit: number) : Promise<StuCourse[]> {
+    const SelectQueryBuilder: SelectQueryBuilder<StuCourse> = this.CourseRepository.createQueryBuilder("course").leftJoinAndSelect("course.college", "mm_stu_stu_college");
+    return await SelectQueryBuilder
+                                  .skip((offset - 1) * limit)
+                                  .take(limit)
+                                  .getMany();
+  }
 }

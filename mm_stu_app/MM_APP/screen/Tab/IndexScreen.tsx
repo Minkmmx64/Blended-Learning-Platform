@@ -1,16 +1,19 @@
-import { ScrollView, StyleSheet, RefreshControl, Image, Text, TouchableOpacity } from "react-native";
+import { ScrollView, StyleSheet, RefreshControl, Image, Text, TouchableOpacity, NativeSyntheticEvent, NativeScrollEvent } from "react-native";
 import { ContainerBox } from "../../compoment/ContainerBox";
 import { TabScreenProps } from "../../navigator";
-import { rpx, sleep } from "../../utils/common";
-import { useCallback, useMemo, useState } from "react";
+import { DateTransform, debounce, rpx, sleep } from "../../utils/common";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SwiperManager, SwiperManagerItem } from "../../compoment/display/SwiperManager";
 import { Color } from "../../utils/style";
 import { Column } from "../../compoment/flex-box/Column";
 import { Row } from "../../compoment/flex-box/Row";
 import { course } from "../../utils/data";
-import { FlowLayout } from "../../compoment/display/FlowLayout";
+import { FlowLayoutProvider, FlowLayoutProviderRef } from "../../compoment/display/FlowLayout";
+import Index from "../../request/api/index";
 
-type courseType = typeof course extends (infer U)[] ? U :  typeof course;
+type IndexScreenProps = TabScreenProps<"IndexScreen">;
+
+type CourseType = typeof course extends (infer U)[] ? U : typeof course;
 
 const IndexScreenStyle = StyleSheet.create({
   Main: {
@@ -36,19 +39,51 @@ const IndexScreenStyle = StyleSheet.create({
   }
 });
 
-type IndexScreenProps = TabScreenProps<"IndexScreen">;
+function IndexScreen({ navigation }: IndexScreenProps) {
 
-function IndexScreen({ }: IndexScreenProps) {
-
+  //瀑布流当前页数
+  const currentOffset = useRef(1);
   // 下拉刷新
   const [refreshing, setRefreshing] = useState(false);
+  // 是否加载
+  const [ reload, setReload ] = useState(false);
 
-  const onRefresh = useCallback(async () => {
+  const onRefresh = (async () => {
     setRefreshing(true);
     // 加载数据的逻辑
+    setReload(!reload);
+    currentOffset.current = 1;
+    append();
     // ...
     await sleep(1000);
     setRefreshing(false);
+  });
+
+  //瀑布流数据加载
+  const flowDatasLoad = useRef(false);
+  //瀑布流布局
+  const FlowLayout = FlowLayoutProvider<CourseType>();
+  //获取瀑布流布局对象
+  const FlowLayoutRef = useRef<FlowLayoutProviderRef<CourseType>>(null);
+  //列
+  const [ columns , setColumns ] = useState(2);
+  
+  // 加载课程
+  const loadCourse = async (): Promise<CourseType[]> => {
+    const { data } = await Index.loadCourse(currentOffset.current, 6);
+    currentOffset.current += 1;
+    return data;
+  }
+  // 添加课程
+  const append = () => {
+    loadCourse().then( course => {    
+      FlowLayoutRef.current!.appendFlowDatas(course);
+    });
+  }
+
+  //初始化
+  useEffect(() => {
+    append();
   }, []);
 
   //轮播图
@@ -60,14 +95,58 @@ function IndexScreen({ }: IndexScreenProps) {
     "http://124.220.176.205:8080/image/a3f3c218644ae86dc71a9a94b5d2a495.jpeg",
   ]
 
-  //轮播图点击
-  const onCourseItemPress = (course: courseType) => {
-    console.log(course.id);
+  //瀑布流元素点击
+  const onCourseItemPress = (course: CourseType) => {
+    // 点击去课程章节页面
+    navigation.push("CourseScreen", { courseId: course.id });
   }
 
+  //窗口滑动
+  const onScroll = async (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentSize, contentOffset, layoutMeasurement } = event.nativeEvent;
+    const scrollH = contentOffset.y;
+    const H = contentSize.height - layoutMeasurement.height;
+    if (Math.abs(scrollH - H) <= 50) {
+      // 加载瀑布流元素
+      if(flowDatasLoad.current) return;
+      flowDatasLoad.current = true;
+      const setFlowDatas = debounce(FlowLayoutRef.current!.appendFlowDatas, 200);
+      const courses = await loadCourse();
+      setFlowDatas([...courses]);
+    } else {
+      flowDatasLoad.current = false;
+    }
+  }
+
+  {/** 瀑布流 */ }
+  const renderFlowData = useMemo(() =>
+    <FlowLayout
+      ref={FlowLayoutRef}
+      columns={ columns }
+      onRender={course => {
+        return (
+          <TouchableOpacity
+            key={course.id}
+            onPress={() => onCourseItemPress(course)}
+            activeOpacity={0.8} 
+            style={{ width: "92%" }}>
+            <Column style={{ marginTop: 10 }}>
+              <Image style={{ width: "100%" }} source={{ uri: course.avatar }} height={150} />
+              <Text style={{ marginTop: rpx(10) }}><Text style={{ color: Color.Primary }}>课程名称: </Text>{course.name}</Text>
+              <Text style={{ marginTop: rpx(10) }}><Text style={{ color: Color.Danger }}>所属学院: </Text>{course.college.name}</Text>
+              <Text numberOfLines={8} style={{ marginTop: rpx(10) }}>    {course.remark}</Text>
+              <Text style={{ marginTop: rpx(10), alignSelf: "flex-end", color: Color.Default }}>{DateTransform(course.update_time)}</Text>
+            </Column>
+          </TouchableOpacity>
+        )
+      }}
+    />, [ reload ]);
+  
   return (
     <ContainerBox style={{ flex: 1 }}>
       <ScrollView
+        scrollEventThrottle={10}
+        onScroll={onScroll}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -91,24 +170,11 @@ function IndexScreen({ }: IndexScreenProps) {
                 {image.map((uri, _) => <SwiperManagerItem key={_}><Image width={rpx(750)} height={rpx(250)} source={{ uri }} /></SwiperManagerItem>)}
               </SwiperManager>, [])
           }
-          {/** 瀑布流 */}
-          <FlowLayout
-            data={course}
-            onRender={ course => {
-              return (
-                <TouchableOpacity 
-                  onPress={ () => onCourseItemPress(course) }
-                  activeOpacity={1} style={{ width: "95%" }}>
-                  <Column key={course.id} style={{ marginTop: 10 }}>
-                    <Image style={{ width: "100%" }} source={{ uri: course.avatar }} height={150} />
-                    <Text>{ course.name }</Text>
-                    <Text>{ course.remark }</Text>
-                    <Text>{ course.college.name }</Text>
-                    </Column>
-                </TouchableOpacity>
-              )
-            }}
-          />
+          {/** 瀑布流 */ }
+          { renderFlowData }
+        </Column>
+        <Column>
+          <Text>------ 下滑刷新 ------</Text>
         </Column>
       </ScrollView>
     </ContainerBox>

@@ -5,8 +5,9 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 //定义 APP Stack 注册的路由
 export type RootStackParamList = {
   MainBottomTab: undefined;
-  LoginScreen: undefined; 
+  LoginScreen:  undefined; 
   RegistScreen: undefined;
+  CourseScreen: { courseId: number };
 }
 
 //定义首页底部选项卡注册的路由
@@ -22,7 +23,7 @@ export type RootTabParamList = {
 //当前 Home 是 MainBottomTab 的 Tab 页面, MainBottomTab 是 Stack 页面
 export type TabScreenProps<RouteName extends keyof RootTabParamList> = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, RouteName>,
-  StackScreenProps<RootStackParamList>
+  StackScreenProps<keyof RootStackParamList>
 >;
 
 export type StackScreenProps<RouteName extends keyof RootStackParamList> = NativeStackScreenProps<RootStackParamList, RouteName>;

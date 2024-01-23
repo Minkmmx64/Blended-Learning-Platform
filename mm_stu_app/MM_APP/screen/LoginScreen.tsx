@@ -69,7 +69,7 @@ interface ReduxDispatch {
 
 type LoginScreenProps = StackScreenProps<"LoginScreen"> & ReduxProps & ReduxDispatch; 
 
-function LoginScreen({ navigation, setUserdata, useAppUserRedux }: LoginScreenProps) {
+function LoginScreen({ navigation, setUserdata }: LoginScreenProps) {
   
   const FormRef = useRef<FormRef>(null);
 
