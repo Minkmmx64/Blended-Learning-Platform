@@ -1,16 +1,17 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { RootTabParamList } from '../../navigator';
+import { RootTabParamList, StackScreenProps } from '../../navigator';
 import IndexScreen from './IndexScreen';
 import AdminScreen from './AdminScreen';
-import { MessageScreen } from './MessageScreen';
+import MessageScreen from './MessageScreen';
 import CourseScreen from './CourseScreen';
 import { Image, ImageSourcePropType, StyleSheet } from 'react-native';
+import { useEffect } from 'react';
 
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
-export function MainBottomTab() : JSX.Element {
-  
+export function MainBottomTab(Props: StackScreenProps<"MainBottomTab">) : JSX.Element {
+
   const SwitchTabImage = (focused : boolean, def: ImageSourcePropType, activity: ImageSourcePropType) : JSX.Element => {
     const ImageStyle = StyleSheet.create({
       Image: {
@@ -24,7 +25,10 @@ export function MainBottomTab() : JSX.Element {
   }
  
   return (
-    <Tab.Navigator id="MainBottomTab"> 
+    <Tab.Navigator id="MainBottomTab" screenOptions={{
+      lazy: false,
+      
+    }}> 
       <Tab.Screen name="IndexScreen" component={IndexScreen} options={{
         tabBarIcon: ({ focused, color, size }) => 
           SwitchTabImage(focused, require("../../static/tab/index_default.png"), require("../../static/tab/index_activity.png"))

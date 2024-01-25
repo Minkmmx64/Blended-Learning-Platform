@@ -1,6 +1,7 @@
 import { Action, Dispatch } from "redux";
 
 const SET_DATA = "SET_DATA";
+const CLEAR_USER = "CLEAR_USER";
 
 export interface StudentsProps {
   id: number;
@@ -48,6 +49,11 @@ export function useAppUserRedux(state: AppUserReduxProps = initializeAppUserRedu
         ...data
       };
     }
+    case CLEAR_USER: {
+      return {
+        ...initializeAppUserReduxProps
+      }
+    }
     default:
       return state;
   }
@@ -57,5 +63,11 @@ export function useAppUserRedux(state: AppUserReduxProps = initializeAppUserRedu
 export const setAppUser = (dispatch: Dispatch) => {
   return (data: Partial<AppUserReduxProps>) => {
     dispatch({type: SET_DATA, data});
+  }
+}
+//CLEAR_USER
+export const clearAppUser = (dispatch: Dispatch) => {
+  return () => {
+    dispatch({type: CLEAR_USER});
   }
 }

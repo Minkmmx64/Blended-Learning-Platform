@@ -2,18 +2,32 @@ import { ScrollView, StyleSheet, RefreshControl, Image, Text, TouchableOpacity, 
 import { ContainerBox } from "../../compoment/ContainerBox";
 import { TabScreenProps } from "../../navigator";
 import { DateTransform, debounce, rpx, sleep } from "../../utils/common";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SwiperManager, SwiperManagerItem } from "../../compoment/display/SwiperManager";
 import { Color } from "../../utils/style";
 import { Column } from "../../compoment/flex-box/Column";
 import { Row } from "../../compoment/flex-box/Row";
-import { course } from "../../utils/data";
+import { UtilToolDatas, CourseDatas } from "../../utils/data";
 import { FlowLayoutProvider, FlowLayoutProviderRef } from "../../compoment/display/FlowLayout";
 import Index from "../../request/api/index";
+import { BaseScreenProps } from "../../compoment/compoment";
+import { IUtilTools } from "./tab.type";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { RootStoreRedux } from "../../store";
+import { AppUserReduxProps } from "../../store/useAppUserRedux";
 
-type IndexScreenProps = TabScreenProps<"IndexScreen">;
+interface ReduxDispatch {
 
-type CourseType = typeof course extends (infer U)[] ? U : typeof course;
+}
+
+interface ReduxProps {
+  useAppUserRedux: AppUserReduxProps
+}
+
+type IndexScreenProps = TabScreenProps<"IndexScreen"> & ReduxProps & ReduxDispatch;
+
+type CourseType = typeof CourseDatas extends (infer U)[] ? U : typeof CourseDatas;
 
 const IndexScreenStyle = StyleSheet.create({
   Main: {
@@ -39,15 +53,33 @@ const IndexScreenStyle = StyleSheet.create({
   }
 });
 
-function IndexScreen({ navigation }: IndexScreenProps) {
+function IndexScreen({ navigation, useAppUserRedux }: IndexScreenProps) {
+
+  //初始化
+  useEffect(() => {
+    append();
+    return () => {
+
+    }
+  }, []);
 
   //瀑布流当前页数
   const currentOffset = useRef(1);
   // 下拉刷新
   const [refreshing, setRefreshing] = useState(false);
   // 是否加载
-  const [ reload, setReload ] = useState(false);
-
+  const [reload, setReload] = useState(false);
+  // 加载文字
+  const [reloadText, setReloadText] = useState("------ 下滑刷新 ------");
+  //瀑布流列
+  const [columns, setColumns] = useState(2);
+  //瀑布流数据加载
+  const flowDatasLoad = useRef(false);
+  //瀑布流布局
+  const FlowLayout = FlowLayoutProvider<CourseType>();
+  //获取瀑布流布局对象
+  const FlowLayoutRef = useRef<FlowLayoutProviderRef<CourseType>>(null);
+  //下拉刷新
   const onRefresh = (async () => {
     setRefreshing(true);
     // 加载数据的逻辑
@@ -59,15 +91,6 @@ function IndexScreen({ navigation }: IndexScreenProps) {
     setRefreshing(false);
   });
 
-  //瀑布流数据加载
-  const flowDatasLoad = useRef(false);
-  //瀑布流布局
-  const FlowLayout = FlowLayoutProvider<CourseType>();
-  //获取瀑布流布局对象
-  const FlowLayoutRef = useRef<FlowLayoutProviderRef<CourseType>>(null);
-  //列
-  const [ columns , setColumns ] = useState(2);
-  
   // 加载课程
   const loadCourse = async (): Promise<CourseType[]> => {
     const { data } = await Index.loadCourse(currentOffset.current, 6);
@@ -76,15 +99,13 @@ function IndexScreen({ navigation }: IndexScreenProps) {
   }
   // 添加课程
   const append = () => {
-    loadCourse().then( course => {    
-      FlowLayoutRef.current!.appendFlowDatas(course);
+    loadCourse().then(cc => {
+      if (cc.length) {
+        setReloadText("------ 下滑刷新 ------");
+      }
+      FlowLayoutRef.current!.appendFlowDatas(cc);
     });
   }
-
-  //初始化
-  useEffect(() => {
-    append();
-  }, []);
 
   //轮播图
   const image = [
@@ -101,17 +122,19 @@ function IndexScreen({ navigation }: IndexScreenProps) {
     navigation.push("CourseScreen", { courseId: course.id });
   }
 
-  //窗口滑动
+  //下滑加载
   const onScroll = async (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { contentSize, contentOffset, layoutMeasurement } = event.nativeEvent;
     const scrollH = contentOffset.y;
     const H = contentSize.height - layoutMeasurement.height;
     if (Math.abs(scrollH - H) <= 50) {
       // 加载瀑布流元素
-      if(flowDatasLoad.current) return;
+      if (flowDatasLoad.current) return;
       flowDatasLoad.current = true;
       const setFlowDatas = debounce(FlowLayoutRef.current!.appendFlowDatas, 200);
       const courses = await loadCourse();
+      if (courses.length < 1)
+        setReloadText("------ 没有更多了 ------");
       setFlowDatas([...courses]);
     } else {
       flowDatasLoad.current = false;
@@ -122,16 +145,16 @@ function IndexScreen({ navigation }: IndexScreenProps) {
   const renderFlowData = useMemo(() =>
     <FlowLayout
       ref={FlowLayoutRef}
-      columns={ columns }
+      columns={columns}
       onRender={course => {
         return (
           <TouchableOpacity
             key={course.id}
             onPress={() => onCourseItemPress(course)}
-            activeOpacity={0.8} 
+            activeOpacity={0.8}
             style={{ width: "92%" }}>
             <Column style={{ marginTop: 10 }}>
-              <Image style={{ width: "100%" }} source={{ uri: course.avatar }} height={150} />
+              <Image style={{ width: "100%", borderRadius: rpx(10) }} source={{ uri: course.avatar }} height={150} />
               <Text style={{ marginTop: rpx(10) }}><Text style={{ color: Color.Primary }}>课程名称: </Text>{course.name}</Text>
               <Text style={{ marginTop: rpx(10) }}><Text style={{ color: Color.Danger }}>所属学院: </Text>{course.college.name}</Text>
               <Text numberOfLines={8} style={{ marginTop: rpx(10) }}>    {course.remark}</Text>
@@ -140,8 +163,58 @@ function IndexScreen({ navigation }: IndexScreenProps) {
           </TouchableOpacity>
         )
       }}
-    />, [ reload ]);
-  
+    />, [reload]
+  );
+
+  interface UtilToolsProps extends BaseScreenProps {
+    data: IUtilTools[];
+  }
+
+  {/** 常用工具 */ }
+  const UtilTools = ({ data }: UtilToolsProps) => {
+
+    const UtilToolsPress = (value: IUtilTools) => {
+      if(useAppUserRedux.id === -1) {
+        return navigation.push("LoginScreen");
+      }
+      return value.nav.type === "tab" ? 
+                            navigation.jumpTo(value.nav.url) :
+                            navigation.push(value.nav.url);
+    }
+    
+    return (
+      <>
+        <Row style={{ justifyContent: "flex-start", marginTop: rpx(20) }}>
+          <Text style={{ fontSize: rpx(40), color: "#000000" }}>常用</Text>
+        </Row>
+        <Column>
+          {
+            data.map((value, _) => {
+              const dimension = 60;
+              return (
+                <TouchableOpacity 
+                  activeOpacity={1}
+                  onPress={ UtilToolsPress.bind({}, value) }
+                  key={_}>
+                  <Row    
+                    style={{ height: rpx(100), justifyContent: "flex-start", position: "relative" }}>
+                    <Column style={{ height: "100%", width: rpx(80), marginRight: rpx(40) }}>
+                      <Image style={{ width: rpx(dimension), height: rpx(dimension) }} source={{ uri: value.url }} />
+                    </Column>
+                    <Text>{value.label}</Text>
+                    <Column style={{ width: rpx(80), right: rpx(40), flex: 1, alignItems: "flex-end" }}>
+                      <Image style={{ height: rpx(dimension / 2), width: rpx(dimension / 2) }} source={require("../../static/index/arrow.png")} />
+                    </Column>
+                  </Row>
+                </TouchableOpacity>
+              );
+            })
+          }
+        </Column>
+      </>
+    )
+  }
+
   return (
     <ContainerBox style={{ flex: 1 }}>
       <ScrollView
@@ -167,17 +240,37 @@ function IndexScreen({ navigation }: IndexScreenProps) {
           {
             useMemo(() =>
               <SwiperManager transition={500} duration={3000} width={rpx(750)} height={rpx(250)}>
-                {image.map((uri, _) => <SwiperManagerItem key={_}><Image width={rpx(750)} height={rpx(250)} source={{ uri }} /></SwiperManagerItem>)}
+                {
+                  image.map((uri, _) =>
+                    <SwiperManagerItem key={_}>
+                      <Image width={rpx(750)} height={rpx(250)} source={{ uri }} />
+                    </SwiperManagerItem>
+                  )
+                }
               </SwiperManager>, [])
           }
-          {/** 瀑布流 */ }
-          { renderFlowData }
+          {/** 常用功能 */}
+          <UtilTools data={UtilToolDatas} />
+          {/** 瀑布流 */}
+          {renderFlowData}
         </Column>
-        <Column>
-          <Text>------ 下滑刷新 ------</Text>
+        <Column style={{ marginTop: rpx(40) }}>
+          <Text>{reloadText}</Text>
         </Column>
       </ScrollView>
     </ContainerBox>
   );
 }
-export default IndexScreen;
+const mapStateToProps = (state : RootStoreRedux, ownProps : TabScreenProps<"CourseScreen">): ReduxProps => {
+  return {
+    useAppUserRedux: state.useAppUserRedux,
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): ReduxDispatch => {
+  return {
+    
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(IndexScreen);

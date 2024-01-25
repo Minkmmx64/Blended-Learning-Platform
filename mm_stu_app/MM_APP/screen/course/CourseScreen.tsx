@@ -1,11 +1,19 @@
-import { Text } from "react-native"
+import { StyleSheet, Text } from "react-native"
 import { ContainerBox } from "../../compoment/ContainerBox"
 import { Column } from "../../compoment/flex-box/Column"
 import { StackScreenProps } from "../../navigator"
 import { useEffect, useState } from "react"
 import Index, { Chapters } from '../../request/api/index';
 import { FlatList } from "react-native"
-import { Color } from "../../utils/style"
+import { rpx } from "../../utils/common"
+
+const CourseScreenStyle = StyleSheet.create({
+  ChapterTitle: {
+    width: rpx(700),
+    height: rpx(60),
+    backgroundColor: "rgba(0,0,0,1)"
+  }
+})
 
 export const CourseScreen = (Props: StackScreenProps<"CourseScreen">) => {
 
@@ -26,7 +34,17 @@ export const CourseScreen = (Props: StackScreenProps<"CourseScreen">) => {
         renderItem={ chapter => {
           return (
             <Column>
-              <Text>{chapter.item.name }</Text>
+              <Text style={CourseScreenStyle.ChapterTitle}>{chapter.item.name }</Text>
+              <FlatList 
+                data={chapter.item.children}
+                renderItem={ ch => {
+                  return (
+                    <Column>
+                      <Text>{ch.item.name}</Text>
+                    </Column>
+                  )
+                }}
+              />
             </Column>
           )
         }}

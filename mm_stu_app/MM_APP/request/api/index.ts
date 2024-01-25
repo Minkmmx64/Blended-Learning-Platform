@@ -10,6 +10,7 @@ export interface Chapters {
   cover: string;
   pid: null | number;
   course: number;
+  children?: Chapters[];
 }
 
 export class Index extends Request {

@@ -1,4 +1,4 @@
-import { Alert } from "react-native";
+import { Alert, ToastAndroid } from "react-native";
 
 export const BaseUrl = "http://app.minkm.api:8080/api";
 
@@ -68,7 +68,7 @@ export class Request {
       const res = await data;
       if (res.ok) {
         const successMsg = await res.json();
-        console.debug("请求成功:: => [", successMsg, "] <=");
+        //ToastAndroid.show(`"请求成功:: => [", ${JSON.stringify(successMsg)}, "] <="`, 1000);
         return successMsg;
       }
       else {

@@ -6,8 +6,10 @@ import { useCallback, useEffect, useRef } from "react";
 import { RootStoreRedux } from "../../store";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { AppUserReduxProps, setAppUser } from "../../store/useAppUserRedux";
+import { AppUserReduxProps, clearAppUser, setAppUser } from "../../store/useAppUserRedux";
 import { rpx } from "../../utils/common";
+import { Color } from "../../utils/style";
+import { Column } from "../../compoment/flex-box/Column";
 
 const DefaultAvatar = "http://124.220.176.205:8080/image/4608aad3b19cb132d58c6f4f55a71163.jpeg";
 
@@ -17,11 +19,12 @@ interface ReduxProps {
 
 interface ReduxDispatch {
   setUserdata: (data: Partial<AppUserReduxProps>) => void;
+  clearAppUser: () => void;
 }
 
 type AdminScreenProps = TabScreenProps<"AdminScreen"> & ReduxProps & ReduxDispatch;
 
-function AdminScreen({ navigation, useAppUserRedux } : AdminScreenProps) {
+function AdminScreen({ navigation, useAppUserRedux, clearAppUser } : AdminScreenProps) {
 
   const isFocuse = useIsFocused();
 
@@ -65,6 +68,16 @@ function AdminScreen({ navigation, useAppUserRedux } : AdminScreenProps) {
           <Image style={AdminStyle.AdminAvatar} source={{ uri: useAppUserRedux.avatar ?? DefaultAvatar }} />
         </TouchableOpacity>
         <Text style={{ marginTop: 10 }}>{useAppUserRedux.username ?? "请登录"}</Text>
+        <TouchableOpacity 
+          onPress={() => {
+            clearAppUser();
+            console.log(useAppUserRedux.id);
+          }}
+          style={{ marginTop: rpx(300), width: rpx(700), height: rpx(60), borderBottomWidth: 1, borderBottomColor: Color.Primary }}>
+          <Column style={{ height: rpx(60)}}>
+            <Text style={{ color: Color.Danger }}>退出登录</Text>
+          </Column>
+        </TouchableOpacity>
       </ContainerBox>
     </>
   )
@@ -91,7 +104,7 @@ const AdminStyle = StyleSheet.create({
  * @param ownProps 该组件的Props
  * 该对象会在Props中,也就是state的值会在该组件的参数列表
  */
-const mapStateToProps = (state : RootStoreRedux, ownProps : TabScreenProps<"AdminScreen">) => {
+const mapStateToProps = (state : RootStoreRedux, ownProps : TabScreenProps<"AdminScreen">): ReduxProps => {
   return {
     useAppUserRedux: state.useAppUserRedux,
   };
@@ -101,10 +114,11 @@ const mapStateToProps = (state : RootStoreRedux, ownProps : TabScreenProps<"Admi
  * @param dispatch 
  * 定义dispatch 该组件会包含一个 fetchData 方法 执行 dispatch
  */
-const mapDispatchToProps = (dispatch: Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch): ReduxDispatch => {
   return {
-    setUserdata: (data) => setAppUser(dispatch)(data)
-  } as ReduxDispatch;
+    setUserdata: (data) => setAppUser(dispatch)(data),
+    clearAppUser: () => clearAppUser(dispatch)()
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminScreen);
