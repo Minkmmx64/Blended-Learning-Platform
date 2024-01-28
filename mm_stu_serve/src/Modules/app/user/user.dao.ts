@@ -62,8 +62,9 @@ export class AppUserDAO {
   public async getAppUserByStudent(username: string) : Promise<AppUser> {
     return await this.AppUserRepository
                      .createQueryBuilder("user")
-                     .leftJoinAndSelect("user.student", "mm_stu_stu_info.student")
-                     .where("username = :username")
+                     .leftJoinAndSelect("user.student", "mm_stu_stu_info")
+                     .leftJoinAndSelect("mm_stu_stu_info.class", "mm_stu_stu_class")
+                     .where("user.username = :username")
                      .setParameter("username", username)
                      .getOne();
   }

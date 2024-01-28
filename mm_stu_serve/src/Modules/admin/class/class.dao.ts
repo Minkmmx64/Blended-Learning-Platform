@@ -10,6 +10,8 @@ export class ClassDAO {
 
   public ClassRepository = this.DataSource.getRepository(StuClass);
 
+  public ClassTableRepositiry = this.DataSource.getRepository(ClassCourseTeacher);
+
   public ClassCourseTeacherRepository = this.DataSource.getRepository(ClassCourseTeacher);
 
   public async ClassListsPagination(ClassQuery: PaginationQuery<ClassQueryDTO>): Promise<StuClass[]> {
@@ -150,6 +152,17 @@ export class ClassDAO {
    } finally {
     await queryRunner.release();
    }
+  }
+
+  public async getStudentCourseTables(classId: number) {
+    return await this.ClassTableRepositiry
+                     .createQueryBuilder("table")
+                     .leftJoinAndSelect("table.class", "mm_stu_stu_class")
+                     .leftJoinAndSelect("table.course", "mm_stu_stu_course")
+                     .leftJoinAndSelect("table.teacher", "mm_stu_stu_teacher")
+                     .where("table.class_id = :classId")
+                     .setParameter("classId", classId)
+                     .getMany();
   }
   
 }

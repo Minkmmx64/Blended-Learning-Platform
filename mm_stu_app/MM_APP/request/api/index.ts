@@ -27,6 +27,11 @@ export class Index extends Request {
   public async getChaptersByCourseId(courseId: number): Promise<{ data: Chapters[] }> {
     return this.get(`/chapter/${ courseId }`);
   }
+
+  //根据班级加载我的课程表
+  public async getStudentCourseTables() {
+    
+  }
 }
 
 export default new Index();

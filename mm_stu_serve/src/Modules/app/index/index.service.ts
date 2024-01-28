@@ -1,18 +1,18 @@
-
 import { Injectable } from "@nestjs/common";
 import { StuChapter } from "src/Entity/stu_chapter.entity";
 import { StuCourse } from "src/Entity/stu_course.entity";
+import { ClassCourseTeacher } from "src/Entity/teacher_course_class.entity";
 import { ChapterService } from "src/Modules/admin/chapter/chapter.service";
-import { CourseDAO } from "src/Modules/admin/course/course.dao";
+import { ClassService } from "src/Modules/admin/class/class.service";
 import { CourseService } from "src/Modules/admin/course/course.service";
 import { ServiceData } from "src/Modules/index.type";
-import { DataSource } from "typeorm";
 
 @Injectable()
 export class IndexService{
   constructor(
     private readonly ChapterService: ChapterService,
-    private readonly CourseService: CourseService
+    private readonly CourseService: CourseService,
+    private readonly ClassService: ClassService
   ){}
 
   public async IndexCourseLists(offset: number, limit: number) : ServiceData<StuCourse[]> {
@@ -28,6 +28,15 @@ export class IndexService{
     try {
       const [ error, chapters ] = await this.ChapterService.getChapterByCourseId(courseId);
       return [ error, chapters ];
+    } catch (error) {
+      return [ new Error(error) , null ]
+    }
+  }
+
+  public async getStudentCourseTables(classId: number) : ServiceData<ClassCourseTeacher[]> {
+    try {
+      const tables = await this.ClassService.ClassDAO.getStudentCourseTables(classId);
+      return [ null, tables ];
     } catch (error) {
       return [ new Error(error) , null ]
     }

@@ -12,7 +12,14 @@ export interface StudentsProps {
   year: number,
   gender: string
   age: number,
-  avatar: string
+  avatar: string;
+  class: StuClassProps | null;
+}
+
+export interface StuClassProps {
+  id: number;
+  name: string;
+  code: number;
 }
 
 export interface AppUserReduxProps {
@@ -35,7 +42,6 @@ const initializeAppUserReduxProps: AppUserReduxProps = {
   student: null,
   teacher: "",
   phone: "",
-
 }
 
 type MAction<U = unknown> = Action & U;

@@ -58,6 +58,7 @@ function IndexScreen({ navigation, useAppUserRedux }: IndexScreenProps) {
   //初始化
   useEffect(() => {
     append();
+    
     return () => {
 
     }

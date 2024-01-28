@@ -73,7 +73,7 @@ function AdminScreen({ navigation, useAppUserRedux, clearAppUser } : AdminScreen
             clearAppUser();
             console.log(useAppUserRedux.id);
           }}
-          style={{ marginTop: rpx(300), width: rpx(700), height: rpx(60), borderBottomWidth: 1, borderBottomColor: Color.Primary }}>
+          style={{ width: rpx(700), height: rpx(60), borderBottomWidth: 1, borderBottomColor: Color.Primary, bottom: rpx(0) }}>
           <Column style={{ height: rpx(60)}}>
             <Text style={{ color: Color.Danger }}>退出登录</Text>
           </Column>

@@ -35,7 +35,7 @@ export function ContainerBox(Props : ContainerBoxProps) : JSX.Element  {
   return(
     <>
       { Props.isFocuse ? <StatusBar {...Props.StatusBarOptions}  /> : <></>}
-      <PlatformView style={{...Props.style}}>{Props.children}</PlatformView>
+      <PlatformView style={{ backgroundColor: "#ffffff", flex: 1, ...Props.style }}>{Props.children}</PlatformView>
     </>
   );
 }

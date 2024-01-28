@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import { RootStoreRedux } from "../store";
 import { Dispatch } from "redux";
 import { AppUserReduxProps, setAppUser } from "../store/useAppUserRedux";
+import { Toast } from "../compoment/display/toast/Toast";
 
 const LoginStyle = StyleSheet.create({
   Login: {
@@ -108,6 +109,10 @@ function LoginScreen({ navigation, setUserdata }: LoginScreenProps) {
         //回退到主页
         navigation.pop();
         //登录成功
+        Toast.show("登陆成功");
+        setTimeout(() => {
+          Toast.hide();
+        }, 1000);
       }
     } catch (error) {
       Alert.alert("错误", JSON.stringify(error));
@@ -120,7 +125,7 @@ function LoginScreen({ navigation, setUserdata }: LoginScreenProps) {
 
   return (
     <>
-      <ContainerBox style={{ marginTop: rpx(200) }}>
+      <ContainerBox style={{ paddingTop: rpx(200) }}>
         <Column>
           <RenderForm form={LoginFromProps} ref={FormRef} />
           <Row style={LoginStyle.Sms}>

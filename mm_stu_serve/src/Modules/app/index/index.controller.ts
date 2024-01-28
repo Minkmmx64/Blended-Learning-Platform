@@ -2,13 +2,13 @@ import { BadRequestException, Controller, Get, HttpStatus, Param, Query } from "
 import { HttpResponse } from "src/response/response";
 import { IndexService } from "./index.service";
 
-@Controller("/app/index")
+@Controller("/app")
 export class IndexController {
   
   constructor(private readonly IndexService: IndexService){}
 
   //首页课程
-  @Get("/course/list")
+  @Get("/index/course/list")
   public async IndexCourseLists(
    @Query("offset") offset: number,
    @Query("limit") limit: number,
@@ -20,7 +20,7 @@ export class IndexController {
   }
 
   //通过课程id获取章节
-  @Get("/chapter/:courseId")
+  @Get("/index/chapter/:courseId")
   public async getChaptersByCourseId(
     @Param("courseId") courseId: number
   ) {
@@ -30,4 +30,23 @@ export class IndexController {
     } else return new HttpResponse(HttpStatus.ACCEPTED, chapters).send();
   }
 
+  //通过班级Id获取课表
+  @Get("/class/student/:classId")
+  public async getStudentCourseTables(
+    @Param("classId") classId: number
+  ) {
+    const [ error, tables ] = await this.IndexService.getStudentCourseTables(classId);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse(HttpStatus.ACCEPTED, tables).send();
+  }
+
 }
+
+
+
+
+
+
+
+

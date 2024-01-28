@@ -1,7 +1,12 @@
-import { Alert, ToastAndroid } from "react-native";
-
+import { Alert } from "react-native";
+import { Toast } from '../compoment/display/toast/Toast';
 export const BaseUrl = "http://app.minkm.api:8080/api";
 
+export interface RequestData<U = any> {
+  code: number;
+  data: U;
+  message: string;
+}
 
 export class Request {
 
@@ -63,12 +68,13 @@ export class Request {
     return this.tran(this.Fetch("POST", url, body, TimeOut))
   }
 
-  protected async tran(data: Promise<Response>) {
+  protected async tran(data: Promise<Response>): Promise<RequestData> {
     try {
       const res = await data;
       if (res.ok) {
         const successMsg = await res.json();
         //ToastAndroid.show(`"请求成功:: => [", ${JSON.stringify(successMsg)}, "] <="`, 1000);
+        //Toast.show("网络请求" , JSON.stringify(successMsg));
         return successMsg;
       }
       else {
@@ -80,7 +86,7 @@ export class Request {
       let err_msg = "";
       if(error.toString) err_msg = error.toString();
       else err_msg = JSON.stringify(error);
-      Alert.alert("请求错误", err_msg);
+      Toast.show("请求错误" , err_msg);
       console.error(err_msg);
       return Promise.reject(error);
     }

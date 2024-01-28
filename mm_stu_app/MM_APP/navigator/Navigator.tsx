@@ -7,6 +7,7 @@ import LoginScreen from "../screen/LoginScreen";
 import { MainBottomTab } from "../screen/Tab/MainBottomTab";
 import { RegistScreen } from "../screen/RegistScreen";
 import { CourseScreen } from "../screen/course/CourseScreen";
+import { ChapterDetailScreen } from "../screen/course/ChapterDetailScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -36,6 +37,9 @@ export function MainNavigator() : JSX.Element {
         }} />
         <Stack.Screen name="CourseScreen" component={ CourseScreen } options={{
           headerTitle: "课程信息"
+        }} />
+        <Stack.Screen name="ChapterDetailScreen" component={ ChapterDetailScreen } options={{
+
         }} />
       </Stack.Navigator>
     </NavigationContainer>

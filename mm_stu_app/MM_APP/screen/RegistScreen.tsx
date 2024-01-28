@@ -113,7 +113,7 @@ export function RegistScreen({ navigation } : RegistScreenProps) {
   }
 
   return <>
-    <ContainerBox style={{ marginTop: rpx(200) }}>
+    <ContainerBox style={{ paddingTop: rpx(200) }}>
       <Column>
         <RenderForm form={RegistFromProps} ref={FormRef} />
         <CheckBoxGroup 
