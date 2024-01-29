@@ -86,4 +86,12 @@ export class resourceDAO {
                                      .select()
                                      .getCount();
   }
+
+  public async getChapterResourceByChapterId(chapterId: number) {
+    return await this.resourceRepository
+                     .createQueryBuilder()
+                     .where("chapter_id = :chapter_id")
+                     .setParameter("chapter_id", chapterId)
+                     .getMany();
+  }
 }

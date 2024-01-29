@@ -15,17 +15,26 @@ const ColumnStyle = StyleSheet.create({
 })
 
 interface IColumn extends BaseScreenProps {
-
+  /**
+   * 垂直外边距
+   */
+  gapV?: number;
+  /*
+  * 水平外边距
+  */
+  gapH?: number;
 }
 
 export const Column = (Props: IColumn) => {
-  
+
   return (
     <View {...Props} style={{
       ...ColumnStyle.box,
+      marginHorizontal: Props.gapH ?? 0,
+      marginVertical: Props.gapV ?? 0,
       ...Props.style
     }}>
-      { Props.children }
+      {Props.children}
     </View>
   )
 };

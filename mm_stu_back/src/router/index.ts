@@ -95,6 +95,12 @@ const routes: Array<RouteRecordRaw> = [
         name: "FileUpload",
         meta: { isAuth: true, key: "FileUpload" },
         component: () => import("@/views/admin/FileUpload.vue")
+      },
+      {
+        path: "/ApplyAuth",
+        name: "ApplyAuth",
+        meta: { isAuth: true, key: "ApplyAuth" },
+        component: () => import("@/views/admin/ApplyAuth.vue")
       }
     ]
   },

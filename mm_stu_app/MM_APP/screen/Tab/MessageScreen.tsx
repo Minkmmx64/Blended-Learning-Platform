@@ -29,7 +29,7 @@ function MessageScreen({ navigation, useAppUserRedux } : MessageScreenProps) {
   return (
     <>
       <ContainerBox>
-        <Text>{ useAppUserRedux.username }</Text>
+        
       </ContainerBox>
     </>
   )

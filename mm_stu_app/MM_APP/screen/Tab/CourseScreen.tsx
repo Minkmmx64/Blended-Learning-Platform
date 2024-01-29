@@ -53,7 +53,6 @@ function CourseScreen({ navigation, useAppUserRedux }: CourseScreenProps) {
             return (
               <Row style={{ justifyContent: "flex-start", padding: rpx(20), borderWidth: rpx(1),marginTop: rpx(10), width: rpx(750), borderColor: Color.Default }}>
                 <Image source={{ uri: tables.item.course.avatar }} width={rpx(70)} height={rpx(70)}/>
-                {/* <Text>{tables.item.class.name}</Text> */}
                 <Row style={{ flex: 1, justifyContent: "space-between", paddingLeft: rpx(50), paddingRight: rpx(50) }}>
                   <Text>{tables.item.course.name}</Text>
                   <Text>{tables.item.teacher.name}</Text>

@@ -1,5 +1,5 @@
 <template>
-  <div class="user-avatar border-round border-info absolute hidden">
+  <div class="user-avatar border-round border-info hidden">
     <el-dropdown>
       <ImageLayout
         class="point"
@@ -32,7 +32,6 @@ const LogOut = () => {
   
 <style lang="scss" scoped>
   .user-avatar {
-    right: 50px;
     width: 36px;
     height: 36px;
   }

@@ -28,7 +28,7 @@ export function MainBottomTab(Props: StackScreenProps<"MainBottomTab">) : JSX.El
     <Tab.Navigator id="MainBottomTab" screenOptions={{
       lazy: false,
     }}> 
-      <Tab.Screen name="IndexScreen" component={IndexScreen} options={{
+      <Tab.Screen name="IndexScreen" component={ IndexScreen } options={{
         tabBarIcon: ({ focused, color, size }) => 
           SwitchTabImage(focused, require("../../static/tab/index_default.png"), require("../../static/tab/index_activity.png"))
         ,

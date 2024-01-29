@@ -31,14 +31,30 @@ export interface CourseTables {
   teacher: StuTeacherProps;
 }
 
+export interface ChapterResources {
+  cover:        string;
+  create_time:  string;
+  id:           number;
+  name:         string;
+  remark:       string;
+  src:          string;
+  type:         string;
+  update_time:  string;
+}
+
 export class Class extends Request {
   constructor() {
-    super("/app/class");
+    super("/app");
   }
 
   //根据班级加载我的课程表
   public async getStudentCourseTables(classId: number): Promise<RequestData<CourseTables[]>> {
-    return this.get(`/student/${classId}`);
+    return this.get(`/class/student/${classId}`);
+  }
+
+  //根据章节Id加载章节资源
+  public async getChapterResource(chapterId: number): Promise<RequestData<ChapterResources[]>> {
+    return this.get(`/chapter/resource/${chapterId}`);
   }
 }
 

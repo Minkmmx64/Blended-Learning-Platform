@@ -20,7 +20,18 @@
           <span>{{ item.name }}</span>
         </template>
       </div>
-      <UserAvatar />
+      <!-- 右侧功能列表 -->
+      <div class="flex-row pr-50" style="flex: 1;justify-content: flex-end; align-items: center;">
+        <!-- 系统通知 -->
+        <IconFont
+          v-if="user.User.role.id === 1"
+          class="mr-4 point flex-row flex-center"
+          icon="comment"
+          style="width: 36px; height: 36px; background-color: rgba(0, 122, 255, 0.7);color: #fff; border-radius: 50%;"
+        />
+        <UserAvatar />
+      </div>
+      
     </div>
     <div class="Bread-Nav-history font-12 h-full hidden w-full flex-row flex-alg">
       <template
@@ -54,6 +65,8 @@ import IconFont from "@/components/display/icon/IconFont.vue";
 import { ref, watch, onMounted } from "vue";
 import { ISystemMenus } from "../AdminSystemLayout.type";
 import UserAvatar from "@/components/Layouts/UserAvatar.vue";
+import { useUserStore } from '@/store/index';
+const user = useUserStore();
 interface IProps{
   path : ISystemMenus[];
   active : string;

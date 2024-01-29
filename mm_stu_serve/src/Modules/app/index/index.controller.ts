@@ -41,6 +41,17 @@ export class IndexController {
     } else return new HttpResponse(HttpStatus.ACCEPTED, tables).send();
   }
 
+  //通过章节Id获取章节资源
+  @Get("/chapter/resource/:chapterId")
+  public async getChapterResource(
+    @Param("chapterId") chapterId: number
+  ) {
+    const [ error, resources ] = await this.IndexService.getChapterResource(chapterId);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse(HttpStatus.ACCEPTED, resources).send();
+  }
+
 }
 
 

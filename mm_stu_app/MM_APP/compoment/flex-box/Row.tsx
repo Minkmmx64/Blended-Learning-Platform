@@ -15,7 +15,14 @@ const RowStyle = StyleSheet.create({
 })
 
 interface IRow extends BaseScreenProps {
-
+  /**
+  * 垂直外边距
+  */
+  gapV?: number;
+  /*
+  * 水平外边距
+  */
+  gapH?: number;
 }
 
 export function Row(Props: IRow) {
@@ -23,7 +30,9 @@ export function Row(Props: IRow) {
   return (
     <View {...Props} style={{
       ...RowStyle.box,
-      ...Props.style
+      marginHorizontal: Props.gapH ?? 0,
+      marginVertical: Props.gapV ?? 0,
+      ...Props.style,
     }}>
       { Props.children }
     </View>

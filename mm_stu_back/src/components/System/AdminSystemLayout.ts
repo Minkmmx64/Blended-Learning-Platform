@@ -132,6 +132,12 @@ const SystemMenus: ISystemMenus[] = [
     key: "FileUpload",
     icon: "file",
     route: "FileUpload"
+  },
+  {
+    name: "申请权限",
+    key: "ApplyAuth",
+    icon: "announcement",
+    route: "ApplyAuth"
   }
 ];
 
