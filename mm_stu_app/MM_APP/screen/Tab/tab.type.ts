@@ -1,4 +1,5 @@
 import { RootStackParamList, RootTabParamList } from "../../navigator";
+import { UtilToolsBaseProps } from "../compoment/UtilTools";
 
 //判断跳转的路由类型
 interface NavType<T> {
@@ -8,8 +9,6 @@ interface NavType<T> {
  
 type getNavType<T extends "stack" | "tab"> = NavType<T>;
 
-export interface IUtilTools { 
-  url: string;
+export interface IUtilTools extends UtilToolsBaseProps { 
   nav: getNavType<"stack"> | getNavType<"tab">;
-  label: string ;
 }

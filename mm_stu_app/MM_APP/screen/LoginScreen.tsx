@@ -1,4 +1,5 @@
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { WebSocketReduxProps, WsCC } from "../store/useWebSocketRedux.ts";
 import { StackScreenProps } from "../navigator";
 import React, { useEffect, useRef, useState } from "react";
 import { ContainerBox } from "../compoment/ContainerBox";
@@ -15,6 +16,7 @@ import { RootStoreRedux } from "../store";
 import { Dispatch } from "redux";
 import { AppUserReduxProps, setAppUser } from "../store/useAppUserRedux";
 import { Toast } from "../compoment/display/toast/Toast";
+import { SocketConnectData } from "../websocket/connect";
 
 const LoginStyle = StyleSheet.create({
   Login: {
@@ -61,17 +63,21 @@ interface FormRef {
 }
 
 interface ReduxProps {
-  useAppUserRedux: AppUserReduxProps
+
+  useAppUserRedux: AppUserReduxProps;
+
+  useWebSocketRedux: WebSocketReduxProps;
 }
 
 interface ReduxDispatch {
   setUserdata: (data: Partial<AppUserReduxProps>) => void;
+  setWsConnect: (data: SocketConnectData) => void;
 }
 
 type LoginScreenProps = StackScreenProps<"LoginScreen"> & ReduxProps & ReduxDispatch; 
 
-function LoginScreen({ navigation, setUserdata }: LoginScreenProps) {
-  
+function LoginScreen({ navigation, setUserdata, setWsConnect, useWebSocketRedux }: LoginScreenProps) {
+
   const FormRef = useRef<FormRef>(null);
 
   const [sms, setSms] = useState("");
@@ -91,6 +97,7 @@ function LoginScreen({ navigation, setUserdata }: LoginScreenProps) {
   }, []);
 
   const UserLogin = async () => {
+    
     try {
       //验证验证码
       const verify = await common.VSms(smsText);
@@ -103,9 +110,9 @@ function LoginScreen({ navigation, setUserdata }: LoginScreenProps) {
 
       if (FormRef.current?.check()) {
         const login = FormRef.current?.values();
-        const login_res = await user.login(login);
+        const { data } = await user.login(login);
         //插入用户登录信息
-        setUserdata(login_res.data);
+        setUserdata(data);
         //回退到主页
         navigation.pop();
         //登录成功
@@ -113,9 +120,13 @@ function LoginScreen({ navigation, setUserdata }: LoginScreenProps) {
         setTimeout(() => {
           Toast.hide();
         }, 1000);
+        /**
+         * 登录连接WebSocket
+         */
+        setWsConnect({ })
       }
     } catch (error) {
-      Alert.alert("错误", JSON.stringify(error));
+      console.error(error);
     }
   }
 
@@ -167,13 +178,15 @@ function LoginScreen({ navigation, setUserdata }: LoginScreenProps) {
 const mapStateToProps = (state : RootStoreRedux, ownProps : LoginScreenProps) => {
   return {
     useAppUserRedux: state.useAppUserRedux,
+    useWebSocketRedux: state.useWebSocketRedux
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch): ReduxDispatch => {
   return {
-    setUserdata: (data) => setAppUser(dispatch)(data)
-  } as ReduxDispatch;
+    setUserdata: (data) => setAppUser(dispatch)(data),
+    setWsConnect: (data) => WsCC(dispatch)(data)
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

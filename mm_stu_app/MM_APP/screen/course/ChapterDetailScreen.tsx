@@ -5,7 +5,6 @@ import Chapter, { ChapterResources } from '../../request/api/class'
 import { FlatList, Image, Text } from "react-native";
 import { Column } from "../../compoment/flex-box/Column";
 import { ContainerBox } from "../../compoment/ContainerBox";
-import { Toast } from "../../compoment/display/toast/Toast";
 import { Row } from "../../compoment/flex-box/Row";
 type ChapterDetailScreenProps = StackScreenProps<"ChapterDetailScreen">;
 

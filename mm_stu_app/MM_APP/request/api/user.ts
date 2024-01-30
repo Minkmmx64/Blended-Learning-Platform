@@ -1,4 +1,6 @@
-import { Request } from "../env.";
+import { AppUserReduxProps } from "../../store/useAppUserRedux";
+import { userlogin } from "../../utils/data";
+import { Request, RequestData } from "../env.";
 
 export interface RegisterData {
   username: string;
@@ -30,7 +32,7 @@ export class user extends Request {
     return this.post("/regist", { ...data });
   }
 
-  public async login( data: LoginData ) {
+  public async login( data: LoginData ): Promise<RequestData<AppUserReduxProps>> {
     return this.post("/login", { ...data });
   }
 }

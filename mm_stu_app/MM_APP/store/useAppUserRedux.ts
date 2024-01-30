@@ -1,4 +1,5 @@
-import { Action, Dispatch } from "redux";
+import { Dispatch } from "redux";
+import { MAction } from "./type";
 
 const SET_DATA = "SET_DATA";
 const CLEAR_USER = "CLEAR_USER";
@@ -44,7 +45,6 @@ const initializeAppUserReduxProps: AppUserReduxProps = {
   phone: "",
 }
 
-type MAction<U = unknown> = Action & U;
 
 export function useAppUserRedux(state: AppUserReduxProps = initializeAppUserReduxProps, action: MAction) {
   switch (action.type) {
@@ -71,6 +71,7 @@ export const setAppUser = (dispatch: Dispatch) => {
     dispatch({type: SET_DATA, data});
   }
 }
+
 //CLEAR_USER
 export const clearAppUser = (dispatch: Dispatch) => {
   return () => {

@@ -12,7 +12,7 @@ export class WebSocket implements OnGatewayInit, OnGatewayConnection, OnGatewayD
 
   //连接ws服务器
   handleConnection(client: Socket) {
-    
+    console.log('Client connected:', client.id);
   }
 
   //客户端断开连接
@@ -21,7 +21,7 @@ export class WebSocket implements OnGatewayInit, OnGatewayConnection, OnGatewayD
   }
 
   //订阅消息
-  @SubscribeMessage('test')
+  @SubscribeMessage('login')
   handleMessage(client: Socket , payload: unknown): string {
     // 处理收到的消息
     console.log(client, payload);

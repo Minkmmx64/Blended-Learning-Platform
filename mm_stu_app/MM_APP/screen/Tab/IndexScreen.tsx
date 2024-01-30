@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { RootStoreRedux } from "../../store";
 import { AppUserReduxProps } from "../../store/useAppUserRedux";
+import { UtilTools } from "../compoment/UtilTools";
 
 interface ReduxDispatch {
 
@@ -167,55 +168,7 @@ function IndexScreen({ navigation, useAppUserRedux }: IndexScreenProps) {
     />, [reload]
   );
 
-  interface UtilToolsProps extends BaseScreenProps {
-    data: IUtilTools[];
-  }
-
-  {/** 常用工具 */ }
-  const UtilTools = ({ data }: UtilToolsProps) => {
-
-    const UtilToolsPress = (value: IUtilTools) => {
-      if(useAppUserRedux.id === -1) {
-        return navigation.push("LoginScreen");
-      }
-      return value.nav.type === "tab" ? 
-                            navigation.jumpTo(value.nav.url) :
-                            navigation.push(value.nav.url);
-    }
-    
-    return (
-      <>
-        <Row style={{ justifyContent: "flex-start", marginTop: rpx(20) }}>
-          <Text style={{ fontSize: rpx(40), color: "#000000" }}>常用</Text>
-        </Row>
-        <Column>
-          {
-            data.map((value, _) => {
-              const dimension = 60;
-              return (
-                <TouchableOpacity 
-                  activeOpacity={1}
-                  onPress={ UtilToolsPress.bind({}, value) }
-                  key={_}>
-                  <Row    
-                    style={{ height: rpx(100), justifyContent: "flex-start", position: "relative" }}>
-                    <Column style={{ height: "100%", width: rpx(80), marginRight: rpx(40) }}>
-                      <Image style={{ width: rpx(dimension), height: rpx(dimension) }} source={{ uri: value.url }} />
-                    </Column>
-                    <Text>{value.label}</Text>
-                    <Column style={{ width: rpx(80), right: rpx(40), flex: 1, alignItems: "flex-end" }}>
-                      <Image style={{ height: rpx(dimension / 2), width: rpx(dimension / 2) }} source={require("../../static/index/arrow.png")} />
-                    </Column>
-                  </Row>
-                </TouchableOpacity>
-              );
-            })
-          }
-        </Column>
-      </>
-    )
-  }
-
+  
   return (
     <ContainerBox style={{ flex: 1 }}>
       <ScrollView
@@ -251,7 +204,22 @@ function IndexScreen({ navigation, useAppUserRedux }: IndexScreenProps) {
               </SwiperManager>, [])
           }
           {/** 常用功能 */}
-          <UtilTools data={UtilToolDatas} />
+          <UtilTools 
+            renderTop={
+              <Row style={{ justifyContent: "flex-start", marginTop: rpx(20) }}>
+                <Text style={{ fontSize: rpx(40), color: "#000000" }}>常用</Text>
+              </Row>
+            }
+            ItemOnPress={
+              value => {
+                if(useAppUserRedux.id === -1) {
+                  return navigation.push("LoginScreen");
+                }
+                return value.nav.type === "tab" ? 
+                        navigation.jumpTo(value.nav.url) :
+                        navigation.push(value.nav.url);
+            }}
+            data={UtilToolDatas} />
           {/** 瀑布流 */}
           {renderFlowData}
         </Column>
