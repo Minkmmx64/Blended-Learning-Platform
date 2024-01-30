@@ -1,5 +1,5 @@
 import { RootUser } from "src/Entity/root_user.entity";
-import { DataSource, SelectQueryBuilder } from "typeorm";
+import { DataSource, SelectQueryBuilder, UpdateResult } from "typeorm";
 import { RootInfoDTO, RootQueryDTO, RootUpdateDTO } from "./root.dto";
 import { PaginationQuery } from "../../index.type";
 import { ToOrder } from "src/common/common";
@@ -67,6 +67,25 @@ export class RootServiceDAO {
                                                       .setParameter("id", RootUpdate.id)
                                                       .execute();
     return UpdateResult;
+  }
+
+  public async findRootUserById(userId: number) : Promise<RootUser> {
+    return await this.RootUserRepository
+                     .createQueryBuilder("user")
+                     .leftJoinAndSelect("user.role", "role")
+                     .where("user.id = :userId")
+                     .setParameter("userId", userId)
+                     .getOne();
+  }
+
+  public async updateRootUserById(userId: number, user: RootUser) : Promise<UpdateResult> {
+    return await this.RootUserRepository
+                     .createQueryBuilder()
+                     .update()
+                     .set(user)
+                     .where("id = :userId")
+                     .setParameter("userId", userId)
+                     .execute();
   }
 
 }

@@ -5,6 +5,7 @@ export class TeacherCreateDTO{
   gender: "男" | "女";
   age: number;
   code: string;
+  authentication?: "已认证" | "待认证";
 }
 
 export class TeacherQueryDTO {

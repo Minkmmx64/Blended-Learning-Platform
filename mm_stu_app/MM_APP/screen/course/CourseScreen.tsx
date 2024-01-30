@@ -92,7 +92,7 @@ export const CourseScreen = (Props: StackScreenProps<"CourseScreen">) => {
   }
 
   return (
-    <ContainerBox style={{ flex: 1 }}>
+    <ContainerBox style={{ flex: 1, paddingBottom: rpx(50) }}>
       <FlatList
         style={{ width: "100%", height: 700 }}
         data={chp}

@@ -68,7 +68,8 @@ export class TeacherDAO {
                                 gender: UpdateTeacher.data.gender,
                                 profile: UpdateTeacher.data.profile,
                                 remark: UpdateTeacher.data.remark,
-                                code: UpdateTeacher.data.code
+                                code: UpdateTeacher.data.code,
+                                authentication: UpdateTeacher.data.authentication ?? "待认证"
                              })
                              .where("id = :id")
                              .setParameter("id", UpdateTeacher.id)
@@ -142,4 +143,5 @@ export class TeacherDAO {
                      .setParameter("code", code)
                      .getOne();
   }
+
 }

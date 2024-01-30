@@ -134,4 +134,13 @@ export class RoleDAO {
                                           .getOne();
     return  routers;
   }
+
+  public async getRoleByName(name: string): Promise<RootRole> {
+    // 查找当前教师编号是否存在, 以及当前教师是否认证
+    return await this.RoleRepository
+                     .createQueryBuilder()
+                     .where("name = :name")
+                     .setParameter("name", name)
+                     .getOne();
+  }
 }

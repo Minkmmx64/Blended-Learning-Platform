@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, HttpStatus, Post, Put, UseGuards, UseInterceptors, UsePipes, Query } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, HttpStatus, Post, Put, UseGuards, UseInterceptors, UsePipes, Query, Param } from "@nestjs/common";
 import { RootService } from "./root.service";
 import { RootRegistDTO , RootLoginDTO, RootInfoDTO, RootLoginUserInfo, RootQueryDTO, RootUpdateDTO } from "./root.dto";
 import { ValidationPipe } from "src/utils/pipes";
@@ -84,5 +84,17 @@ export class RootController {
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<RootRouters[]>(HttpStatus.RESET_CONTENT, auths ).send();
+  }
+
+  @Put("/teacher/:userId/auth")
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async TeacherAuthorization(
+    @Param("userId") userId: number,
+    @Body("code") code: string
+  ) {
+    const [ error, auth ] = await this.RootService.TeacherAuthorization(userId, code);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse(HttpStatus.RESET_CONTENT, auth ).send();
   }
 }

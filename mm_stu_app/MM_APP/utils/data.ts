@@ -60,22 +60,6 @@ export const AdminUtilToolsDatas: IAdminUtilToolsDatas[] = [
     label: "个人资料(开发中)"
   },
   {
-    icon: "http://124.220.176.205:8080/image/ff39133894d8e1fad9c1a1b5e336ab2a.png",
-    label: "用户功能2(开发中)"
-  },
-  {
-    icon: "http://124.220.176.205:8080/image/ff39133894d8e1fad9c1a1b5e336ab2a.png",
-    label: "用户功能3(开发中)"
-  },
-  {
-    icon: "http://124.220.176.205:8080/image/ff39133894d8e1fad9c1a1b5e336ab2a.png",
-    label: "用户功能4(开发中)"
-  },
-  {
-    icon: "http://124.220.176.205:8080/image/ff39133894d8e1fad9c1a1b5e336ab2a.png",
-    label: "用户功能5(开发中)"
-  },
-  {
     icon: "http://124.220.176.205:8080/image/4c15206b06c26751cd152546a478bf4a.png",
     label: "通用设置(开发中)"
   },
@@ -99,9 +83,23 @@ export const AdminUtilToolsDatas: IAdminUtilToolsDatas[] = [
     icon: "http://124.220.176.205:8080/image/58d4e4fd6a68d698bdb7f9d57b3efa0b.png",
     label: "设置与隐私(开发中)"
   },
+  {
+    icon: "http://124.220.176.205:8080/image/ff39133894d8e1fad9c1a1b5e336ab2a.png",
+    label: "用户功能2(开发中)"
+  },
+  {
+    icon: "http://124.220.176.205:8080/image/ff39133894d8e1fad9c1a1b5e336ab2a.png",
+    label: "用户功能3(开发中)"
+  },
+  {
+    icon: "http://124.220.176.205:8080/image/ff39133894d8e1fad9c1a1b5e336ab2a.png",
+    label: "用户功能4(开发中)"
+  },
+  {
+    icon: "http://124.220.176.205:8080/image/ff39133894d8e1fad9c1a1b5e336ab2a.png",
+    label: "用户功能5(开发中)"
+  }
 ]
-
-
 
 export const userlogin = {
   "avatar": null, 

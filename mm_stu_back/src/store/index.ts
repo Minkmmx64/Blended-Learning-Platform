@@ -7,7 +7,8 @@ const nullUser: UserInfo = { username: "未登录", avatar: "", label: "",
   role: {
     id: -1,
     name: "未登录",
-  }
+  },
+  id: -1
 };
 
 export const useUserStore = defineStore("User",{

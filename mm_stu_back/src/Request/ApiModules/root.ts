@@ -19,10 +19,11 @@ export interface RootRole {
 }
 
 export interface UserInfo {
-  username: string,
-  avatar: string,
-  label: string,
-  role: RootRole
+  username: string;
+  avatar: string;
+  label: string;
+  role: RootRole;
+  id: number;
 }
 
 export interface LoginResponseData {
@@ -65,6 +66,10 @@ export class root extends AxiosApi {
 
   public auth(id: number) {
     return this.get("/auth", { id });
+  }
+
+  public teacherAuth(userId: number, code: string) {
+    return this.put(`/teacher/${userId}/auth`, { code: code });
   }
 }
 

@@ -8,13 +8,15 @@ import { Injectable } from "@nestjs/common";
 import { ListMetaData, PaginationQuery, ServiceData } from "../../index.type";
 import { RootRouters } from "src/Entity/root_routers.entity";
 import { RoleService } from "../role/role.service";
+import { TeacherService } from "../teacher/teacher.service";
 
 @Injectable()
 export class RootService {
 
   constructor(
     public DataSource: DataSource,
-    private readonly RoleService: RoleService  
+    private readonly RoleService: RoleService,
+    private readonly TeacherService: TeacherService,
   ){}
 
   public RootServiceDAO = new RootServiceDAO(this.DataSource);
@@ -73,7 +75,8 @@ export class RootService {
             username: user.username,
             avatar: user.avatar,
             label: user.label,
-            role: user.role
+            role: user.role,
+            id: user.id
           }
         }
     ];
@@ -123,6 +126,47 @@ export class RootService {
     try {
       const Auths = await this.RoleService.RoleDAO.getAuthRoutersByRoleId(role_id);
       return [ null, Auths ]
+    } catch (error) {
+      return [ new Error(error), null ];
+    }
+  }
+
+  public async TeacherAuthorization(userId: number, code: string): ServiceData<boolean> {
+    try {
+      // 先查看当前管理员角色是否是教师
+      const user = await this.RootServiceDAO.findRootUserById(userId);
+      if(!user){
+        throw "该用户不存在，数据错误";
+      }
+      const teacherRole = await this.RoleService.RoleDAO.getRoleByName("教师");
+      if(!teacherRole){
+        throw "暂无教师角色，请联系管理员添加";
+      }
+      if(user.role.id === teacherRole.id) throw "该角色已经认证，请联系管理员";  
+      //不是教师可以进行认证
+      const teacherUser = await this.TeacherService.TeacherDAO.getTeacherByCode(code);
+      if(!teacherUser) {
+        throw "暂无该教师，请检查教师编号是否有误";
+      }
+      //查看该教师是否已经被认证
+      if(teacherUser.authentication === "已认证"){
+        throw "该教师已经被认证"
+      }
+      // 修改教师状态为已经认证
+      await this.TeacherService.TeacherDAO.UpdateTeacherById({
+        id: teacherUser.id,
+        data: {
+          ...teacherUser,
+          authentication: "已认证"
+        }
+      });
+      // 为管理员添加教师id, 同时修改角色为教师
+      await this.RootServiceDAO.updateRootUserById(userId, {
+        ...user,
+        teacher: teacherUser,
+        role: teacherRole
+      });
+      return [ null, true ];
     } catch (error) {
       return [ new Error(error), null ];
     }
