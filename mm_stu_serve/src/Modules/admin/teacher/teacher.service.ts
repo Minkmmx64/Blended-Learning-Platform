@@ -5,10 +5,15 @@ import { TeacherDAO } from "./teacher.dao";
 import { TeacherCreateDTO, TeacherUpdateDTO, TeacherQueryDTO, RealCourseDTO } from "./teacher.dto";
 import { StuTeacher } from "src/Entity/stu_teacer.entity";
 import * as pinyin from "pinyin";
+import { ClassCourseTeacher } from "src/Entity/teacher_course_class.entity";
+import { ClassDAO } from "../class/class.dao";
 
 @Injectable()
 export class TeacherService{
-  constructor(private readonly DataSource: DataSource){}
+  constructor(
+    private readonly DataSource: DataSource,
+    private readonly ClassDAO: ClassDAO
+  ){}
 
   public TeacherDAO = new TeacherDAO(this.DataSource); 
 
@@ -78,6 +83,15 @@ export class TeacherService{
     try {
       const classes = await this.TeacherDAO.TeacherAll();
       return [ null, classes ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
+
+  public async getTeacherClassTablesInfo(teacherId: number) : ServiceData<ClassCourseTeacher[]> {
+    try {
+      const info = await this.ClassDAO.getStudentCourseTablesByTeacherId(teacherId);
+      return [ null, info ];
     } catch (error) {
       return [new Error(error), null];
     }

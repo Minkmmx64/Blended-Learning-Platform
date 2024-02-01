@@ -31,6 +31,10 @@ export class teacher extends AxiosApi {
   public async all() {
     return this.get("/all");
   }
+
+  public async getTeacherClassCourseTablesInfo(teacherId: number) {
+    return this.get(`/class/${teacherId}`, { date: Date.now() });
+  }
 }
 
 export default new teacher();

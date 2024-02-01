@@ -4,6 +4,7 @@ import * as cookieParser from "cookie-parser";
 import * as session from "express-session";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import * as path from "path";
+import { netWorkInterface } from "./utils/os";
 
 async function bootstrap() {
   
@@ -39,6 +40,8 @@ async function bootstrap() {
   app.useStaticAssets(path.join(__dirname,"static", "file"), {
     prefix: "/file"
   });
+  
+  console.log(netWorkInterface);
   
   await app.listen(8080);
 }

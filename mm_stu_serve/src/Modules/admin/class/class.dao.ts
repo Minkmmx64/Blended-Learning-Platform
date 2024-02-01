@@ -4,7 +4,9 @@ import { ClassCreateDTO, ClassQueryDTO, ClassUpdateDTO, UpdateClassTableDTO } fr
 import { StuClass } from "src/Entity/stu_class.entity";
 import { ToOrder } from "src/common/common";
 import { ClassCourseTeacher } from "src/Entity/teacher_course_class.entity";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class ClassDAO {
   constructor(protected DataSource: DataSource){}
 
@@ -154,7 +156,7 @@ export class ClassDAO {
    }
   }
 
-  public async getStudentCourseTables(classId: number) {
+  public async getStudentCourseTablesByClassId(classId: number) {
     return await this.ClassTableRepositiry
                      .createQueryBuilder("table")
                      .leftJoinAndSelect("table.class", "mm_stu_stu_class")
@@ -162,6 +164,17 @@ export class ClassDAO {
                      .leftJoinAndSelect("table.teacher", "mm_stu_stu_teacher")
                      .where("table.class_id = :classId")
                      .setParameter("classId", classId)
+                     .getMany();
+  }
+
+  public async getStudentCourseTablesByTeacherId(teacherId: number) {
+    return await this.ClassTableRepositiry
+                     .createQueryBuilder("table")
+                     .leftJoinAndSelect("table.class", "mm_stu_stu_class")
+                     .leftJoinAndSelect("table.course", "mm_stu_stu_course")
+                     .leftJoinAndSelect("table.teacher", "mm_stu_stu_teacher")
+                     .where("table.teacher_id = :teacherId")
+                     .setParameter("teacherId", teacherId)
                      .getMany();
   }
   

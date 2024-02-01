@@ -8,7 +8,8 @@ const nullUser: UserInfo = { username: "未登录", avatar: "", label: "",
     id: -1,
     name: "未登录",
   },
-  id: -1
+  id: -1,
+  teacher: null
 };
 
 export const useUserStore = defineStore("User",{

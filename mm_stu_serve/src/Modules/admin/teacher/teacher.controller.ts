@@ -1,5 +1,4 @@
-
-import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Post, Put, Query, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
 import { ListMetaData, PaginationQuery } from "../../index.type";
 import { HttpResponse } from "src/response/response";
 import { DeleteResult, InsertResult, UpdateResult } from "typeorm";
@@ -86,5 +85,16 @@ export class TeacherController {
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<StuTeacher[]>(HttpStatus.ACCEPTED, classes).send();
+  }
+
+  @Get("/class/:teacherId")
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async getTeacherClassTablesInfo(
+    @Param("teacherId") teacherId: number 
+  ) {
+    const [ error, result ] = await this.TeacherService.getTeacherClassTablesInfo(teacherId);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse(HttpStatus.ACCEPTED, result).send();
   }
 }

@@ -14,7 +14,7 @@ export class RootServiceDAO {
     try {
       return  await this.RootUserRepository.findOne({
         where: { username: username },
-        relations : { "role": true }
+        relations : { "role": true, "teacher": true }
       });
     } catch (error) { return error; }
   }

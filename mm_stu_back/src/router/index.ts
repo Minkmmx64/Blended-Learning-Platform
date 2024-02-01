@@ -101,6 +101,12 @@ const routes: Array<RouteRecordRaw> = [
         name: "ApplyAuth",
         meta: { isAuth: true, key: "ApplyAuth" },
         component: () => import("@/views/admin/ApplyAuth.vue")
+      },
+      {
+        path: "/TeacherClassCoursesManager",
+        name: "TeacherClassCoursesManager",
+        meta: { isAuth: true, key: "TeacherClassCoursesManager" },
+        component: () => import("@/views/teacher/TeacherClassCoursesManager.vue")
       }
     ]
   },

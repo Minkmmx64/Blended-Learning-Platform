@@ -38,7 +38,7 @@ export class IndexService{
 
   public async getStudentCourseTables(classId: number) : ServiceData<ClassCourseTeacher[]> {
     try {
-      const tables = await this.ClassService.ClassDAO.getStudentCourseTables(classId);
+      const tables = await this.ClassService.ClassDAO.getStudentCourseTablesByClassId(classId);
       return [ null, tables ];
     } catch (error) {
       return [ new Error(error) , null ]

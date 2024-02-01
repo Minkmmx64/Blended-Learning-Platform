@@ -18,12 +18,27 @@ export interface RootRole {
   name: string;
 }
 
+export interface RootTeacherProps {
+    id: number;
+    create_time: string;
+    update_time: string;
+    status: boolean;
+    remark: string;
+    name: string;
+    code: string;
+    authentication: "已认证";
+    profile: string,
+    gender: "男" | "女";
+    age: number;
+}
+
 export interface UserInfo {
   username: string;
   avatar: string;
   label: string;
-  role: RootRole;
-  id: number;
+  role: RootRole;              //管理员角色
+  id: number;                  //管理员Id
+  teacher?:RootTeacherProps;   //如果是教师角色，携带教师信息
 }
 
 export interface LoginResponseData {

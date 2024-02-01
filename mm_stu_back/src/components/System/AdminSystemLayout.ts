@@ -138,6 +138,12 @@ const SystemMenus: ISystemMenus[] = [
     key: "ApplyAuth",
     icon: "announcement",
     route: "ApplyAuth"
+  },
+  {
+    name: "我的课程",
+    key: "TeacherClassCoursesManager",
+    icon: "calendar",
+    route: "TeacherClassCoursesManager"
   }
 ];
 

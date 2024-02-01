@@ -9,6 +9,7 @@ import { ListMetaData, PaginationQuery, ServiceData } from "../../index.type";
 import { RootRouters } from "src/Entity/root_routers.entity";
 import { RoleService } from "../role/role.service";
 import { TeacherService } from "../teacher/teacher.service";
+import { TeacherDAO } from "../teacher/teacher.dao";
 
 @Injectable()
 export class RootService {
@@ -16,7 +17,7 @@ export class RootService {
   constructor(
     public DataSource: DataSource,
     private readonly RoleService: RoleService,
-    private readonly TeacherService: TeacherService,
+    private readonly TeacherDAO: TeacherDAO,
   ){}
 
   public RootServiceDAO = new RootServiceDAO(this.DataSource);
@@ -76,7 +77,8 @@ export class RootService {
             avatar: user.avatar,
             label: user.label,
             role: user.role,
-            id: user.id
+            id: user.id,
+            teacher: user.teacher
           }
         }
     ];
@@ -144,7 +146,7 @@ export class RootService {
       }
       if(user.role.id === teacherRole.id) throw "该角色已经认证，请联系管理员";  
       //不是教师可以进行认证
-      const teacherUser = await this.TeacherService.TeacherDAO.getTeacherByCode(code);
+      const teacherUser = await this.TeacherDAO.getTeacherByCode(code);
       if(!teacherUser) {
         throw "暂无该教师，请检查教师编号是否有误";
       }
@@ -153,7 +155,7 @@ export class RootService {
         throw "该教师已经被认证"
       }
       // 修改教师状态为已经认证
-      await this.TeacherService.TeacherDAO.UpdateTeacherById({
+      await this.TeacherDAO.UpdateTeacherById({
         id: teacherUser.id,
         data: {
           ...teacherUser,
