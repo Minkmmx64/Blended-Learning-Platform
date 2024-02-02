@@ -57,3 +57,31 @@ export const TProvinceToElCascader = () : Elcascader[] => {
   }
   return ProvinceToElCascader;
 }
+
+export const Colors = [
+  "#FF5733", // 暖色
+  "#FF8D33", // 暖色
+  "#FFC300", // 暖色
+  "#FFDA33", // 暖色
+  "#DFFF33", // 暖色
+
+  "#8DFF33", // 冷色
+  "#33FF57", // 冷色
+  "#33FF8D", // 冷色
+  "#33FFC3", // 冷色
+  "#33FFDA", // 冷色
+
+  "#33DFFF", // 冷色
+  "#3398FF", // 冷色
+  "#3357FF", // 冷色
+  "#5E33FF", // 冷色
+  "#8D33FF", // 冷色
+
+  "#C733FF", // 暖色
+  "#FF33DA", // 暖色
+  "#FF3398", // 暖色
+  "#FF3357", // 暖色
+  "#FF5733"  // 暖色
+];
+
+export const randomColors = () => Colors[Math.floor(Math.random() * Colors.length)];

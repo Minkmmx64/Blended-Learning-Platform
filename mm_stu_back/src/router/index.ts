@@ -103,10 +103,22 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/admin/ApplyAuth.vue")
       },
       {
-        path: "/TeacherClassCoursesManager",
-        name: "TeacherClassCoursesManager",
-        meta: { isAuth: true, key: "TeacherClassCoursesManager" },
-        component: () => import("@/views/teacher/TeacherClassCoursesManager.vue")
+        path: "/TeacherClassCourses",
+        name: "TeacherClassCourses",
+        meta: { isAuth: true, key: "TeacherClassCourses" },
+        component: () => import("@/views/teacher/TeacherClassCourses.vue")
+      },
+      {
+        path: "/InitSign",
+        name: "InitSign",
+        meta: { isAuth: true, key: "InitSign" },
+        component: () => import("@/views/teacher/TeacherClassCourses.vue")
+      },
+      {
+        path: "/SignManager",
+        name: "SignManager",
+        meta: { isAuth: true, key: "SignManager" },
+        component: () => import("@/views/teacher/TeacherClassCourses.vue")
       }
     ]
   },
@@ -115,7 +127,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "NotFound",
     component: () => import("@/components/NotFound.vue")
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
@@ -129,7 +141,6 @@ router.addRoute("System", RootRouterPath["student.info"])
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
   const currentRouterName = useRouter().currentRoute.value.fullPath.replaceAll(/[\/\\]*/g, "")
-  
   const User = useUserStore();
   if (to.name === "Home") {
     if(User.getToken) {

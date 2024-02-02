@@ -115,6 +115,31 @@ const SystemMenus: ISystemMenus[] = [
     ]
   },
   {
+    name: "我的课程",
+    key: "TeacherClassCourses",
+    icon: "film",
+    route: "TeacherClassCourses"
+  },
+  {
+    name: "上课管理",
+    key: "AttendClassManager",
+    icon: "task",
+    subMenu: [
+      {
+        name: "发起签到",
+        key: "InitSign",
+        icon: "scanning",
+        route: "InitSign"
+      },
+      {
+        name: "签到管理",
+        key: "SignManager",
+        icon: "shou",
+        route: "SignManager"
+      }
+    ]
+  },
+  {
     name: "个人管理",
     key: "AdminManager",
     icon: "GitHub",
@@ -123,28 +148,22 @@ const SystemMenus: ISystemMenus[] = [
         name: "个人信息",
         key: "AdminInfoManager",
         route: "AdminInfoManager",
-        icon: "image-text"
+        icon: "twitter"
       }
     ]
   },
   {
     name: "文件上传",
     key: "FileUpload",
-    icon: "file",
+    icon: "arrow-up-circle",
     route: "FileUpload"
   },
   {
-    name: "申请权限",
+    name: "权限申请",
     key: "ApplyAuth",
-    icon: "announcement",
+    icon: "ssun",
     route: "ApplyAuth"
   },
-  {
-    name: "我的课程",
-    key: "TeacherClassCoursesManager",
-    icon: "calendar",
-    route: "TeacherClassCoursesManager"
-  }
 ];
 
 export { SystemMenus , config }
