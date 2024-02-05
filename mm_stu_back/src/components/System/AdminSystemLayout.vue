@@ -86,7 +86,7 @@ onMounted(() => {
     try {
       const { currentMenu: CM, BreadNavPath: BNP } = JSON.parse(Data);
       currentMenu.value = CM, BreadNavPath.value = BNP;
-    } catch (error) { console.log("???"); }
+    } catch (error) { console.error(error); }
   }
 });
 onUnmounted(() => { window.removeEventListener("beforeunload", reFresh); })

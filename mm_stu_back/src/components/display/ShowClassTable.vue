@@ -80,7 +80,7 @@ const findCourses = (weak: number, time: number) => {
 }
 .c-table-main-th-content {
   width: calc(100% / 8);
-  height: 50px;
+  height: 59px;
   border: 2px solid rgba(27, 100, 240, 0.1);
   text-align: center;
 }

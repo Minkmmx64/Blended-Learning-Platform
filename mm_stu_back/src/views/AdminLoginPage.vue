@@ -17,6 +17,7 @@ import Root from "@/Request/ApiModules/root";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import { useUserStore } from "@/store";
+import { SocketManager } from "@/ws/WsConnect";
 
 const AdminLogin = useRouter();
 const LoginFails = ref(false);
@@ -37,6 +38,10 @@ const login = async (e: Record<keyof User.LoginProps, string>) => {
           const useUser = useUserStore();
           useUser.setUser(user);
           useUser.setToken(token);
+          /**
+           * 创建websocket会话
+           */
+          new SocketManager({ type: "teacher" });
           /**
            * 加载权限表
            */
