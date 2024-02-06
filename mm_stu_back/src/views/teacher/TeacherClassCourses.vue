@@ -48,7 +48,7 @@ onMounted((() => {
           console.error(e);
         }
       });
-    });
+    }).catch( error => ElMessage.error(error));
   } else ElMessage.error("您不是教师!");
 }));
 </script>

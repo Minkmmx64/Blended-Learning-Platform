@@ -1,7 +1,8 @@
 import SocketIO, { Socket } from "socket.io-client";
 
 export interface SocketConnectData {
-  
+  type: "student" | "teacher";
+  id: number;
 }
 
 export class SocketManager {
@@ -10,7 +11,7 @@ export class SocketManager {
 
   public SocketInstance: Socket;
 
-  constructor( data: SocketConnectData = {} ) {
+  constructor( data: SocketConnectData) {
 
     this.SocketInstance = SocketIO(`${this.baseUrl}?data=${JSON.stringify(data)}`);
     

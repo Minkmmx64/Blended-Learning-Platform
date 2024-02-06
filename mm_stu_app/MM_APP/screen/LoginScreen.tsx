@@ -123,7 +123,11 @@ function LoginScreen({ navigation, setUserdata, setWsConnect, useWebSocketRedux 
         /**
          * 登录连接WebSocket
          */
-        setWsConnect({ })
+        if(data.student){
+          setWsConnect({ type: "student", id: data.student.id })
+        } else {
+          /** 教师登录 */
+        }
       }
     } catch (error) {
       console.error(error);

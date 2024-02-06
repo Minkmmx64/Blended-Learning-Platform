@@ -18,6 +18,7 @@ import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import { useUserStore } from "@/store";
 import { SocketManager } from "@/ws/WsConnect";
+import { useWebSocketStore } from "@/store/WebSocketStore";
 
 const AdminLogin = useRouter();
 const LoginFails = ref(false);
@@ -41,7 +42,8 @@ const login = async (e: Record<keyof User.LoginProps, string>) => {
           /**
            * 创建websocket会话
            */
-          new SocketManager({ type: "teacher" });
+          const wx = useWebSocketStore();
+          wx.setInstance({ type: "teacher", id: user.role.id });
           /**
            * 加载权限表
            */

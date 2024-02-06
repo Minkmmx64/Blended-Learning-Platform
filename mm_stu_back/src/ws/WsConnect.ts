@@ -2,6 +2,7 @@ import SocketIO, { Socket } from "socket.io-client";
 
 export interface SocketConnectData {
   type: "student" | "teacher";
+  id: number;
 }
 
 export class SocketManager {
@@ -12,7 +13,10 @@ export class SocketManager {
 
   constructor( data: SocketConnectData) {
     
-    this.SocketInstance = SocketIO(`${this.baseUrl}?data=${JSON.stringify(data)}`);
+    this.SocketInstance = SocketIO(`${this.baseUrl}?data=${JSON.stringify(data)}`, {
+      retries: 10,
+      ackTimeout: 1000
+    });
 
   }
 }
