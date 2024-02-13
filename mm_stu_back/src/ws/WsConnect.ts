@@ -1,7 +1,7 @@
 import SocketIO, { Socket } from "socket.io-client";
 
 export interface SocketConnectData {
-  type: "student" | "teacher";
+  type: "student" | "teacher" | "root";
   id: number;
 }
 

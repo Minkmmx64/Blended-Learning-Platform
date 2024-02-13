@@ -23,9 +23,9 @@ export class WebSocket implements OnGatewayInit, OnGatewayConnection, OnGatewayD
 
   //连接ws服务器
   handleConnection(client: Socket) {
-    console.log(client.id);
+    
     const data = JSON.parse(client.handshake.query.data as string) as SocketConnectData;
-    console.log(data);
+    console.log(client.id, data);
     if(data.type === "teacher") {
       // 该教师上线，将该教师加入到对应授课的班级房间
     } else {

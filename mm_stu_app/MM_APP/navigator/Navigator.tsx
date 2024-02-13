@@ -8,6 +8,7 @@ import { MainBottomTab } from "../screen/Tab/MainBottomTab";
 import { RegistScreen } from "../screen/RegistScreen";
 import { CourseScreen } from "../screen/course/CourseScreen";
 import { ChapterDetailScreen } from "../screen/course/ChapterDetailScreen";
+import { SignScreen } from "../screen/sign/SignScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -40,6 +41,9 @@ export function MainNavigator() : JSX.Element {
         }} />
         <Stack.Screen name="ChapterDetailScreen" component={ ChapterDetailScreen } options={{
 
+        }} />
+        <Stack.Screen name="SignScreen" component={ SignScreen } options={{
+          headerTitle: "我的签到"
         }} />
       </Stack.Navigator>
     </NavigationContainer>

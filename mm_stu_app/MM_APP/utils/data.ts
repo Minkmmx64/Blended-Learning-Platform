@@ -35,7 +35,7 @@ export const UtilToolDatas: IUtilTools[] = [
   },
   {
     icon: "http://124.220.176.205:8080/image/f74854b094f95217a6f3f3f98ead7fd8.png",
-    nav: { type: "tab", url: "CourseScreen" },
+    nav: { type: "stack", url: "SignScreen" },
     label: "我的签到"
   },
   {

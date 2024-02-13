@@ -9,6 +9,7 @@ export type RootStackParamList = {
   RegistScreen: undefined;
   CourseScreen: { courseId: number };
   ChapterDetailScreen: { chapterId: number, chapterName: string };
+  SignScreen: undefined;
 }
 
 //定义首页底部选项卡注册的路由

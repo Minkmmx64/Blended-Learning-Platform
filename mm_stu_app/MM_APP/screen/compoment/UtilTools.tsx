@@ -11,12 +11,25 @@ export interface UtilToolsBaseProps {
 
 export interface UtilToolsProps<T> extends BaseScreenProps {
 
+  /**
+   * 数据源
+   */
   data: T[];
 
+  /**
+   * 工具点击事件
+   */
   ItemOnPress: (value: T) => void;
 
+  /**
+   * 渲染顶部标题
+   */
   renderTop?: JSX.Element;
-  
+
+  /**
+   * 隐藏右侧箭头
+   */
+  hiddenRightArrow?: boolean;
 }
 
 {/** 常用工具 */ }
@@ -31,6 +44,7 @@ export function UtilTools<T extends UtilToolsBaseProps>(Props: UtilToolsProps<T>
             const dimension = 60;
             return (
               <TouchableOpacity 
+                style={{ width: "100%" }}
                 activeOpacity={1}
                 onPress={ () => Props.ItemOnPress(value) }
                 key={_}>
@@ -40,9 +54,12 @@ export function UtilTools<T extends UtilToolsBaseProps>(Props: UtilToolsProps<T>
                     <Image style={{ width: rpx(dimension), height: rpx(dimension) }} source={{ uri: value.icon }} />
                   </Column>
                   <Text>{value.label}</Text>
-                  <Column style={{ width: rpx(80), right: rpx(40), flex: 1, alignItems: "flex-end" }}>
-                    <Image style={{ height: rpx(dimension / 2), width: rpx(dimension / 2) }} source={require("../../static/index/arrow.png")} />
-                  </Column>
+                  {
+                    !Props.hiddenRightArrow ? 
+                      <Column style={{ width: rpx(80), right: rpx(40), flex: 1, alignItems: "flex-end" }}>
+                        <Image style={{ height: rpx(dimension / 2), width: rpx(dimension / 2) }} source={require("../../static/index/arrow.png")} />
+                      </Column> : <></>
+                  }
                 </Row>
               </TouchableOpacity>
             );
