@@ -97,4 +97,15 @@ export class TeacherController {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse(HttpStatus.ACCEPTED, result).send();
   }
+
+  @Get("/class/group/:teacherId")
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async getTeacherClassGroup(
+    @Param("teacherId") teacherId: number
+  ) {
+    const [ error, result ] = await this.TeacherService.getTeacherClassGroup(teacherId);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse(HttpStatus.ACCEPTED, result).send();
+  }
 }

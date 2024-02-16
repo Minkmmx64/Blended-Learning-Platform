@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import { ObjectDirective, createApp } from 'vue';
 import { createPinia } from "pinia";
 import App from './App.vue';
 import router from './router';
@@ -25,3 +25,20 @@ app.component("IconFont", IconFont)
 app.component("TableContent", TableContent)
 app.component("ImageLayout", ImageLayout)
 app.mount('#app');
+
+
+// 自定义 指令
+app.directive("directive", {
+  created(el, binding, vnode, prevVnode) {
+    console.log(el);
+    console.log(binding);
+    console.log(vnode);
+    console.log(prevVnode);
+  },
+  updated(el, binding, vnode, prevVnode) {
+    console.log(el);
+    console.log(binding);
+    console.log(vnode);
+    console.log(prevVnode);
+  },
+} as ObjectDirective<HTMLDivElement, any>)

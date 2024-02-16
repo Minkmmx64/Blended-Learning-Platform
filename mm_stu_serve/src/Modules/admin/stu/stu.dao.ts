@@ -119,4 +119,13 @@ export class StuDAO {
                      .setParameter("student", student)
                      .getOne();
   }
+
+  public async getStudentInfoClass(classId: number) : Promise<StuInfo[]> {
+    return await this.StuRepository
+                     .createQueryBuilder("student")
+                     .leftJoinAndSelect("student.user", "app")
+                     .where("class_id = :classId")
+                     .setParameter("classId", classId)
+                     .getMany();
+  }
 }

@@ -18,6 +18,7 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 import { AppUserModule } from './Modules/app/user/user.module';
 import { WebSocketModule } from './Modules/ws/websocket.module';
 import { IndexModule } from './Modules/app/index/index.module';
+import { SignModule } from './Modules/admin/sign/sign.module';
 
 dotenv.config();
 
@@ -55,6 +56,7 @@ dotenv.config();
     WebSocketModule,
     IndexModule,
     TeacherModule,
+    SignModule
   ],
   controllers: [AppController],
   providers: [AppService],

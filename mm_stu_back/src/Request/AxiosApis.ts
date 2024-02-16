@@ -17,7 +17,7 @@ export class AxiosApi {
 
   public get<D = any, T = any>(url: string, params?: D, config?: AxiosRequestConfig<any>): Promise<AxiosResponse<ServerData<T>, any>> {
     config = config ?? {};
-    return HttpRequest().get(this.prefix + url, Object.assign(config, { params : params }));
+    return HttpRequest().get(this.prefix + url, Object.assign(config, { params : params, Date: Date.now() }));
   }
 
   public post<D = any, T = any>(url: string, data?: D, config?: AxiosRequestConfig<any>): Promise<AxiosResponse<ServerData<T>, any>> {

@@ -92,9 +92,13 @@ onMounted(() => {
 onUnmounted(() => { window.removeEventListener("beforeunload", reFresh); })
 
 </script>
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .System-main{ height: 100vh; }
 .System-drag{ top: 50%; cursor: move; }
 .System-view{ flex-grow: 1; color: #000; }
 .System-right{ height: 100vh; flex-grow: 1; width: calc(100% - 250px); }
+
+.System-main /deep/ .el-menu {
+  border: none;
+}
 </style>

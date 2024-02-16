@@ -18,6 +18,37 @@ export interface StuQuery {
   class_id: number;
 }
 
+export interface User {
+	id: number;
+	create_time: string;
+	update_time: string;
+	status: boolean;
+	remark?: any;
+	username: string;
+	password: string;
+	avatar?: any;
+	label?: any;
+	phone: string;
+	type: string;
+}
+
+export interface Student {
+	id: number;
+	create_time: string;
+	update_time: string;
+	status: boolean;
+	remark?: any;
+	student: string;
+	school: string;
+	name: string;
+	native: string;
+	year: number;
+	gender: string;
+	age: number;
+	avatar: string;
+	user: User;
+}
+
 export class studata extends DataModules {
   
 
@@ -43,6 +74,11 @@ export class stu extends AxiosApi {
   constructor(){
     super("/api/stu")
   }
+
+  public async getStudentInfoClass(classId: number) {
+    return this.get< any , Student[]>(`/${classId}`);
+  }
+
 }
 
 export default new stu();

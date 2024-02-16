@@ -178,4 +178,37 @@ export class ClassDAO {
                      .getMany();
   }
   
+  public async getTeacherClassGroup(teacherId: number) {
+    
+    const data = await this.ClassTableRepositiry
+                           .createQueryBuilder("cct")
+                           .leftJoinAndSelect("cct.class", "class")
+                           .groupBy("cct.class_id")
+                           .select([ "cct.id" ])
+                           .addSelect(["class.name", "class.id"])
+                           .where("cct.teacher_id = :teacherId", { teacherId })
+                           .getMany();
+    const ret = await Promise.all(data.map( async ( value ) => {
+      const find_course = (await this.ClassTableRepositiry
+                                     .createQueryBuilder("cct")
+                                     .leftJoinAndSelect("cct.course", "course")
+                                     .where("cct.class_id = :classId", { classId: value.class.id })
+                                     .andWhere("cct.teacher_id = :teacherId", { teacherId })
+                                     .select(["cct.id"])
+                                     .addSelect(["course.id", "course.name"])
+                                     .getMany())
+                                     .map( v => { return { ...v.course, key: v.course.id } });
+      return {
+        ...value,
+        ... {
+          class: {
+            ...value.class,
+            courses: find_course,
+            key: value.class.id
+          }
+        }
+      }
+    }));
+    return ret;
+  }
 }

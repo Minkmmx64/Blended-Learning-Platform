@@ -20,7 +20,7 @@ $size in (small : 400px, middle : 750px, large : 1000px) {
   flex-center ( vertical & horizontal )
 */
 
-@each $dist in (column, row, center, jus, alg, between, around) {
+@each $dist in (column, row, center, jus, alg, between, around, alg-end) {
   .flex-#{$dist} {
     @if $dist ==center {
       justify-content: center;
@@ -39,6 +39,9 @@ $size in (small : 400px, middle : 750px, large : 1000px) {
     }
     @else if $dist == between{
       justify-content: space-between;
+    }
+    @else if $dist == alg-end {
+      align-items: end;
     }
     @else {
       align-items: center;

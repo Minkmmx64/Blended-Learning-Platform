@@ -62,4 +62,13 @@ export class StuService{
       return [new Error(error), null];
     }
   }
+
+  public async getStudentInfoClass(classId: number) : ServiceData<StuInfo[]> {
+    try {
+      const Students = await this.StuDAO.getStudentInfoClass(classId);
+      return [ null, Students ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
 }

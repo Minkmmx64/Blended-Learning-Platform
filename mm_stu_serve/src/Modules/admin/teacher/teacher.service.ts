@@ -96,4 +96,13 @@ export class TeacherService{
       return [new Error(error), null];
     }
   }
+
+  public async getTeacherClassGroup(teacherId: number) : ServiceData<any> {
+    try {
+      const info = await this.ClassDAO.getTeacherClassGroup(teacherId);
+      return [ null, info ];
+    } catch (error) {
+      return [new Error(error), null];
+    }
+  }
 }
