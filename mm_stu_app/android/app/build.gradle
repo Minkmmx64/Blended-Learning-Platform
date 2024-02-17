@@ -74,13 +74,18 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.mm_stu_app"
+    namespace "com.minkm.push"
     defaultConfig {
-        applicationId "com.mm_stu_app"
+        applicationId "com.minkm.push"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [
+          JPUSH_PKGNAME : applicationId,
+          JPUSH_APPKEY: "f6fed4a0c36a707509baab3d",         //在此替换你的APPKey
+          JPUSH_CHANNEL: "developer-default"        //在此替换你的channel
+        ]
     }
     signingConfigs {
         debug {
@@ -102,12 +107,19 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    buildFeatures {
+        //compose = true
+        //buildConfig = true //   设置为true
+    }
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
+
+    implementation project(':jpush-react-native')  // 添加 jpush 依赖
+    implementation project(':jcore-react-native')  // 添加 jcore 依赖
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

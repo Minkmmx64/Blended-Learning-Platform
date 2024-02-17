@@ -24,10 +24,10 @@ export class StuSign extends BaseAttrColumn {
   @Column({type: "char", length: 20, comment: "签到密钥", nullable: true})
   cipher: string;
 
-  @Column({type: "date", comment: "开始时间"})
+  @Column({type: "char", length: 20, comment: "开始时间"})
   start: string;
 
-  @Column({type: "date", comment: "结束时间", nullable: true})
+  @Column({type: "char", length: 20, comment: "结束时间", nullable: true})
   end: string;
 
   @ManyToOne(type => StuClass, StuClass => StuClass.id)

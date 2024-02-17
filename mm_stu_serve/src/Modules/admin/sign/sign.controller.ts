@@ -32,7 +32,6 @@ export class SignController {
   public async SignCreate(
     @Body() body: SignCreateDTO
   ){
-    console.log(body);
     const [error, InsertResult ] = await this.SignService.SignCreate(body);
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());

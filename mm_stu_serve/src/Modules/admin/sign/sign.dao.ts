@@ -1,8 +1,9 @@
 import { DataSource, DeleteResult, InsertResult, SelectQueryBuilder, UpdateResult } from "typeorm";
 import { PaginationQuery } from "../../index.type";
-import { SignCreateDTO, SignQueryDTO, SignUpdateDTO } from "./sign.dto";
+import { Sign, SignCreateDTO, SignQueryDTO, SignUpdateDTO } from "./sign.dto";
 import { ToOrder } from "src/common/common";
 import { StuSign } from "src/Entity/stu_sign.entity";
+import * as moment from "moment";
 
 export class SignDAO {
   constructor(protected DataSource: DataSource){}
@@ -22,13 +23,21 @@ export class SignDAO {
   }
 
   public async CreateSign(CreateSign: SignCreateDTO): Promise<InsertResult> {
-
+    const now = Date.now();
+    const end = now + CreateSign.SignDuration * 60 * 1000;
     const result = await this.SignRepository
                              .createQueryBuilder()
                              .insert()
                              .into(StuSign)
                              .values({
-                                
+                                name: CreateSign.SignTitle,
+                                type: CreateSign.signType,
+                                cipher: CreateSign.signType === Sign.Gestures ? CreateSign.SignCipher : '',
+                                class: { id: CreateSign.classId },
+                                course: { id: CreateSign.courseId },
+                                teacher: { id: CreateSign.teacherId },
+                                start: moment(now).format("YYYY-MM-DD hh:mm:ss"),
+                                end: moment(end).format("YYYY-MM-DD hh:mm:ss")
                              }).execute();
     return result;
   }

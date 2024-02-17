@@ -1,5 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.minkm.push">
+    <uses-permission android:name="com.minkm.push.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -21,5 +21,21 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
+
+      <service android:name="xx.xx.XService"
+        android:enabled="true"
+        android:exported="false"
+        android:process=":pushcore">
+        <intent-filter>
+            <action android:name="cn.jiguang.user.service.action" />
+        </intent-filter>
+      </service>
+
+      <meta-data
+	      android:name="JPUSH_CHANNEL"
+	      android:value="${JPUSH_CHANNEL}" />
+      <meta-data
+	      android:name="JPUSH_APPKEY"
+	      android:value="${JPUSH_APPKEY}" /> 
     </application>
 </manifest>
