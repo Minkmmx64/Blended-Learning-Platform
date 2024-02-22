@@ -36,32 +36,44 @@
       <!-- 发起签到 -->
       <div class="send-sign pl-5 pt-5 border-info shadow-info flex-column">
         <div class="mt-5 mb-5 select-none">{{ getClass }} - {{ getCourse }} 课</div>
-        <SendSignOptions 
+        <SendSignOptions
+          v-if="!currentIsSign" 
           :name="`${getClass},${getCourse}`"
           @sign="handleSign"
         />
+        <div v-else>
+          当前签到还剩 {{ currentSignDuration }}
+        </div>
       </div>
       <!-- 签到信息 -->
-      <div class="sign-stu scroll">
-        
+      <div 
+        v-loading="isLoadingStudent"
+        class="sign-stu scroll flex-row">
+        <renderStuSign 
+          v-for="(item, index) in currentStudent" :key="index" 
+          :student="item"
+        />
       </div>
     </div>
   </div>
 </template>
   
 <script setup lang="ts">
+import renderStuSign from './compoment/renderStuSign.vue'
 import { computed, onMounted, ref } from "vue";
 import MainSystemMenu from '@/components/System/child/MainSystemMenu.vue';
 import { config } from "@/components/System/AdminSystemLayout";
 import { ElMessage, MenuItemClicked } from "element-plus";
 import { NavigationFailure } from "vue-router";
 import teacher, { menu } from '@/Request/ApiModules/teacher';
-import stu from '@/Request/ApiModules/stu';
-import { useUserStore } from '@/store/index'
+import stu, { Student } from '@/Request/ApiModules/stu';
+import { useUserStore, useWebSocketStore } from '@/store/index'
 import SendSignOptions from "./SendSignOptions.vue";
 import { ISignOptions } from ".";
+import sign, { SignBase, SignCreate } from '@/Request/ApiModules/sign';
 
 const teacher_user = useUserStore();
+const ws = useWebSocketStore();
 
 const mapProp = ref(new Map<string, { name: string, courses: menu[]}>());
 
@@ -86,13 +98,19 @@ const getClass = computed(() => {
   return mapProp.value.get(currentSelectClass.value).name;
 })
 
+// 获取该班级学生
 const loadStudentClassInfo = async (classId: number) => {
-  const { data } = (await stu.getStudentInfoClass(classId)).data;
-
-  console.log(data);
+  isLoadingStudent.value = true;
+  setTimeout( async () => {
+    const { data } = (await stu.getStudentInfoClass(classId)).data;
+    currentStudent.value = data;
+    isLoadingStudent.value = false;
+  }, 500);
 }
-
-
+//当前学生
+const currentStudent = ref<Student[]>([]);
+//加载学生
+const isLoadingStudent = ref(false);
 //当前选中班级
 const currentSelectClass = ref("");
 //当前选中课程
@@ -106,6 +124,7 @@ const courseList = ref([]);
  * 获取教师的班级
  * 获取教师的课程
  */
+
 const selectClass = async (key: string, indexPath: string[], item: MenuItemClicked, routerResult?: Promise<void | NavigationFailure>) => {
   currentSelectClass.value = "";
   currentSelectCourse.value = "";
@@ -114,24 +133,71 @@ const selectClass = async (key: string, indexPath: string[], item: MenuItemClick
   }, 0);
   courseList.value = mapProp.value.get(key).courses;
 
-  loadStudentClassInfo(+ key);
 }
-
+//当前是否有签到工作
+const currentIsSign = ref(false);
+//当前签到倒计时
+const currentSignDuration = ref(0);
 /**
  * 选中课程，查看该班级该课程该教师的信息
  */
-const selectCourse = (key: string, indexPath: string[], item: MenuItemClicked, routerResult?: Promise<void | NavigationFailure>) => {
+const selectCourse = async (key: string, indexPath: string[], item: MenuItemClicked, routerResult?: Promise<void | NavigationFailure>) => {
   currentSelectCourse.value = key;
-  console.log(currentSelectClass.value, key);
+  
+  const data = await sign.getTTL(getSignInfo.value);
+  const ttl = data.data.data.ttl;
+  const sign_id = data.data.data.id;
+  
+  loadStudentClassInfo(+ currentSelectClass.value);
+
+  // 获取当前签到的id, 后续根据 签到id - 学生id 获取当前是否签到成功
+  //console.log(sign_id);
+
+  if(ttl > 0) {
+    // 还在签到
+    currentIsSign.value = true;
+
+    currentSignDuration.value = ttl;
+
+  } else {
+    currentIsSign.value = false;
+  }
 }
+
+/**
+ * 获取当前签到课程信息
+ */
+const getSignInfo = computed((): SignBase => {
+  return {
+    classId: parseInt(currentSelectClass.value),
+    courseId: parseInt(currentSelectCourse.value),
+    teacherId: teacher_user.getUser.teacher.id
+  }
+})
 
 /**
  * 发起签到
  */
 const handleSign = (value: ISignOptions) => {
-  console.log(value);
-  ElMessage.info("正在发起签到...");
-  
+  const SignCreate: SignCreate = {
+    SignCipher: value.SignCipher,
+    SignDuration: value.SignDuration,
+    SignTitle: value.SignTitle,
+    SignType: value.signType,
+    classId: parseInt(currentSelectClass.value),
+    courseId: parseInt(currentSelectCourse.value),
+    teacherId: teacher_user.getUser.teacher.id
+  }
+  sign.create(SignCreate).then( async (res) => {
+    ElMessage.info("正在发起签到...");
+    /**
+     * 去通知该班级学生提示签到
+     */
+    ws.getInstance.emit("SEND_SIGN", { ...SignCreate, SignId: res.data.data });
+    currentIsSign.value = true;
+  }).catch( err => {
+    ElMessage.error("发起签到失败" + err);
+  });
 }
 
 onMounted(() => {
@@ -159,5 +225,5 @@ onMounted(() => {
 .main /deep/ .el-menu { border: none; }
 .content { flex: 1; max-height: calc(100vh - 110px); animation: movein 400ms ease-in-out; }
 .send-sign { flex: 0.25; }
-.sign-stu { flex: 0.75; }
+.sign-stu { flex: 0.75; flex-wrap: wrap; }
 </style>

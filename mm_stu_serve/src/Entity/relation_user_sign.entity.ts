@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
-import { AppUser } from "./app_user.entity";
-import { ClassCourseTeacher } from "./teacher_course_class.entity";
+import { StuInfo } from "./stu_info.entity";
+import { StuSign } from "./stu_sign.entity";
 
 @Entity("relation_mm_stu_user_sign")
 export class UserSign extends BaseAttrColumn {
@@ -9,17 +9,17 @@ export class UserSign extends BaseAttrColumn {
   @Column({ type:"bool", default: false, comment: "签到状态" })
   successful: boolean;
 
-  @ManyToOne(type => AppUser, AppUser => AppUser.student)
+  @ManyToOne(type => StuInfo, StuInfo => StuInfo.id)
   @JoinColumn({
-    name: "user_id",
+    name: "student",
     referencedColumnName: "id"
   })
-  user: AppUser;
+  student: StuInfo;
 
-  @ManyToOne(type => ClassCourseTeacher, ClassCourseTeacher => ClassCourseTeacher.id)
+  @ManyToOne(type => StuSign, StuSign => StuSign.id)
   @JoinColumn({
-    name: "teacher_course_class_id",
+    name: "sign_id",
     referencedColumnName: "id"
   })
-  classcourseteacher: ClassCourseTeacher;
+  sign: StuSign;
 }

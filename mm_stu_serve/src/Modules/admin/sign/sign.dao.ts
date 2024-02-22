@@ -4,11 +4,14 @@ import { Sign, SignCreateDTO, SignQueryDTO, SignUpdateDTO } from "./sign.dto";
 import { ToOrder } from "src/common/common";
 import { StuSign } from "src/Entity/stu_sign.entity";
 import * as moment from "moment";
+import { UserSign } from "src/Entity/relation_user_sign.entity";
 
 export class SignDAO {
   constructor(protected DataSource: DataSource){}
 
   public SignRepository = this.DataSource.getRepository(StuSign);
+
+  public UserSignRepository = this.DataSource.getRepository(UserSign);
 
   public async SignListsPagination(SignQuery: PaginationQuery<SignQueryDTO>): Promise<StuSign[]> {
 
@@ -31,8 +34,8 @@ export class SignDAO {
                              .into(StuSign)
                              .values({
                                 name: CreateSign.SignTitle,
-                                type: CreateSign.signType,
-                                cipher: CreateSign.signType === Sign.Gestures ? CreateSign.SignCipher : '',
+                                type: CreateSign.SignType,
+                                cipher: CreateSign.SignType === Sign.Gestures ? CreateSign.SignCipher : '',
                                 class: { id: CreateSign.classId },
                                 course: { id: CreateSign.courseId },
                                 teacher: { id: CreateSign.teacherId },
@@ -67,12 +70,28 @@ export class SignDAO {
     return result;
   }
 
-
-
   public async Total() : Promise<number> {
     return await this.SignRepository
                                      .createQueryBuilder()
                                      .select()
                                      .getCount();
+  }
+
+  // 添加签到关联记录
+  public async addUserSignRecord(student_id: number[], sign_id: number) {
+    
+    return await this.UserSignRepository
+                     .createQueryBuilder()
+                     .insert()
+                     .values(
+                       student_id.map( id => {
+                         return {
+                           successful: false,
+                           sign: { id: sign_id },
+                           student: { id: id }
+                         }
+                       })
+                     )
+                     .execute();
   }
 }

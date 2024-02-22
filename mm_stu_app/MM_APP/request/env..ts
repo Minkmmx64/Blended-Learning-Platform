@@ -1,8 +1,7 @@
-import { Alert } from "react-native";
 import { Toast } from '../compoment/display/toast/Toast';
 
 const dev = false;
-const url = dev ? "app.minkm.api:8080" : "192.168.0.104:8080";
+const url = dev ? "app.minkm.api:8080" : "192.168.0.105:8080";
 export const BaseUrl = `http://${url}/api`;
 
 export interface RequestData<U = any> {

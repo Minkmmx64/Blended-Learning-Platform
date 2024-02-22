@@ -32,4 +32,21 @@ export class RedisService {
       this.RedisRepository.del(key).then(resolve, reject);
     });
   }
+
+  public async setKVEX(key: RedisKey, value: string | Buffer | number, seconds: number) {
+    return new Promise((resolve,reject) => {
+      this.RedisRepository.setex(key, seconds, value).then(resolve, reject);
+    })
+  }
+
+  public async getTTL(key: RedisKey) : Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.RedisRepository.ttl(key, err => {
+        if(err)
+          reject(JSON.stringify(err));
+      }).then( ttl => {
+        resolve(ttl);
+      }).catch(err => reject(err));
+    });
+  }
 }

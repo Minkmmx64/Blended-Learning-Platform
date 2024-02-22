@@ -14,8 +14,9 @@ export interface StuEdit {
 }
 
 export interface StuQuery {
-  name: string;
-  class_id: number;
+  name?: string;
+  class_id?: number;
+  sign_id?: number;
 }
 
 export interface User {
@@ -76,9 +77,9 @@ export class stu extends AxiosApi {
   }
 
   public async getStudentInfoClass(classId: number) {
-    return this.get< any , Student[]>(`/${classId}`);
+    return this.get< any , Student[]>( `/${classId}` );
   }
-
+  
 }
 
 export default new stu();

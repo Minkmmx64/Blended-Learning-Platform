@@ -14,6 +14,7 @@ export class StuCreateDTO{
 export class StuQueryDTO {
   class_id: number;
   name: string;
+  sign_id?: number;
 }
 
 export class StuUpdateDTO {

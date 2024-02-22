@@ -1,18 +1,17 @@
 import { Injectable } from "@nestjs/common";
 import { randomUUID } from "crypto";
 import { JWT } from "src/utils/crypto";
-import { svgCode } from "src/utils/sms";
 import { IFileUploadStart, IFileisExist, RedisFileSliceData, TokenDTO } from "./common.dto";
 import { Express } from 'express'
 import { ReadFile } from "src/common/common";
 import * as path from "path";
-import { Rules } from "src/utils/regex";
 import * as fs from "node:fs";
 import * as dotenv from "dotenv";
 import * as worker_threads from "worker_threads";
 import { RedisService } from "src/Modules/redis/RedisService";
 import { DataSource } from "typeorm";
 import { CommonDao } from "./common.dao";
+import { Rules, svgCode } from "src/utils/commom";
 
 @Injectable()
 export class CommonService {

@@ -44,8 +44,8 @@ const login = async (e: Record<keyof User.LoginProps, string>) => {
            */
           const wx = useWebSocketStore();
           if(user.role.name === "教师"){
-            wx.setInstance({ type: "teacher", id: user.role.id });
-          } else wx.setInstance({ type: "root", id: user.role.id });
+            wx.setInstance({ type: "teacher", id: user.teacher.id });
+          } else wx.setInstance({ type: "root", id: user.id });
           /**
            * 加载权限表
            */

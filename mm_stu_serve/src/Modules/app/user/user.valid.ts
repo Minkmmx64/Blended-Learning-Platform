@@ -1,7 +1,7 @@
 import * as Joi from "joi";
 import { LoginData, RegisterData } from "./user.dto";
 import { NotAcceptableException } from "@nestjs/common";
-import { Rules } from "src/utils/regex";
+import { Rules } from "src/utils/commom";
 
 export const RegisterDataValid = Joi.object<RegisterData>({
   username: Joi.string().required().regex(Rules.username.rule).error(new NotAcceptableException("用户名错误")),

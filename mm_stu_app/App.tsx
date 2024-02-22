@@ -4,11 +4,10 @@ import { Provider } from 'react-redux';
 import DefaultStore from "./MM_APP/store";
 import { PersistGate } from 'redux-persist/integration/react'
 import { ToastContainer } from './MM_APP/compoment/display/toast/ToastContainer';
-import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
-
 import JPushModule from 'jpush-react-native';
-import { isAndroid } from './MM_APP/utils/common';
-
+import { requestNotificationPermission } from './MM_APP/utils/permission';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DevicesId } from './MM_APP/const/value';
 
 const { store, persistor } = DefaultStore();
 function App(): React.JSX.Element {
@@ -21,30 +20,21 @@ function App(): React.JSX.Element {
       production: false
     });
 
+    //查看是否开启通知权限
+    JPushModule.isNotificationEnabled( enabled => {
+      if(!enabled) requestNotificationPermission();
+    });
+
     // 监听收到推送事件
     JPushModule.addNotificationListener((map) => {
       console.log('Received notification: ', map);
     });
 
-    requestNotificationPermission();
-  })
+    JPushModule.getRegistrationID( ({ registerID }) => {
+      if(registerID) AsyncStorage.setItem(DevicesId, registerID);
+    })
 
-  const requestNotificationPermission = async () => {
-    try {
-      const result = await request(
-        isAndroid()
-          ? PERMISSIONS.ANDROID.POST_NOTIFICATIONS
-          : PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY
-      );
-      if (result === RESULTS.GRANTED) {
-        console.log('Notification permission granted');
-      } else {
-        console.log('Notification permission denied');
-      }
-    } catch (error) {
-      console.error('Error requesting notification permission: ', error);
-    }
-  };
+  });
 
   return (
     <Provider store={store}>

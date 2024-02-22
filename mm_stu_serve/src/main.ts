@@ -4,7 +4,8 @@ import * as cookieParser from "cookie-parser";
 import * as session from "express-session";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import * as path from "path";
-import { netWorkInterface } from "./utils/os";
+import { netWorkInterface } from "./utils/commom";
+
 
 async function bootstrap() {
   

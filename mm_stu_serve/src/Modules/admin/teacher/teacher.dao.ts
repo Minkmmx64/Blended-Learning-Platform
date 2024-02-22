@@ -144,4 +144,13 @@ export class TeacherDAO {
                      .getOne();
   }
 
+  public async getTeacherById(teacher_id: number) :  Promise<StuTeacher> {
+    return await this.TeacherRepository
+                     .createQueryBuilder()
+                     .select()
+                     .where("id = :teacher_id")
+                     .setParameter("teacher_id", teacher_id)
+                     .getOne();
+  }
+
 }

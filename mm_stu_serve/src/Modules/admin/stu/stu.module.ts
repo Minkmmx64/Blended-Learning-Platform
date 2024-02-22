@@ -7,7 +7,7 @@ import { ClassService } from "../class/class.service";
 @Module({
   providers: [StuService, ClassService],
   controllers: [StuController],
-  imports: []
+  imports: [],
 })
 export class StuModule {
 

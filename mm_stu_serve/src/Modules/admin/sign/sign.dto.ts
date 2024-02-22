@@ -4,14 +4,17 @@ export enum Sign {
   Online = "在线签到"
 }
 
-export class SignCreateDTO{
-  signType: Sign;
-  SignDuration: number;
-  SignTitle: string;
-  SignCipher: string;
+export class SignBase {
   classId: number;
   courseId: number;
   teacherId: number;
+}
+
+export class SignCreateDTO extends SignBase {
+  SignType: Sign;
+  SignDuration: number;
+  SignTitle: string;
+  SignCipher: string;
 }
 
 export class SignQueryDTO {

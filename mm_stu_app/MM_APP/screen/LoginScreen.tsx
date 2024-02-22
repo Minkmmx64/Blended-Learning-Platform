@@ -17,6 +17,8 @@ import { Dispatch } from "redux";
 import { AppUserReduxProps, setAppUser } from "../store/useAppUserRedux";
 import { Toast } from "../compoment/display/toast/Toast";
 import { SocketConnectData } from "../websocket/connect";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DevicesId } from "../const/value.ts";
 
 const LoginStyle = StyleSheet.create({
   Login: {
@@ -90,10 +92,6 @@ function LoginScreen({ navigation, setUserdata, setWsConnect, useWebSocketRedux 
 
   useEffect(() => {
     loadSms();
-    
-    return () => {
-
-    }
   }, []);
 
   const UserLogin = async () => {
@@ -122,9 +120,10 @@ function LoginScreen({ navigation, setUserdata, setWsConnect, useWebSocketRedux 
         }, 1000);
         /**
          * 登录连接WebSocket
+         * 该用户登录发送设备Id
          */
         if(data.student){
-          setWsConnect({ type: "student", id: data.student.id })
+          setWsConnect({ type: "student", id: data.student.id, devices_id: await AsyncStorage.getItem(DevicesId) })
         } else {
           /** 教师登录 */
         }

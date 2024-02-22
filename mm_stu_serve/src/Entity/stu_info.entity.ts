@@ -1,8 +1,9 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, OneToOne, OneToMany } from 'typeorm';
 import { BaseAttrColumn } from './BaseAttrColumn';
 import { StuCollege } from './stu_college.entity';
 import { StuClass } from './stu_class.entity';
 import { AppUser } from './app_user.entity';
+import { StuSign } from './stu_sign.entity';
 
 //学生学籍表
 @Entity("mm_stu_stu_info")
@@ -40,4 +41,7 @@ export class StuInfo extends BaseAttrColumn {
   @ManyToOne( type => StuClass , { nullable : false })
   @JoinColumn({ name: "class_id" })
   class: StuClass;
+
+  @OneToMany( type => StuSign, StuSign => StuSign.id)
+  signs: StuSign[];
 }

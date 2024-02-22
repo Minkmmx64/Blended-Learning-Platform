@@ -1,7 +1,7 @@
 import * as Joi from "joi";
 import { RootInfoDTO, RootLoginDTO, RootRegistDTO, RootUpdateDTO } from "./root.dto";
-import { Rules } from "src/utils/regex";
 import { NotAcceptableException } from "@nestjs/common";
+import { Rules } from "src/utils/commom";
 
 //表单验证
 export const RootRegistSchema = Joi.object<RootRegistDTO>({
