@@ -14,6 +14,10 @@ export interface SignBase {
   teacherId: number;
 }
 
+export interface UserSignInfo {
+  successful: boolean;
+}
+
 export class sign extends AxiosApi {
   constructor(){
     super("/api/sign");
@@ -25,6 +29,10 @@ export class sign extends AxiosApi {
 
   public async getTTL(data: SignBase) {
     return this.post("/ttl",  data);
+  }
+
+  public async getStudentSignInfo (signId: number, studentId: number) {
+    return this.post<{ studentId: number }, UserSignInfo>(`/info/${signId}/stu`, { studentId: studentId })
   }
 
 }

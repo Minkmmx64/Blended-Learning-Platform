@@ -94,4 +94,16 @@ export class SignDAO {
                      )
                      .execute();
   }
+
+  public async getStudentSignInfo(signId: number, studentId: number) : Promise<UserSign>{
+
+    return await this.UserSignRepository
+                     .createQueryBuilder()
+                     .select()
+                     .where("student = :studentId")
+                     .setParameter("studentId", studentId)
+                     .andWhere("sign_id = :signId")
+                     .setParameter("signId", signId)
+                     .getOne();
+  }
 }

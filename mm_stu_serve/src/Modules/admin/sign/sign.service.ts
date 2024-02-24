@@ -7,6 +7,7 @@ import { StuSign } from "src/Entity/stu_sign.entity";
 import { StuDAO } from "../stu/stu.dao";
 import { RedisService } from "src/Modules/redis/RedisService";
 import { SignCreate } from "src/Modules/ws/webSocket.type";
+import { UserSign } from "src/Entity/relation_user_sign.entity";
 
 
 @Injectable()
@@ -59,6 +60,15 @@ export class SignService{
       const ttl = await this.RedisService.getTTL(key);
       const res = await this.RedisService.getKV('@' + key);
       return [ null, { ttl: ttl, id: parseInt(res) } ];
+    } catch (error) {
+      return [ new Error(error) , null ]
+    }
+  }
+
+  public async getStudentSignInfo(signId: number, studentId: number) : ServiceData<UserSign> {
+    try {
+      const UserSign = await this.SignDAO.getStudentSignInfo(signId, studentId);
+      return [ null, UserSign ];
     } catch (error) {
       return [ new Error(error) , null ]
     }

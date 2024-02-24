@@ -12,5 +12,5 @@ export const useWebSocketStore = defineStore("ws", () => {
 
   const getInstance = computed(() => Instance.value);
 
-  return { getInstance , setInstance };
+  return { getInstance , setInstance, Instance };
 });

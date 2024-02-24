@@ -19,6 +19,7 @@ import { Toast } from "../compoment/display/toast/Toast";
 import { SocketConnectData } from "../websocket/connect";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DevicesId } from "../const/value.ts";
+import JPushModule from 'jpush-react-native';
 
 const LoginStyle = StyleSheet.create({
   Login: {
@@ -122,6 +123,13 @@ function LoginScreen({ navigation, setUserdata, setWsConnect, useWebSocketRedux 
          * 登录连接WebSocket
          * 该用户登录发送设备Id
          */
+
+        //设置设备别名
+        JPushModule.setAlias({
+          alias: data.student?.id.toString() ?? "unauthorization",
+          sequence: data.student?.id ?? -1
+        });
+
         if(data.student){
           setWsConnect({ type: "student", id: data.student.id, devices_id: await AsyncStorage.getItem(DevicesId) })
         } else {

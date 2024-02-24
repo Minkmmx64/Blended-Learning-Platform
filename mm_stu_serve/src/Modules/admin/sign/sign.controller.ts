@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Post, Put, Query, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
 import { ListMetaData, PaginationQuery } from "../../index.type";
 import { HttpResponse } from "src/response/response";
 import { DeleteResult, InsertResult, UpdateResult } from "typeorm";
@@ -8,6 +8,7 @@ import { ValidationPipe } from "src/utils/pipes";
 import { SignService } from "./sign.service";
 import { SignCreateDTO, SignUpdateDTO, SignQueryDTO, SignBase } from "./sign.dto";
 import { SignCreateValid, SignUpdateValid } from "./sign.valid";
+import { UserSign } from "src/Entity/relation_user_sign.entity";
 @Controller("sign")
 export class SignController {
   
@@ -51,6 +52,20 @@ export class SignController {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     }
     return new HttpResponse<{ ttl: number, id: number }>(HttpStatus.RESET_CONTENT, data).send();
+  }
+  
+  @Post("/info/:signId/stu")
+  @UseGuards(new AuthGuard())
+  @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
+  public async getStudentSignInfo(
+    @Param("signId") signId: number,
+    @Body("studentId")  studentId: number
+  ) {
+    const [error, data ] = await this.SignService.getStudentSignInfo(signId, studentId);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    }
+    return new HttpResponse<UserSign>(HttpStatus.RESET_CONTENT, data).send();
   }
 
   // @Put("/update")

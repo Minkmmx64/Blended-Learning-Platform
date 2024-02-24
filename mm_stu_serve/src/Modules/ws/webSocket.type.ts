@@ -19,6 +19,6 @@ export interface SignCreate {
 
 
 export interface MapProps {
-  devices: string;
-
+  //devices: string;
+  id: string;
 }

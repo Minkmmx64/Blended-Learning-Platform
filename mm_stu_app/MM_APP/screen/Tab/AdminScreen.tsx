@@ -12,7 +12,8 @@ import { Color } from "../../utils/style";
 import { Column } from "../../compoment/flex-box/Column";
 import { UtilTools } from "../compoment/UtilTools";
 import { AdminUtilToolsDatas } from "../../utils/data";
-import { WebSocketReduxProps } from "../../store/useWebSocketRedux";
+import { WebSocketReduxProps, clearWsCC } from "../../store/useWebSocketRedux";
+import JPushModule from 'jpush-react-native';
 
 const DefaultAvatar = "http://124.220.176.205:8080/image/4608aad3b19cb132d58c6f4f55a71163.jpeg";
 
@@ -86,6 +87,10 @@ function AdminScreen({ navigation, useAppUserRedux, clearAppUser, useWebSocketRe
               onPress={() => {
                 clearAppUser();
                 navigation.push("LoginScreen");
+                JPushModule.setAlias({
+                  sequence: -1,
+                  alias: "unauthorization"
+                })
               }}
               activeOpacity={0.8}
               style={{ width: rpx(700), height: rpx(60), borderBottomWidth: 1, borderBottomColor: Color.Primary, bottom: rpx(0) }}>
@@ -132,7 +137,10 @@ const mapStateToProps = (state: RootStoreRedux, ownProps: TabScreenProps<"AdminS
 const mapDispatchToProps = (dispatch: Dispatch): ReduxDispatch => {
   return {
     setUserdata: (data) => setAppUser(dispatch)(data),
-    clearAppUser: () => clearAppUser(dispatch)()
+    clearAppUser: () => {
+      clearAppUser(dispatch)();
+      clearWsCC(dispatch)();
+    }
   };
 };
 

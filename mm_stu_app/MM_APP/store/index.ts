@@ -4,6 +4,7 @@ import { AppUserReduxProps, useAppUserRedux } from "./useAppUserRedux";
 import { WebSocketReduxProps, useWebSocketRedux } from "./useWebSocketRedux";
 import { PersistConfig, createTransform, persistReducer, persistStore } from 'redux-persist';
 import { SocketManager } from "../websocket/connect";
+//import JPushModule from 'jpush-react-native';
 
 export interface RootStoreRedux {
   useAppUserRedux: AppUserReduxProps;
@@ -22,8 +23,9 @@ const persistConfig: PersistConfig<any> = {
   transforms: [
     createTransform(
       (input, key) => {
-        if(key === "useWebSocketRedux")
+        if(key === "useWebSocketRedux"){
           return { ...input, Socket: null }
+        }
         else return { ...input };
       },
       (output, key) => {
@@ -32,7 +34,13 @@ const persistConfig: PersistConfig<any> = {
             return { ...output, Socket: new SocketManager(output.ConnectData) }
           }else
             return { ...output, Socket: null }
-        else return { ...output };
+        else {
+          if(key === "useAppUserRedux") {
+            //console.log(output, key);
+            return { ...output };
+          } else 
+            return { ...output };
+        }
       }
     )
   ]

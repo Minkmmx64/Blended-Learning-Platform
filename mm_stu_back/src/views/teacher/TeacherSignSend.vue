@@ -31,6 +31,7 @@
     </el-menu>
     <!-- 内容区 -->
     <div 
+      v-loading="isLoadingStudent"
       v-if="currentSelectCourse" 
       class="content flex-column relative">
       <!-- 发起签到 -->
@@ -46,14 +47,16 @@
         </div>
       </div>
       <!-- 签到信息 -->
-      <div 
-        v-loading="isLoadingStudent"
-        class="sign-stu scroll flex-row">
-        <renderStuSign 
-          v-for="(item, index) in currentStudent" :key="index" 
-          :student="item"
-        />
-      </div>
+      <template v-if="currentIsSign">
+        <div 
+          class="sign-stu scroll flex-row">
+          <renderStuSign 
+            v-for="(item, index) in currentStudent" :key="item.id" 
+            :student="item"
+            :signId="signId"
+          />
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -119,7 +122,8 @@ const currentSelectCourse = ref("");
 const classList = ref([]);
 //当前课程列表
 const courseList = ref([]);
-
+// 当前发起签到Id
+const signId = ref(0);
 /**
  * 获取教师的班级
  * 获取教师的课程
@@ -148,6 +152,8 @@ const selectCourse = async (key: string, indexPath: string[], item: MenuItemClic
   const ttl = data.data.data.ttl;
   const sign_id = data.data.data.id;
   
+  signId.value = sign_id;
+
   loadStudentClassInfo(+ currentSelectClass.value);
 
   // 获取当前签到的id, 后续根据 签到id - 学生id 获取当前是否签到成功
@@ -179,6 +185,7 @@ const getSignInfo = computed((): SignBase => {
  * 发起签到
  */
 const handleSign = (value: ISignOptions) => {
+
   const SignCreate: SignCreate = {
     SignCipher: value.SignCipher,
     SignDuration: value.SignDuration,
@@ -195,6 +202,9 @@ const handleSign = (value: ISignOptions) => {
      */
     ws.getInstance.emit("SEND_SIGN", { ...SignCreate, SignId: res.data.data });
     currentIsSign.value = true;
+    signId.value = res.data.data;
+    currentSignDuration.value = 60 * SignCreate.SignDuration;
+    
   }).catch( err => {
     ElMessage.error("发起签到失败" + err);
   });
@@ -206,6 +216,11 @@ onMounted(() => {
     return;
   }
   loadTeacherClassGroup();
+
+  setInterval(() => {
+    currentSignDuration.value = currentSignDuration.value - 1;
+  }, 1000);
+  
 })
 
 </script>
@@ -225,5 +240,5 @@ onMounted(() => {
 .main /deep/ .el-menu { border: none; }
 .content { flex: 1; max-height: calc(100vh - 110px); animation: movein 400ms ease-in-out; }
 .send-sign { flex: 0.25; }
-.sign-stu { flex: 0.75; flex-wrap: wrap; }
+.sign-stu { flex: 0.75; flex-wrap: wrap; gap: 20px }
 </style>
