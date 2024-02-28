@@ -8,7 +8,10 @@ import { MainBottomTab } from "../screen/Tab/MainBottomTab";
 import { RegistScreen } from "../screen/RegistScreen";
 import { CourseScreen } from "../screen/course/CourseScreen";
 import { ChapterDetailScreen } from "../screen/course/ChapterDetailScreen";
-import { SignScreen } from "../screen/sign/SignScreen";
+import SignScreen from "../screen/sign/SignScreen";
+import { CameraScreen } from "../screen/CameraScreen";
+import { QRCodeScreen } from "../screen/QRCode/QRCodeScreen";
+import SignStatusScreen from "../screen/sign/SignStatusScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -39,12 +42,17 @@ export function MainNavigator() : JSX.Element {
         <Stack.Screen name="CourseScreen" component={ CourseScreen } options={{
           headerTitle: "课程信息"
         }} />
-        <Stack.Screen name="ChapterDetailScreen" component={ ChapterDetailScreen } options={{
-
+        <Stack.Screen name="ChapterDetailScreen" component={ ChapterDetailScreen } />
+        <Stack.Screen name="SignScreen" component={ SignScreen } options={{ headerTitle: "我的签到" }} />
+        <Stack.Screen name="CameraScreen" component={ CameraScreen } options={{
+          headerShown: false,
+          animation: "slide_from_bottom"
         }} />
-        <Stack.Screen name="SignScreen" component={ SignScreen } options={{
-          headerTitle: "我的签到"
+        <Stack.Screen name="QRCodeScreen" component={ QRCodeScreen } options={{
+          headerShown: false,
+          animation: "slide_from_bottom"
         }} />
+        <Stack.Screen name="SignStatusScreen" component={ SignStatusScreen } options={{ headerTitle: "签到状态" }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

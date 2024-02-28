@@ -1,11 +1,14 @@
-import { BadRequestException, Controller, Get, HttpStatus, Param, Query } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, HttpStatus, Param, Post, Query } from "@nestjs/common";
 import { HttpResponse } from "src/response/response";
 import { IndexService } from "./index.service";
+import { StudentInitSign } from "./index.dto";
 
 @Controller("/app")
 export class IndexController {
   
-  constructor(private readonly IndexService: IndexService){}
+  constructor(
+    private readonly IndexService: IndexService,
+  ){}
 
   //首页课程
   @Get("/index/course/list")
@@ -52,6 +55,30 @@ export class IndexController {
     } else return new HttpResponse(HttpStatus.ACCEPTED, resources).send();
   }
 
+
+  // 通过sutdentId 获取学生历史签到列表
+  @Get("/sign/:studentId")
+  public async getStuSignBySutdentId(
+    @Param("studentId") studentId: number
+  ) {
+    const [ error, signs ] = await this.IndexService.getStuSignBySutdentId(studentId);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse(HttpStatus.ACCEPTED, signs).send();
+  }
+
+
+  //学生进行签到
+  @Post("/sign/init")
+  public async studentInitSign(
+    @Body() body: StudentInitSign
+  ) {
+    const [ error, result ] = await this.IndexService.studentInitSign(body);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse(HttpStatus.ACCEPTED, result).send();
+
+  }
 }
 
 

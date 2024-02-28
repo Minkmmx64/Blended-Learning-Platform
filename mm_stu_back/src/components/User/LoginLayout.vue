@@ -7,9 +7,9 @@
         style="width: 40%;"
       >
         <span class="select-none font-20 mt-50 w-full ml-50 text-white fangzheng">Welcome !!!</span>
-        <!-- <ImageLayout class="hidden transparent border-info border-small mb-10 mt-10" :height="200" :width="200" :resource="src ?? ''" />
+        <ImageLayout class="hidden transparent border-info border-small mb-10 mt-10" :height="200" :width="200" :resource="src ?? ''" />
         <el-button @click="RefreshQRcode" type="primary">Refresh</el-button>
-        <span class="font-14 mt-10 select-none text-white">使用App扫码登录</span> -->
+        <span class="font-14 mt-10 select-none text-white">使用App扫码登录</span>
       </div>
       <!-- qrcode  /////////////////////////////////////////////// -->
 
@@ -283,7 +283,7 @@ const GenerateQRcode = async (str: string): Promise<string> => await Qrcode.toDa
 );
 
 //二维码
-const code = "4423rfergrehrtjyu4423rfergreh";
+const code = "mjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjw";
 const emit = defineEmits<IEmits>();
 const LoginStatus = ref<"login" | "register" | "forget">("login");
 const src = ref();

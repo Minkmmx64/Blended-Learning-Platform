@@ -11,6 +11,10 @@ export interface EmitEvent {
 export interface OnEvent {
   // 用户签到
   RECV_SIGN: { id: number }
+  APP_STUDENT_SIGN: {
+    signId: number;
+    studentId: number;
+  }
 }
 
 

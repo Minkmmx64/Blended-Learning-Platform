@@ -30,7 +30,9 @@ const Props = withDefaults(
 )
 
 onMounted(() => {
-  
+  ws.getInstance.on("APP_STUDENT_SIGN", data => {
+    console.log("APP_STUDENT_SIGN", data);
+  })
 });
 
 onUpdated(() => {
@@ -42,7 +44,7 @@ onUpdated(() => {
   
   ws.getInstance.on("RECV_SIGN", ({ id }) => {
     if(id === Props.student.id) successful.value = true;
-
+    
   });
   
 })

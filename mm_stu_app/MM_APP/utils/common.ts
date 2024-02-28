@@ -93,3 +93,8 @@ export function debounce<A extends any[], R> (fn: (...args : A) => R, timeout: n
 export function DateTransform(date: string) {
   return moment(date).format("YYYY-MM-DD");
 }
+
+//设备宽度参数转化成rpx
+export const devices_w_to_rpx = (value: number) => rpx(750) * value / Device_W;
+//设备高度参数转化成rpx
+export const devices_h_to_rpx = (value: number) => rpx(750) * value / Device_H;

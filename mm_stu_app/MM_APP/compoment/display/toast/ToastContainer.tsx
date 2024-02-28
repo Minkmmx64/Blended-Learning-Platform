@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ToastContainerProps } from "./Toast.type";
 import { Column } from "../../flex-box/Column";
-import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Animated, Button, Image, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { rpx } from "../../../utils/common";
 import ToastObserver from './ToastObserver';
 import { Row } from "../../flex-box/Row";
@@ -14,22 +14,21 @@ const ToastContainerStyle = StyleSheet.create({
     top: rpx(600),
     left: rpx(125),
     borderRadius: rpx(20),
-    height: rpx(600),
     zIndex: 100000
   },
   ShowTitle: { 
-    width: "100%", 
-    borderBottomColor: "#ffffff",
-    borderBottomWidth: rpx(2),
-    height: rpx(50),
+    width: "100%",
+    height: rpx(60),
     justifyContent: "space-between",
+    alignItems: "center",
     paddingLeft: rpx(20),
-    paddingRight: rpx(30)
+    paddingRight: rpx(30),
+    alignContent: "center"
   },
   ShowMessage: {
     paddingLeft: rpx(30),
     paddingRight: rpx(20),
-    height: rpx(550)
+    maxHeight: rpx(500)
   }
 });
 
@@ -78,17 +77,18 @@ export const ToastContainer = (Props: ToastContainerProps) => {
       {Props.children}
       { visible &&  <Animated.View style={{ ...ToastContainerStyle.Main, opacity: anim_opacity }}>
                       <Column>
-                        <Row style={ToastContainerStyle.ShowTitle}>
-                          <Text style={{ color: "#ffffff"}}>{title}</Text>
+                        <Row style={ { ... ToastContainerStyle.ShowTitle } }>
+                          <Text style={{ color: "#ffffff" }}>{ title }</Text>
                           <TouchableOpacity
-                            onPress={ fade_out }
-                            >
-                            <Text style={{ color: "#ffffff", fontSize: rpx(40)}}>x</Text>
+                            onPress={ fade_out } 
+                            activeOpacity={ 1 }
+                          >
+                            <Image style={{ width: rpx(50), height: rpx(50)}} source={require("../../../static/course/close.png")} />
                           </TouchableOpacity>
                         </Row>
                         <ScrollView 
                           style={ToastContainerStyle.ShowMessage}>
-                          <Text style={{ color: "#ffffff", fontSize: rpx(35)}}>    {message}</Text>
+                          { message && <Text style={{ color: "#ffffff", fontSize: rpx(35)}}>    {message}</Text>}
                         </ScrollView>
                       </Column>
                     </Animated.View>

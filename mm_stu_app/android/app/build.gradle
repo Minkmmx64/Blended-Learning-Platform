@@ -86,6 +86,11 @@ android {
           JPUSH_APPKEY: "f6fed4a0c36a707509baab3d",         //在此替换你的APPKey
           JPUSH_CHANNEL: "developer-default"        //在此替换你的channel
         ]
+
+
+        missingDimensionStrategy 'react-native-camera', 'general' // <--- insert this line
+
+        missingDimensionStrategy 'react-native-camera', 'mlkit' // <--- replace general with mlkit
     }
     signingConfigs {
         debug {
@@ -121,6 +126,8 @@ dependencies {
     implementation project(':jpush-react-native')  // 添加 jpush 依赖
     implementation project(':jcore-react-native')  // 添加 jcore 依赖
 
+    implementation project(':react-native-camera')
+
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
@@ -129,3 +136,4 @@ dependencies {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'

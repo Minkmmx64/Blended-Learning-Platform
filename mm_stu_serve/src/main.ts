@@ -42,7 +42,7 @@ async function bootstrap() {
     prefix: "/file"
   });
   
-  console.log(netWorkInterface);
+  //console.log(netWorkInterface);
   
   await app.listen(8080);
 }

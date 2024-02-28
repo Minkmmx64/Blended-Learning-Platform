@@ -10,8 +10,6 @@ import { Row } from "../../compoment/flex-box/Row";
 import { UtilToolDatas, CourseDatas } from "../../utils/data";
 import { FlowLayoutProvider, FlowLayoutProviderRef } from "../../compoment/display/FlowLayout";
 import Index from "../../request/api/index";
-import { BaseScreenProps } from "../../compoment/compoment";
-import { IUtilTools } from "./tab.type";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { RootStoreRedux } from "../../store";

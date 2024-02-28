@@ -5,7 +5,9 @@ import { ToOrder } from "src/common/common";
 import { StuSign } from "src/Entity/stu_sign.entity";
 import * as moment from "moment";
 import { UserSign } from "src/Entity/relation_user_sign.entity";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class SignDAO {
   constructor(protected DataSource: DataSource){}
 
@@ -39,8 +41,8 @@ export class SignDAO {
                                 class: { id: CreateSign.classId },
                                 course: { id: CreateSign.courseId },
                                 teacher: { id: CreateSign.teacherId },
-                                start: moment(now).format("YYYY-MM-DD hh:mm:ss"),
-                                end: moment(end).format("YYYY-MM-DD hh:mm:ss")
+                                start: moment(now).format("YYYY-MM-DD HH:mm:ss"),
+                                end: moment(end).format("YYYY-MM-DD HH:mm:ss")
                              }).execute();
     return result;
   }
@@ -104,6 +106,56 @@ export class SignDAO {
                      .setParameter("studentId", studentId)
                      .andWhere("sign_id = :signId")
                      .setParameter("signId", signId)
+                     .getOne();
+  }
+
+  public async getStuSignBySutdentId(studentId: number) : Promise<UserSign[]> {
+    return await this.UserSignRepository
+                     .createQueryBuilder("real_sign")
+                     .leftJoinAndSelect("real_sign.sign", "sign")
+                     .leftJoinAndSelect("sign.course", "course")
+                     .leftJoinAndSelect("sign.teacher", "teacher")
+                     .where("real_sign.student = :studentId")
+                     .setParameter("studentId", studentId)
+                     .orderBy("real_sign.create_time", "DESC")
+                     .getMany();
+  }
+
+  //学生进行签到
+  public async toggleStudentInitSign(studentId: number, signId: number) : Promise<UpdateResult> {
+    return await this.UserSignRepository
+                     .createQueryBuilder()
+                     .update()
+                     .set({
+                      successful: true
+                     })
+                     .where("sign_id = :signId")
+                     .setParameter("signId", signId)
+                     .andWhere("student = :studentId")
+                     .setParameter("studentId", studentId)
+                     .execute();
+  }
+
+  public async getSignInfoBySignId(signId: number) : Promise<StuSign> {
+    return await this.SignRepository
+                     .createQueryBuilder("sign")
+                     .leftJoinAndSelect("sign.class", "class")
+                     .leftJoinAndSelect("sign.course", "course")
+                     .leftJoinAndSelect("sign.teacher", "teacher")
+                     .select()
+                     .where("sign.id = :signId")
+                     .setParameter("signId", signId)
+                     .getOne();
+  }
+
+  public async getStudentInitSign(studentId: number, signId: number) : Promise<UserSign> {
+    return await this.UserSignRepository
+                     .createQueryBuilder()
+                     .select()
+                     .where("sign_id = :signId")
+                     .setParameter("signId", signId)
+                     .andWhere("student = :studentId")
+                     .setParameter("studentId", studentId)
                      .getOne();
   }
 }

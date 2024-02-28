@@ -22,3 +22,9 @@ export interface MapProps {
   //devices: string;
   id: string;
 }
+
+export interface StudentSign {
+  signId: number;
+  studentId: number;
+  classId: number;
+}

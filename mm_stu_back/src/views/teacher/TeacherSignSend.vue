@@ -215,10 +215,16 @@ onMounted(() => {
     ElMessage.error("您不是教师");
     return;
   }
+
   loadTeacherClassGroup();
 
-  setInterval(() => {
-    currentSignDuration.value = currentSignDuration.value - 1;
+  const T = setInterval(() => {
+    if(currentSignDuration.value >= 1)
+      currentSignDuration.value = currentSignDuration.value - 1;
+    else {
+      currentIsSign.value = false;
+      //clearInterval(T);
+    }
   }, 1000);
   
 })

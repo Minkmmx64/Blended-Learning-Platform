@@ -66,9 +66,7 @@ interface FormRef {
 }
 
 interface ReduxProps {
-
   useAppUserRedux: AppUserReduxProps;
-
   useWebSocketRedux: WebSocketReduxProps;
 }
 
@@ -79,7 +77,7 @@ interface ReduxDispatch {
 
 type LoginScreenProps = StackScreenProps<"LoginScreen"> & ReduxProps & ReduxDispatch; 
 
-function LoginScreen({ navigation, setUserdata, setWsConnect, useWebSocketRedux }: LoginScreenProps) {
+const LoginScreen = ({ navigation, setUserdata, setWsConnect, useWebSocketRedux }: LoginScreenProps) => {
 
   const FormRef = useRef<FormRef>(null);
 
@@ -186,7 +184,7 @@ function LoginScreen({ navigation, setUserdata, setWsConnect, useWebSocketRedux 
   );
 }
 
-const mapStateToProps = (state : RootStoreRedux, ownProps : LoginScreenProps) => {
+const mapStateToProps = (state : RootStoreRedux, ownProps : LoginScreenProps) : ReduxProps => {
   return {
     useAppUserRedux: state.useAppUserRedux,
     useWebSocketRedux: state.useWebSocketRedux

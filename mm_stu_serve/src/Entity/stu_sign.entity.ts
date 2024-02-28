@@ -12,7 +12,6 @@ enum Sign {
 }
 
 @Entity("mm_stu_stu_sign")
-//@Unique(["classId","courseId","teacherId"])
 export class StuSign extends BaseAttrColumn {
 
   @Column({type: "char", length: 20, comment: "签到名称"})
@@ -24,10 +23,10 @@ export class StuSign extends BaseAttrColumn {
   @Column({type: "char", length: 20, comment: "签到密钥", nullable: true})
   cipher: string;
 
-  @Column({type: "char", length: 20, comment: "开始时间"})
+  @Column({type: "char", length: 50, comment: "开始时间" })
   start: string;
 
-  @Column({type: "char", length: 20, comment: "结束时间", nullable: true})
+  @Column({type: "char", length: 50, comment: "结束时间" })
   end: string;
 
   @ManyToOne(type => StuClass, StuClass => StuClass.id)

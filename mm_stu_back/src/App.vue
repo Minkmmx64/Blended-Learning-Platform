@@ -24,10 +24,8 @@ const _ = (window as any).ResizeObserver;
 const user = useUserStore();
 if(user.getUser.role.name === "教师") {
   const ws = useWebSocketStore();
-  ws.setInstance({ type: "teacher", id: user.getUser.role.id});
+  ws.setInstance({ type: "teacher", id: user.getUser.teacher.id});
 }
-
-
 
 </script>
 

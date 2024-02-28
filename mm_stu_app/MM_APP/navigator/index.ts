@@ -1,15 +1,31 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 //定义 APP Stack 注册的路由
 export type RootStackParamList = {
+  //底部导航
   MainBottomTab: undefined;
-  LoginScreen:  undefined; 
+  //登录
+  LoginScreen: undefined; 
+  //注册
   RegistScreen: undefined;
+  //课程信息
   CourseScreen: { courseId: number };
+  //章节信息
   ChapterDetailScreen: { chapterId: number, chapterName: string };
+  //签到信息
   SignScreen: undefined;
+  //拍照
+  CameraScreen: undefined;
+  //扫码
+  QRCodeScreen: undefined;
+  //签到状态
+  SignStatusScreen: {
+    studentId: number;
+    signId: number;
+    classId: number;
+  };
 }
 
 //定义首页底部选项卡注册的路由
