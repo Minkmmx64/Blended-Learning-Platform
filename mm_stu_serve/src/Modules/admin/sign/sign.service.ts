@@ -54,12 +54,14 @@ export class SignService{
     }
   }
 
-  public async SignTTL(body: SignBase) : ServiceData<{ ttl: number, id: number }> {
+  public async SignTTL(body: SignBase) : ServiceData<{ ttl: number, id: number, sign: StuSign }> {
     try {
       const key = `${body.teacherId}-${body.classId}-${body.courseId}`;
       const ttl = await this.RedisService.getTTL(key);
       const res = await this.RedisService.getKV('@' + key);
-      return [ null, { ttl: ttl, id: parseInt(res) } ];
+      // redis 存当前签到的信息
+      const sign = await this.RedisService.getKV(key);
+      return [ null, { ttl: ttl, id: parseInt(res), sign: JSON.parse(sign) } ];
     } catch (error) {
       return [ new Error(error) , null ]
     }

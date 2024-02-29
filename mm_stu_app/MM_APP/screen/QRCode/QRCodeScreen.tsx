@@ -6,8 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import { BarCodeReadEvent, Point, RNCamera, Size } from "react-native-camera";
 import { Column } from "../../compoment/flex-box/Column";
 import { Color } from "../../utils/style";
+import { QRCodeProps } from "./QRCode.type";
+import { Toast } from "../../compoment/display/toast/Toast";
+import { StackScreenProps } from "../../navigator";
 
-export const QRCodeScreen = (): JSX.Element => {
+type IQRCodeScreenProps = StackScreenProps<"QRCodeScreen">;
+
+export const QRCodeScreen = ({ navigation, route } : IQRCodeScreenProps): JSX.Element => {
 
   const Style = StyleSheet.create({
     Camera: {
@@ -76,6 +81,8 @@ export const QRCodeScreen = (): JSX.Element => {
   const _camera_pos = useRef<Point<number>>({ x: 0, y: 0 });
 
   const _render_pos = (bounds: BarCodeReadEvent["bounds"]) => {
+    console.log(bounds);
+    
     if (bounds.origin instanceof Array) {
       let W: number, H: number;
       if (isAndroid()) {
@@ -115,6 +122,13 @@ export const QRCodeScreen = (): JSX.Element => {
     // 对于本机，这个相机视图是逆时针旋转过的
     // 这个坐标是本机相机视图需要顺时针旋转90度得到
     // 需要转化成能使用的坐标
+    try {
+      navigation.pop();
+      route.params.callBack(e.data);
+    } catch (error) {
+      // 二维码无效
+      return Toast.show("无效二维码");
+    }
   }
 
   return (

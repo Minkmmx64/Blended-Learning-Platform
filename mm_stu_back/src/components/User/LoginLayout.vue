@@ -231,7 +231,7 @@
   
 <script setup lang="ts">
 import { ref, onMounted, watchEffect } from "vue";
-import Qrcode from "qrcode";
+import { GenerateQRcode } from '@/utils/common'
 import ShowSMSCode from "@/components/display/from//ShowSMSCode.vue";
 import InputLayout from "../display/from/InputLayout.vue";
 import { User } from "./LoginLayout.type";
@@ -276,11 +276,7 @@ const getSmsCode = async () => {
     }
   }
 }
-const GenerateQRcode = async (str: string): Promise<string> => await Qrcode.toDataURL(
-  document.createElement("canvas"),
-  str,
-  { width: 200, type: "image/png" }
-);
+
 
 //二维码
 const code = "mjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjwmjw";

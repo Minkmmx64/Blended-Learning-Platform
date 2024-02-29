@@ -44,6 +44,9 @@
         />
         <div v-else>
           当前签到还剩 {{ currentSignDuration }}
+          <div v-if="currentSignType === Sign.QRcode">
+            <ImageLayout class="hidden transparent border-info border-small mb-10 mt-10" :height="200" :width="200" :resource="qrcode ?? ''" />
+          </div>
         </div>
       </div>
       <!-- 签到信息 -->
@@ -51,9 +54,10 @@
         <div 
           class="sign-stu scroll flex-row">
           <renderStuSign 
-            v-for="(item, index) in currentStudent" :key="item.id" 
+            v-for="(item, index) in currentStudent" :key="index" 
             :student="item"
             :signId="signId"
+            @init-sign="InitSign"
           />
         </div>
       </template>
@@ -72,14 +76,17 @@ import teacher, { menu } from '@/Request/ApiModules/teacher';
 import stu, { Student } from '@/Request/ApiModules/stu';
 import { useUserStore, useWebSocketStore } from '@/store/index'
 import SendSignOptions from "./SendSignOptions.vue";
-import { ISignOptions } from ".";
+import { ISignOptions, QRCodeProps, Sign } from ".";
 import sign, { SignBase, SignCreate } from '@/Request/ApiModules/sign';
+import { GenerateQRcode } from '@/utils/common';
 
 const teacher_user = useUserStore();
+
 const ws = useWebSocketStore();
 
 const mapProp = ref(new Map<string, { name: string, courses: menu[]}>());
 
+//获取教师所担任的班级以及对应课程
 const loadTeacherClassGroup = async () => {
   const data = await teacher.getTeacherClassGroup(teacher_user.getUser.teacher.id)
   classList.value = data.data.data.map( v => {
@@ -90,6 +97,21 @@ const loadTeacherClassGroup = async () => {
       name: v.class.name
     }
   });
+}
+
+const qrcode = ref<string>();
+
+// 生成签到二维码
+const SignQRCode = () => {
+  const qrdata : QRCodeProps<"QRSign"> = { 
+    event: "MM:QRSign",
+    data: {
+      
+    } 
+  }
+  GenerateQRcode(JSON.stringify(qrdata)).then( res => {
+    qrcode.value = res;
+  }).catch( error => ElMessage.error(error) );
 }
 
 // 获取课程名称
@@ -124,6 +146,8 @@ const classList = ref([]);
 const courseList = ref([]);
 // 当前发起签到Id
 const signId = ref(0);
+// 当前签到类型
+const currentSignType = ref<Sign | null>();
 /**
  * 获取教师的班级
  * 获取教师的课程
@@ -165,6 +189,14 @@ const selectCourse = async (key: string, indexPath: string[], item: MenuItemClic
 
     currentSignDuration.value = ttl;
 
+    currentSignType.value = data.data.data.sign.SignType;
+
+
+    //当前签到类型是二维码，生成二维码
+    if(currentSignType.value === Sign.QRcode){
+      SignQRCode();
+    }
+  
   } else {
     currentIsSign.value = false;
   }
@@ -185,7 +217,6 @@ const getSignInfo = computed((): SignBase => {
  * 发起签到
  */
 const handleSign = (value: ISignOptions) => {
-
   const SignCreate: SignCreate = {
     SignCipher: value.SignCipher,
     SignDuration: value.SignDuration,
@@ -205,9 +236,20 @@ const handleSign = (value: ISignOptions) => {
     signId.value = res.data.data;
     currentSignDuration.value = 60 * SignCreate.SignDuration;
     
+    //查看当前签到类型
   }).catch( err => {
     ElMessage.error("发起签到失败" + err);
   });
+
+  currentSignType.value = value.signType;
+  
+  SignQRCode();
+}
+
+const InitSign = (e: { signId : number, studentId: number }) => {
+  const Index = currentStudent.value.findIndex( s => s.id === e.studentId);
+  currentStudent.value.unshift(currentStudent.value.find(s => s.id === e.studentId))
+  currentStudent.value.splice( Index + 1 , 1);
 }
 
 onMounted(() => {
@@ -218,12 +260,11 @@ onMounted(() => {
 
   loadTeacherClassGroup();
 
-  const T = setInterval(() => {
+  setInterval(() => {
     if(currentSignDuration.value >= 1)
       currentSignDuration.value = currentSignDuration.value - 1;
     else {
       currentIsSign.value = false;
-      //clearInterval(T);
     }
   }, 1000);
   

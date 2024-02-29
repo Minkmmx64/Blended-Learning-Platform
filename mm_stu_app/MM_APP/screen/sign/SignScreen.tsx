@@ -13,6 +13,8 @@ import { rpx } from "../../utils/common";
 import { Column } from "../../compoment/flex-box/Column";
 import { Color } from "../../utils/style";
 import { WebSocketReduxProps } from "../../store/useWebSocketRedux";
+import { QRCodeProps } from "../QRCode/QRCode.type";
+
 interface ReduxProps {
   useAppUserRedux : AppUserReduxProps;
   useWebSocketRedux : WebSocketReduxProps
@@ -88,10 +90,11 @@ const SignScreen = ({ useAppUserRedux, navigation }: ISignScreenProps): JSX.Elem
               Toast.show("签到结束");
               return;
             }
+            if(data.successful) return Toast.show("您已签到");
             switch (data.sign.type) {
               case Sign.Gestures:
                 //手势签到
-                navigation.push("QRCodeScreen");
+                //navigation.push("QRCodeScreen");
                 break;
               case Sign.Online:
                 //点击签到
@@ -104,7 +107,19 @@ const SignScreen = ({ useAppUserRedux, navigation }: ISignScreenProps): JSX.Elem
                 break;
               case Sign.QRcode:
                 //二维码签到
-                navigation.push("QRCodeScreen");
+                navigation.push("QRCodeScreen", {
+                  callBack: ( qr ) => {
+                    const qrRes = JSON.parse(qr) as QRCodeProps<"QRSign">;
+                    if(!qrRes.event.startsWith("MM:")) Toast.show("无效二维码");
+                    if(qrRes.event === "MM:QRSign") {
+                      navigation.push("SignStatusScreen", {
+                        signId: data.sign.id,
+                        studentId: useAppUserRedux.student!.id,
+                        classId: useAppUserRedux.student!.class!.id
+                      });
+                    } 
+                  }
+                });
                 break;
               default:
                 break;

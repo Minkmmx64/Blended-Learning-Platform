@@ -1,3 +1,5 @@
+import Qrcode from "qrcode";
+
 export const getYears = (): Array<number> => {
   const y = new Date().getFullYear();
   const ret: number[] = [];
@@ -85,3 +87,11 @@ export const Colors = [
 ];
 
 export const randomColors = () => Colors[Math.floor(Math.random() * Colors.length)];
+
+
+// 生成二维码
+export const GenerateQRcode = async (str: string): Promise<string> => await Qrcode.toDataURL(
+  document.createElement("canvas"),
+  str,
+  { width: 200, type: "image/png" }
+);

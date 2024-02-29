@@ -17,6 +17,11 @@ import { useWebSocketStore } from '@/store/index';
 const ws = useWebSocketStore();
 
 const successful = ref(false);
+
+interface IEmit {
+  (event: "InitSign", data : { studentId: number, signId: number } ) : void;
+}
+
 interface IProps {
   student: Student;
   signId: number;
@@ -24,14 +29,17 @@ interface IProps {
 
 const Props = withDefaults(
   defineProps<IProps>(),
-  {
-    signId: -1
-  }
-)
+  { signId: -1 }
+);
+const Emit = defineEmits<IEmit>();
 
 onMounted(() => {
   ws.getInstance.on("APP_STUDENT_SIGN", data => {
-    console.log("APP_STUDENT_SIGN", data);
+    const { studentId, signId } = data;
+    if(Props.signId === signId && Props.student.id === studentId) {
+      successful.value = true;
+      Emit("InitSign", { signId: signId, studentId: studentId });
+    }
   })
 });
 

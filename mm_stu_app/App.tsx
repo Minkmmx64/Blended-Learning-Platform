@@ -8,11 +8,17 @@ import JPushModule from 'jpush-react-native';
 import { requestNotificationPermission } from './MM_APP/utils/permission';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DevicesId } from './MM_APP/const/value';
+import { LogBox } from 'react-native';
 
 const { store, persistor } = DefaultStore();
 function App(): React.JSX.Element {
 
   useEffect(() => {
+
+    LogBox.ignoreLogs([
+      'Non-serializable values were found in the navigation state',
+    ]);
+    
     // 初始化 JPush 模块
     JPushModule.init({
       appKey: "f6fed4a0c36a707509baab3d",
