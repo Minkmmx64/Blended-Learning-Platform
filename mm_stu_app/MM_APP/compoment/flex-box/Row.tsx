@@ -1,6 +1,5 @@
 import { StyleSheet, View } from "react-native";
 import { BaseScreenProps } from "../compoment";
-import { rpx } from "../../utils/common";
 
 const RowStyle = StyleSheet.create({
   box: {
@@ -10,7 +9,8 @@ const RowStyle = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     position: "relative",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    alignContent: "center"
   }
 })
 

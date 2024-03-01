@@ -12,6 +12,7 @@ import SignScreen from "../screen/sign/SignScreen";
 import { CameraScreen } from "../screen/CameraScreen";
 import { QRCodeScreen } from "../screen/QRCode/QRCodeScreen";
 import SignStatusScreen from "../screen/sign/SignStatusScreen";
+import { GesturesScreen } from "../screen/sign/GesturesScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -53,6 +54,7 @@ export function MainNavigator() : JSX.Element {
           animation: "slide_from_bottom"
         }} />
         <Stack.Screen name="SignStatusScreen" component={ SignStatusScreen } options={{ headerTitle: "签到状态" }} />
+        <Stack.Screen name="GesturesScreen" component={ GesturesScreen } options={{ headerTitle: "绘制手势" }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

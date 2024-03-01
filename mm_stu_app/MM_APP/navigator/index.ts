@@ -29,6 +29,8 @@ export type RootStackParamList = {
     signId: number;
     classId: number;
   };
+  //手势图案
+  GesturesScreen: undefined
 }
 
 //定义首页底部选项卡注册的路由

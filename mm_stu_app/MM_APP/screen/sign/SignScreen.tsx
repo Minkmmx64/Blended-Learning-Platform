@@ -86,6 +86,7 @@ const SignScreen = ({ useAppUserRedux, navigation }: ISignScreenProps): JSX.Elem
         renderItem={value => {
           const signOk = value.item.successful;
           const activateSign = (data: SignProps) => {
+            return navigation.push("GesturesScreen");
             if(Date.now() > new Date(data.sign.end).getTime()) {
               Toast.show("签到结束");
               return;
@@ -94,7 +95,7 @@ const SignScreen = ({ useAppUserRedux, navigation }: ISignScreenProps): JSX.Elem
             switch (data.sign.type) {
               case Sign.Gestures:
                 //手势签到
-                //navigation.push("QRCodeScreen");
+                navigation.push("GesturesScreen");
                 break;
               case Sign.Online:
                 //点击签到
