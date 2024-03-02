@@ -10,7 +10,7 @@ import { CourseService } from "src/Modules/admin/course/course.service";
 import { resourceService } from "src/Modules/admin/resource/resource.service";
 import { SignDAO } from "src/Modules/admin/sign/sign.dao";
 import { ServiceData } from "src/Modules/index.type";
-import { StudentInitSign } from "./index.dto";
+import { StudentInitSign, studentVeriftSign } from "./index.dto";
 import { RedisService } from "src/Modules/redis/RedisService";
 
 @Injectable()
@@ -89,6 +89,17 @@ export class IndexService{
       } else {
         return [ null , { ok: -1 , msg: "签到过期" } ];
       }
+    } catch (error) {
+      return [ new Error(error) , null ]
+    }
+  }
+
+  public async studentVeriftSign(verift: studentVeriftSign) : ServiceData<{ ok: number , msg: string }> {
+    try {
+      const sign = await this.SignDAO.getSignInfoBySignId(verift.signId);
+      if(sign.cipher === verift.cipher){
+        return [ null , { ok: 1, msg: "手势正确" } ];
+      } else return [ null , { ok: -1 , msg: "手势错误" } ];
     } catch (error) {
       return [ new Error(error) , null ]
     }

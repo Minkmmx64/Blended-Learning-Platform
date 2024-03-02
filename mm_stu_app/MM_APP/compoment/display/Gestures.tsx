@@ -8,39 +8,44 @@ import { ForwardedRef, forwardRef , useImperativeHandle, useRef, useState } from
 
 interface IGesturesProps {
 
+  //图案绘制完成
   onResult: (value: number[]) => Promise<boolean> | boolean;
 
+  //顶部文字
   title: string;
-
 }
 
 interface _ILine {
-      
+
+  //线段宽度
   width : number;
 
+  //线段旋转角度
   rotate: number;
 }
 
 interface _Point {
-
   x: number;
-
   y: number;
 }
 
 //每个元素坐标属性
 interface _ICell {
+
   //该元素 距离屏幕左边距离
   pageX: number;
+
   //该元素距离屏幕右边距离
   pageY: number;
+
   //高亮元素func
   __onPressIn: () => void;
+
   //元素id;
   id: number;
 }
 
-interface __cell_forward_ref__ {
+interface _Cell_Forward_Ref {
 
   setLineWR: (l: number, r: number) => void;
 
@@ -58,13 +63,13 @@ type Choose<T, U extends keyof T> = {
 }
 
 //计算2点之间距离,以及夹角
-const calcLR = (A: _Point, B: _Point) => {
+const calcLWR = (A: _Point, B: _Point) : _ILine => {
 
-  const l = Math.sqrt(Math.abs((A.x - B.x) ** 2  + (A.y - B.y) ** 2));
+  const width = Math.sqrt(Math.abs((A.x - B.x) ** 2  + (A.y - B.y) ** 2));
 
-  const r = Math.atan2((B.y - A.y), (B.x - A.x)) * 180 / Math.PI;
+  const rotate = Math.atan2((B.y - A.y), (B.x - A.x)) * 180 / Math.PI;
 
-  return { l, r }
+  return { width , rotate }
 }
 
 
@@ -96,6 +101,7 @@ const Style = StyleSheet.create({
 
 export const Gestures = ({ onResult, title }: IGesturesProps): JSX.Element => {
 
+  //当前手势图案内容区
   const _Gesture_Cell_Ref = useRef<View>(null);
 
   const _Title = (): JSX.Element => {
@@ -107,18 +113,26 @@ export const Gestures = ({ onResult, title }: IGesturesProps): JSX.Element => {
     );
   }
 
-  const __cell__ref__ = [] as React.MutableRefObject<__cell_forward_ref__>[];
+  //每个手势图案Ref属性
+  const __Cell_Items_Forward_Ref = [] as React.MutableRefObject<_Cell_Forward_Ref>[];
 
-  for(let i = 0 ; i < 9; i ++) __cell__ref__[i] = useRef() as React.MutableRefObject<__cell_forward_ref__>;
+  for(let i = 1 ; i <= 9; i ++) 
+    __Cell_Items_Forward_Ref[i] = useRef() as React.MutableRefObject<_Cell_Forward_Ref>;
   
-  let current_id : number = -1;
+  //当前选中图案编号
+  let _current_rendered_id : number = -1;
 
   const _Gesture_Cell = (): JSX.Element => {
+    
     const res = [] as JSX.Element[];
+
     for (let i = 1; i <= 9; i++) {
+
       res.push(
         <Row key={i} style={{ width: "33%", height: "33%" }}>
-          <__Cell id={i - 1} ref={__cell__ref__[i - 1]} />
+          <_Cell 
+            id={i} 
+            ref={__Cell_Items_Forward_Ref[i]} />
         </Row>
       );
     }
@@ -130,28 +144,34 @@ export const Gestures = ({ onResult, title }: IGesturesProps): JSX.Element => {
     )
   }
 
-  const _Cell_Props: _ICell[] = [];
-  let result : number[] = [];
+  //每个手势图案基本属性, 当前手势坐标，触发动画函数
+  const __Cell_Items_: _ICell[] = [];
 
-  let _set = new Set<number>();
+  //手势完成结果
+  let getsures_result : number[] = [];
 
+  //当前已经绘制的路径id
+  let __gestures_id_set = new Set<number>();
+
+  //当前是否完成绘制
   let isFinished = false;
 
+  //手势重置
   const _clear = () => {
     isFinished = false;
-    _set = new Set<number>();
-    __cell__ref__.forEach( __ => __.current.clear() );
-    result = [];
+    __gestures_id_set = new Set<number>();
+    __Cell_Items_Forward_Ref.forEach( __ => __.current.clear() );
+    getsures_result = [];
   }
 
-  const _Cell = (_CellProps: { id: number }, ref: ForwardedRef<__cell_forward_ref__>): JSX.Element => {
+  const _Cell = forwardRef((_CellProps: { id: number }, ref: ForwardedRef<_Cell_Forward_Ref>): JSX.Element => {
 
     useImperativeHandle(ref, () => ({
-      setLineWR: (l: number, r: number) => setWR({ width: l + rpx(20), rotate: r}),
+      setLineWR: (l: number, r: number) => setCellItemWR({ width: l + rpx(20), rotate: r}),
       id: _CellProps.id,
       clear: () => {
         __onPressOut();
-        setWR({ width: rpx(20), rotate: 0});
+        setCellItemWR({ width: rpx(20), rotate: 0});
         setColor(Color.Primary);
       },
       setTheme: (theme: string) => {
@@ -159,12 +179,14 @@ export const Gestures = ({ onResult, title }: IGesturesProps): JSX.Element => {
       }
     }));
     
+    //手势线段开始坐标
     const start = useRef<_Point>({ x: 0, y: 0 });
 
+    //默认路径颜色
     const [ color , setColor ] = useState(Color.Primary);
 
+    //每个手势图案触摸事件
     const _cell_gesture = PanResponder.create({
-      // 要求成为响应者：
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
@@ -176,72 +198,93 @@ export const Gestures = ({ onResult, title }: IGesturesProps): JSX.Element => {
       onPanResponderGrant: async (evt, gestureState) => {
         if(isFinished)return;
         __onPressIn();
-        const { pageX, pageY } = await _get_cell_measure();
-        let mov : _Point = {
-          x: pageX,
-          y: pageY
-        }
-        start.current = mov;
-        current_id = _CellProps.id;
-        _set.add(current_id);
-        result.push(current_id);
+
+        const { pageX, pageY } = await _get_current_touch_cell_measure();
+
+        let currentMovPoint : _Point = { x: pageX,  y: pageY }
+
+        start.current = currentMovPoint;
+
+        _current_rendered_id = _CellProps.id;
+
+        __gestures_id_set.add(_current_rendered_id);
+
+        getsures_result.push(_current_rendered_id);
+
       },
       onPanResponderMove: (evt, gestureState) => {
         if(isFinished)return;
-        const end: _Point = {
-          x: gestureState.moveX,
-          y: gestureState.moveY
-        }
-        const { l, r } = calcLR(start.current, end);
-        __cell__ref__[current_id].current.setLineWR(l, r);
 
-        const find = _Cell_Props.find( p => Math.abs((p.pageX - end.x)) <= 20 && Math.abs((p.pageY - end.y)) <= 20 && !_set.has(p.id));
-        if(find) {
+        const end: _Point = { x: gestureState.moveX, y: gestureState.moveY }
+
+        const { width, rotate } = calcLWR(start.current, end);
+
+        __Cell_Items_Forward_Ref[_current_rendered_id].current.setLineWR(width, rotate);
+
+        const findCellItem = __Cell_Items_.find( CellItem => 
+                                                    Math.abs((CellItem.pageX - end.x)) <= 20 && 
+                                                    Math.abs((CellItem.pageY - end.y)) <= 20 && 
+                                                    !__gestures_id_set.has(CellItem.id)
+                                       );
+
+        if(findCellItem) {
           Vibration.vibrate(200)
-          find.__onPressIn();
-          const { l, r } = calcLR(start.current, { x: find.pageX, y: find.pageY });
-          __cell__ref__[current_id].current.setLineWR(l, r);
-          start.current = {
-            x: find.pageX,
-            y: find.pageY
-          }
-          current_id = find.id;
-          result.push(current_id);
-          _set.add(find.id);
+
+          findCellItem.__onPressIn();
+
+          const { width, rotate } = calcLWR(start.current, { x: findCellItem.pageX, y: findCellItem.pageY });
+
+          __Cell_Items_Forward_Ref[_current_rendered_id].current.setLineWR(width, rotate);
+
+          start.current = { x: findCellItem.pageX, y: findCellItem.pageY }
+
+          _current_rendered_id = findCellItem.id;
+
+          getsures_result.push(_current_rendered_id);
+
+          __gestures_id_set.add(findCellItem.id);
         }
       },
       //手指松开
       onPanResponderRelease: (evt, gestureState) => {
-
-        __cell__ref__[current_id].current.setLineWR(-rpx(20), 0);
+        __Cell_Items_Forward_Ref[_current_rendered_id].current.setLineWR(-rpx(20), 0);
 
         isFinished = true;
 
-        const fn = () => {
-          __cell__ref__.forEach( p => {
-            if(_set.has(p.current.id)) p.current.setTheme(Color.Danger);
+        const setThemeForResult = (color: string) => {
+          __Cell_Items_Forward_Ref.forEach( CellItemRef => {
+
+            if(__gestures_id_set.has(CellItemRef.current.id)) 
+              CellItemRef.current.setTheme(color);
+
           })
         }
 
-        const res = onResult(result);
+        const res = onResult(getsures_result);
 
         if(Object.getPrototypeOf(res) === Boolean.prototype) {
-          if(!res)fn();
+
+          if(!res) setThemeForResult(Color.Danger);
+          else setThemeForResult(Color.Success);
+
         } else {
-          (res as Promise<boolean>).then( res => {
-            if(!res) {
-              fn();
-            }
-          }).catch( error => {
-            fn();
-          })
+          (res as Promise<boolean>)
+              .then( res => {
+                if(!res) setThemeForResult(Color.Danger);
+                else setThemeForResult(Color.Success);
+              })
+              .catch( () =>  setThemeForResult(Color.Danger) );
         }
       },
     });
 
+    //手势图案缩放
     const _hover_anim_value_scale = useRef(new Animated.Value(1));
+    //手势图案透明的
     const _hover_anim_value_opacity = useRef(new Animated.Value(1));
-    const _duration = useRef(200).current;
+    //手势图案过渡时间
+    const _hover_anim_duration = useRef(200).current;
+    //手势图案Ref
     const _hover_anim_ref = useRef<View>(null);
 
     const _hover = StyleSheet.create({
@@ -264,33 +307,36 @@ export const Gestures = ({ onResult, title }: IGesturesProps): JSX.Element => {
       }
     });
 
+    //手势图案触发动画
     const __onPressIn = () => {
       Animated.timing(_hover_anim_value_opacity.current, {
         toValue: 0.2,
         useNativeDriver: false,
-        duration: _duration
+        duration: _hover_anim_duration
       }).start();
       Animated.timing(_hover_anim_value_scale.current, {
         toValue: 5,
         useNativeDriver: false,
-        duration: _duration
+        duration: _hover_anim_duration
       }).start();
     }
 
+    //手势图啊结束动画
     const __onPressOut = () => {
       Animated.timing(_hover_anim_value_opacity.current, {
         toValue: 1,
         useNativeDriver: false,
-        duration: _duration
+        duration: _hover_anim_duration
       }).start();
       Animated.timing(_hover_anim_value_scale.current, {
         toValue: 1,
         useNativeDriver: false,
-        duration: _duration
+        duration: _hover_anim_duration
       }).start();
     }
 
-    const _get_cell_measure = () : Promise<Choose<_ICell, "__onPressIn" | "id">>=> {
+    //获取当前触摸的图案宽度，以及位置信息
+    const _get_current_touch_cell_measure = () : Promise<Choose<_ICell, "__onPressIn" | "id">>=> {
       return new Promise((resolve, reject) => {
         if (_hover_anim_ref.current) {
           _hover_anim_ref.current?.measure((_x, _y, _width, _height, pageX, pageY) => {
@@ -302,22 +348,27 @@ export const Gestures = ({ onResult, title }: IGesturesProps): JSX.Element => {
     }
 
     const _hover_anim_layout = async () => {
-      const { pageX, pageY } = await _get_cell_measure();
+      const { pageX, pageY } = await _get_current_touch_cell_measure();
+
       _Gesture_Cell_Ref.current?.measure((_, __, ___, ____, _____, _pageY) => {
+
         const _props: _ICell = { pageX, pageY: pageY, __onPressIn: __onPressIn, id: _CellProps.id };
-        _Cell_Props.push(_props);
+
+        __Cell_Items_.push(_props);
       });
     }
 
+    //设置当前手势图案线段长度和角度
+    const [ CellItemWR, setCellItemWR ] = useState({ width: 0, rotate: 0 })
 
-    const [ WR, setWR ] = useState({ width: 0, rotate: 0 })
-
-    const _Line = ( _Line_Props : _ILine) : JSX.Element => {
+    const _Line = ( _LineProps : _ILine) : JSX.Element => {
       return <View 
         style={ { 
           ... _hover._line, 
-          width: _Line_Props.width,
-          transform: [{ rotate: `${_Line_Props.rotate}deg` }]} } />
+          width: _LineProps.width,
+          transform: [
+            { rotate: `${_LineProps.rotate}deg` }
+          ]} } />
     }
 
     return (
@@ -327,12 +378,10 @@ export const Gestures = ({ onResult, title }: IGesturesProps): JSX.Element => {
           onLayout={_hover_anim_layout}
           style={_hover._anim}>
         </Animated.View>
-        { <_Line width={WR.width} rotate={WR.rotate} /> }
+        { <_Line width={ CellItemWR.width } rotate={ CellItemWR.rotate } /> }
       </Row>
     )
-  }
-
-  const __Cell = forwardRef(_Cell);
+  });
 
   return (
     <Column>

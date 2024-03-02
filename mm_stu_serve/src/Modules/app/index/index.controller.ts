@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Get, HttpStatus, Param, Post, Query } from "@nestjs/common";
 import { HttpResponse } from "src/response/response";
 import { IndexService } from "./index.service";
-import { StudentInitSign } from "./index.dto";
+import { StudentInitSign, studentVeriftSign } from "./index.dto";
 
 @Controller("/app")
 export class IndexController {
@@ -78,6 +78,17 @@ export class IndexController {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse(HttpStatus.ACCEPTED, result).send();
 
+  }
+
+  //校验签到
+  @Post("/sign/verify")
+  public async studentVeriftSign(
+    @Body() verify: studentVeriftSign
+  ) {
+    const [ error, result ] = await this.IndexService.studentVeriftSign(verify);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse(HttpStatus.ACCEPTED, result).send();
   }
 }
 

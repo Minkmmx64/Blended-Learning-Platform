@@ -30,7 +30,11 @@ export type RootStackParamList = {
     classId: number;
   };
   //手势图案
-  GesturesScreen: undefined
+  GesturesScreen: {
+    signId: number;
+    studentId: number;
+    classId: number;
+  }
 }
 
 //定义首页底部选项卡注册的路由

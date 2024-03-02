@@ -51,6 +51,11 @@ export class sign extends Request {
   public async studentInitSign(data: { studentId: number , signId: number }) : Promise<RequestData<studentInitSignResData>> {
     return this.post("/init", data);
   }
+
+  //验证手势密码
+  public async studentVeriftSign(signId: number, cipher: string) : Promise<RequestData<studentInitSignResData>> {
+    return this.post("/verify", { cipher: cipher, signId: signId });
+  }
 }
 
 export default new sign();

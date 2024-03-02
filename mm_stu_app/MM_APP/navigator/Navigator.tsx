@@ -12,7 +12,7 @@ import SignScreen from "../screen/sign/SignScreen";
 import { CameraScreen } from "../screen/CameraScreen";
 import { QRCodeScreen } from "../screen/QRCode/QRCodeScreen";
 import SignStatusScreen from "../screen/sign/SignStatusScreen";
-import { GesturesScreen } from "../screen/sign/GesturesScreen";
+import GesturesScreen from "../screen/sign/GesturesScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
