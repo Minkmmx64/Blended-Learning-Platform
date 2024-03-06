@@ -20,20 +20,20 @@ export class SignService{
 
   public SignDAO = new SignDAO(this.DataSource); 
 
-  // public async SignListsPagination(SignQuery: PaginationQuery<SignQueryDTO>): ServiceData<ListMetaData<StuSign[]>> {
-  //   try {
-  //     const Signs = await this.SignDAO.SignListsPagination(SignQuery);
-  //     const res: ListMetaData<StuSign[]> = {
-  //       list: Signs,
-  //       meta: {
-  //         total: await this.SignDAO.Total()
-  //       }
-  //     }
-  //     return [ null, res ];
-  //   } catch (error) {
-  //     return [ new Error(error), null];
-  //   }
-  // }
+  public async SignListsPagination(SignQuery: PaginationQuery<SignQueryDTO>): ServiceData<ListMetaData<StuSign[]>> {
+    try {
+      const Signs = await this.SignDAO.SignListsPagination(SignQuery);
+      const res: ListMetaData<StuSign[]> = {
+        list: Signs,
+        meta: {
+          total: Signs.length
+        }
+      }
+      return [ null, res ];
+    } catch (error) {
+      return [ new Error(error), null];
+    }
+  }
 
   public async SignCreate(SignCreate: SignCreateDTO) : ServiceData<number>{
     try {
@@ -76,21 +76,4 @@ export class SignService{
     }
   }
 
-  // public async SignUpdate(SignUpdate : SignUpdateDTO) : ServiceData<UpdateResult>{
-  //   try {
-  //     const UpdateResult = await this.SignDAO.UpdateSignById(SignUpdate);
-  //     return [ null, UpdateResult ];
-  //   } catch (error) {
-  //     return [new Error(error), null];
-  //   }
-  // }
-
-  // public async SignDelete(id: number) : ServiceData<DeleteResult> {
-  //   try {
-  //     const DeleteResult = await this.SignDAO.DeleteSignById(id);
-  //     return [ null, DeleteResult ];
-  //   } catch (error) {
-  //     return [new Error(error), null];
-  //   }
-  // }
 }

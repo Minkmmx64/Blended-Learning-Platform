@@ -1,6 +1,6 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useEffect } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { StatusBar } from "react-native";
 import { RootStackParamList } from ".";
 import LoginScreen from "../screen/LoginScreen";
@@ -16,7 +16,11 @@ import GesturesScreen from "../screen/sign/GesturesScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export function MainNavigator() : JSX.Element {
+export interface IMainNavigatorRef {
+  navigator: <T extends keyof RootStackParamList>(nav: T) => void;
+}
+
+export const MainNavigator = forwardRef((Props, ref: React.ForwardedRef<IMainNavigatorRef>) : JSX.Element => {
   /**
    *  默认状态栏
    */
@@ -26,14 +30,22 @@ export function MainNavigator() : JSX.Element {
     StatusBar.setTranslucent(true);
   }, [])
 
+  const NavigatorRef = useRef<NavigationContainerRef<RootStackParamList>>(null);
+
+  useImperativeHandle(ref, () => ({
+    navigator: (nav) => {
+      NavigatorRef.current?.navigate(nav as any)
+    }
+  }));
+
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={NavigatorRef}>
       <Stack.Navigator screenOptions={{
         headerTitleAlign: "center",
         animation: "slide_from_right",
       }}>
         <Stack.Screen name="MainBottomTab" options = {{ headerShown: false }} component={ MainBottomTab } />
-        <Stack.Screen name="LoginScreen" component={ LoginScreen } options={{
+        <Stack.Screen name="LoginScreen" component={ LoginScreen as any } options={{
           headerTitle: "登录",
           animation: "fade_from_bottom",
         }} />
@@ -58,4 +70,4 @@ export function MainNavigator() : JSX.Element {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+})

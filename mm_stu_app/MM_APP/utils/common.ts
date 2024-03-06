@@ -75,7 +75,7 @@ export const sleep = (timeout: number = 1000) => {
 
 
 //函数防抖
-export function debounce<A extends any[], R> (fn: (...args : A) => R, timeout: number) {
+export function debounce<A extends any[], R> (fn: (...args : A) => R, timeout: number = 1000) {
   let time: NodeJS.Timeout | null = null;
   return function(...args: A) {
     time = setTimeout(() => {
@@ -87,7 +87,17 @@ export function debounce<A extends any[], R> (fn: (...args : A) => R, timeout: n
 }
 
 //函数节流
-
+export function throttle<A extends any[], R>(fn: (...args: A) => R, interval: number = 1000) {
+  let time: NodeJS.Timeout | null = null;
+  return function(...args : A){
+    if(!time) {
+      time = setTimeout(() => {
+        fn(...args);
+        time = null;
+      }, interval);
+    }
+  }
+}
 
 // 时间转化成 yyyy-mm-dd
 export function DateTransform(date: string) {

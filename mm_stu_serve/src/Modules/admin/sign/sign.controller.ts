@@ -9,21 +9,22 @@ import { SignService } from "./sign.service";
 import { SignCreateDTO, SignUpdateDTO, SignQueryDTO, SignBase } from "./sign.dto";
 import { SignCreateValid, SignUpdateValid } from "./sign.valid";
 import { UserSign } from "src/Entity/relation_user_sign.entity";
+import { StuSign } from "src/Entity/stu_sign.entity";
 @Controller("sign")
 export class SignController {
   
   constructor(private readonly SignService: SignService){}
 
-  // @Get("/list")
-  // @UseInterceptors(new TokenExpireInterceptor())
-  // public async SignListsPagination(
-  //   @Query() SignQuery: PaginationQuery<SignQueryDTO>
-  // ) {
-  //   const [ error, Signs ] = await this.SignService.SignListsPagination(SignQuery);
-  //   if(error) {
-  //     throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
-  //   } else return new HttpResponse<ListMetaData<StuSign[]>>(HttpStatus.ACCEPTED, Signs).send();
-  // }
+  @Get("/list")
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async SignListsPagination(
+    @Query() SignQuery: PaginationQuery<SignQueryDTO>
+  ) {
+    const [ error, Signs ] = await this.SignService.SignListsPagination(SignQuery);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<ListMetaData<StuSign[]>>(HttpStatus.ACCEPTED, Signs).send();
+  }
 
   @Post("/create")
   @UseGuards(new AuthGuard())
@@ -68,28 +69,4 @@ export class SignController {
     return new HttpResponse<UserSign>(HttpStatus.RESET_CONTENT, data).send();
   }
 
-  // @Put("/update")
-  // @UseGuards(new AuthGuard())
-  // @UsePipes(new ValidationPipe(SignUpdateValid))
-  // @UseInterceptors(new TokenExpireInterceptor())    //需要token认证的地方添加
-  // public async SignUpdate(
-  //   @Body() body: SignUpdateDTO
-  // ){
-  //   const [ error, UpdateResult ] = await this.SignService.SignUpdate(body);
-  //   if(error) {
-  //     throw new BadRequestException(new HttpResponse<UpdateResult>(HttpStatus.BAD_REQUEST, UpdateResult,  error.message).send());
-  //   } else return new HttpResponse<UpdateResult>(HttpStatus.RESET_CONTENT, UpdateResult).send();
-  // }
-
-  // @Delete("/delete")
-  // @UseGuards(new AuthGuard())
-  // @UseInterceptors(new TokenExpireInterceptor())
-  // public async SignDelete(
-  //   @Query("id") id: number,
-  // ){
-  //   const [ error, DeleteResult ] = await this.SignService.SignDelete(id);
-  //   if(error) {
-  //     throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
-  //   } else return new HttpResponse<DeleteResult>(HttpStatus.ACCEPTED, DeleteResult).send();
-  // }
 }

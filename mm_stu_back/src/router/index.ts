@@ -118,7 +118,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/SignManager",
         name: "SignManager",
         meta: { isAuth: true, key: "SignManager" },
-        component: () => import("@/views/teacher/TeacherClassCourses.vue")
+        component: () => import("@/views/SignManager.vue")
       }
     ]
   },

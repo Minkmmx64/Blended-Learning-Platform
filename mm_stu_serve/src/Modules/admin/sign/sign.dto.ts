@@ -18,7 +18,10 @@ export class SignCreateDTO extends SignBase {
 }
 
 export class SignQueryDTO {
-  
+  teacher_id: number;
+  class_id: number;
+  course_id: number;
+  sign_type: Sign
 }
 
 export class SignUpdateDTO {

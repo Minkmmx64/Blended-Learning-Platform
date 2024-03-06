@@ -122,14 +122,12 @@ const userInfoSave = () => {
       isEdit.value = !isEdit.value;
       ElMessage.success("修改信息成功");
       const user = res.data.data;
+
       User.setUser({
+        ...User.getUser,
         username: user.username,
         label: user.label,
         avatar: user.avatar,
-        role: {
-          id: user.role.id,
-          name: user.role.name
-        }
       });
       InfoEdit.value.username = user.username;
       InfoEdit.value.avatar = user.avatar;

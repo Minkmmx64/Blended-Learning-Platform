@@ -90,7 +90,8 @@ export class WebSocket implements OnGatewayInit, OnGatewayConnection, OnGatewayD
         await broadCastForAlias(
                     `${teacher.name}发来一条${payload.SignType}通知`, 
                     `${payload.SignTitle}`, 
-                    devs
+                    devs,
+                    { navigator: "SignScreen" } // 点击跳转到签到页面
               );
       this.RedisService.setKVEX(sign_id, JSON.stringify(payload), payload.SignDuration * 60);
     } catch (error) {

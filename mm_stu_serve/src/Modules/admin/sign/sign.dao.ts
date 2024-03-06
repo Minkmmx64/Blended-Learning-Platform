@@ -18,10 +18,44 @@ export class SignDAO {
   public async SignListsPagination(SignQuery: PaginationQuery<SignQueryDTO>): Promise<StuSign[]> {
 
     const Order = ToOrder(SignQuery);
-    const SelectQueryBuilder: SelectQueryBuilder<StuSign> = this.SignRepository.createQueryBuilder().select();
+    const SelectQueryBuilder: SelectQueryBuilder<StuSign> = this.SignRepository.createQueryBuilder("sign").select();
+
+    SelectQueryBuilder
+                    .leftJoinAndSelect("sign.class","class")
+                    .leftJoinAndSelect("sign.course","course")
+                    .leftJoinAndSelect("sign.teacher","teacher");
+
+    if(SignQuery.class_id) {
+      SelectQueryBuilder
+                        .andWhere("sign.classId = :classId")
+                        .setParameter("classId", SignQuery.class_id)
+      
+    }
+
+    if(SignQuery.course_id) {
+      SelectQueryBuilder
+                        .andWhere("sign.courseId = :courseId")
+                        .setParameter("courseId", SignQuery.course_id)
+    }
+
+    if(SignQuery.teacher_id) {
+      SelectQueryBuilder
+                        .andWhere("sign.teacherId = :teacherId")
+                        .setParameter("teacherId", SignQuery.teacher_id)
+    }
+
+    if(SignQuery.sign_type) {
+      SelectQueryBuilder
+                        .andWhere("sign.type = :signType")
+                        .setParameter("signType", SignQuery.sign_type)
+    }
+
+    if(SignQuery.prop) {
+      SelectQueryBuilder
+                        .orderBy(SignQuery.prop, Order)
+    }
 
     return await SelectQueryBuilder
-                                   .orderBy(SignQuery.prop, Order)
                                    .skip(SignQuery.limit * (SignQuery.offset - 1))
                                    .take(SignQuery.limit)
                                    .getMany();
@@ -72,12 +106,12 @@ export class SignDAO {
     return result;
   }
 
-  public async Total() : Promise<number> {
-    return await this.SignRepository
-                                     .createQueryBuilder()
-                                     .select()
-                                     .getCount();
-  }
+  // public async Total() : Promise<number> {
+  //   return await this.SignRepository
+  //                                    .createQueryBuilder()
+  //                                    .select()
+  //                                    .getCount();
+  // }
 
   // 添加签到关联记录
   public async addUserSignRecord(student_id: number[], sign_id: number) {

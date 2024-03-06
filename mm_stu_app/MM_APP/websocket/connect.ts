@@ -1,4 +1,5 @@
 import SocketIO, { Socket } from "socket.io-client";
+import { url } from "../request/env.";
 
 export interface SocketConnectData {
   type: "student" | "teacher";
@@ -21,7 +22,7 @@ export interface OnEvent {
 
 export class SocketManager {
 
-  private baseUrl = "ws://192.168.0.105:8082";
+  private baseUrl = `ws://${url}:8082`;
 
   private SocketInstance: Socket;
 

@@ -18,6 +18,13 @@ export interface UserSignInfo {
   successful: boolean;
 }
 
+export class SignQuery {
+  teacher_id: number;
+  class_id: number;
+  course_id: number;
+  sign_type: Sign
+}
+
 export class sign extends AxiosApi {
   constructor(){
     super("/api/sign");

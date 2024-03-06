@@ -19,7 +19,12 @@ export const broadCastForDevices = (broadTitle: string, broadContent: string,  d
   });
 }
 
-export const broadCastForAlias = (broadTitle: string, broadContent: string,  alias: string[]) => {
+export const broadCastForAlias = <T = any>(
+  broadTitle: string, 
+  broadContent: string,  
+  alias: string[], 
+  extras?: T
+) => {
   return new Promise((resolve, reject) => {
     client.push()
           .setPlatform(JPush.ALL)
@@ -28,6 +33,8 @@ export const broadCastForAlias = (broadTitle: string, broadContent: string,  ali
             JPush.android(
               broadContent, 
               broadTitle, 
+              1,
+              extras
             )
           )
           .send()

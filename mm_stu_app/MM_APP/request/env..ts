@@ -1,8 +1,8 @@
 import { Toast } from '../compoment/display/toast/Toast';
 
 const dev = false;
-const url = dev ? "app.minkm.api:8080" : "192.168.0.105:8080";
-export const BaseUrl = `http://${url}/api`;
+export const url = dev ? "app.minkm.api" : "192.168.82.38";
+export const BaseUrl = `http://${url}:8080/api`;
 
 export interface RequestData<U = any> {
   code: number;
@@ -102,11 +102,11 @@ export class Request {
     for(const o in data) {
       const type = Object.prototype.toString.call(data[o]);
       if(type === "[object String]") {
-        data[o] = (data[o] as string).replaceAll("app.minkm.api:8080", s => url);
+        data[o] = (data[o] as string).replaceAll("app.minkm.api", s => url);
       }else if(type === "[object Array]") {
         for(let i = 0 ; i < (data[o] as []).length; i ++) {
           const type2 = Object.prototype.toString.call(data[o][i]);
-          if(type2 === "[object String]") data[o][i] = (data[o][i] as string).replaceAll("app.minkm.api:8080", s => url);
+          if(type2 === "[object String]") data[o][i] = (data[o][i] as string).replaceAll("app.minkm.api", s => url);
           else if(type2 === "[object Object]" || type2 === "[object Array]") this.dataTransform(data[o][i]);
         }
       }else if(type === "[object Object]") {
