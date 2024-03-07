@@ -19,6 +19,7 @@ import { AppUserModule } from './Modules/app/user/user.module';
 import { WebSocketModule } from './Modules/ws/websocket.module';
 import { IndexModule } from './Modules/app/index/index.module';
 import { SignModule } from './Modules/admin/sign/sign.module';
+import { SubjectModule } from './Modules/admin/subject/subject.module';
 
 dotenv.config();
 
@@ -56,7 +57,8 @@ dotenv.config();
     WebSocketModule,
     IndexModule,
     TeacherModule,
-    SignModule
+    SignModule,
+    SubjectModule
   ],
   controllers: [AppController],
   providers: [AppService],

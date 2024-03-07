@@ -28,5 +28,4 @@ export class StuPaper extends BaseAttrColumn {
 
   @OneToMany( type => StuExam, StuExam => StuExam.id)
   exames: StuExam[];
-  
 }

@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, OneToMany, OneToOne } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { StuPaper } from "./stu_paper.entity";
+import { StuCourse } from "./stu_course.entity";
 
 @Entity("mm_stu_stu_subject")
 export class StuSubject extends BaseAttrColumn {
@@ -11,7 +12,7 @@ export class StuSubject extends BaseAttrColumn {
   @Column({type: "enum", enum: ["单选题","多选题","简答题","判断题"], comment: "题目类型"})
   type: "单选题" | "多选题" | "简答题" | "判断题";
 
-  @Column({type: "char", length: 255, comment: "答案"})
+  @Column({type: "mediumtext", comment: "参考答案"})
   result: string;
 
   @Column({type: "char", length: 255, comment: "选项", nullable: true})
@@ -20,4 +21,7 @@ export class StuSubject extends BaseAttrColumn {
   @ManyToMany(type => StuPaper, StuPaper => StuPaper.id)
   papers: StuPaper[];
 
+  //题目分类
+  @Column({ type: "char", length: 255, comment: "题目分类" })
+  classify: string;
 }

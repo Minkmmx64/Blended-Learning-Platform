@@ -1,7 +1,7 @@
 import { Toast } from '../compoment/display/toast/Toast';
 
 const dev = false;
-export const url = dev ? "app.minkm.api" : "192.168.82.38";
+export const url = dev ? "app.minkm.api" : "192.168.43.191";
 export const BaseUrl = `http://${url}:8080/api`;
 
 export interface RequestData<U = any> {
