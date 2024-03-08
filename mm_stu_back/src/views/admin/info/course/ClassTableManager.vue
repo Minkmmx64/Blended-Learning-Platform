@@ -2,7 +2,7 @@
   <div class="w-full h-full mb-40">
     <div class="TableHead">
       <el-row class="mb-10 mt-10" :gutter="20">
-        <el-col :span="12">
+        <el-col :span="6">
           <el-select
             v-model="EditParams.class_id"
             class="m-2"

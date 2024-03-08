@@ -1,7 +1,8 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { StuSubject } from "./stu_subject.entity";
 import { StuExam } from "./stu_exam.entity";
+import { StuTeacher } from "./stu_teacer.entity";
 
 @Entity("mm_stu_stu_paper")
 export class StuPaper extends BaseAttrColumn {
@@ -26,6 +27,14 @@ export class StuPaper extends BaseAttrColumn {
   })
   subjects: StuSubject[];
 
+  //题目分类
+  @Column({ type: "char", length: 255, comment: "试卷分类" })
+  classify: string;
+
   @OneToMany( type => StuExam, StuExam => StuExam.id)
   exames: StuExam[];
+
+  @ManyToOne(type => StuTeacher, StuTeacher => StuTeacher.id)
+  @JoinColumn({ name: "teacher_id" })
+  teacher: StuTeacher;
 }

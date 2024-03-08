@@ -1,9 +1,9 @@
 <template>
-  <div class="TableContent border-info relative">
+  <div class="TableContent border-info relative scroll">
     <el-table 
       :key="Props.tableKey" 
       v-loading="loading" 
-      style="width:100%; height: calc(750px)" 
+      style="width:100%; height: calc(650px)" 
       :data="Props.DataSource"
       row-key="id" 
       lazy
@@ -100,7 +100,7 @@ const handleCurrentChange = (val: number) => {
 .TableContent {
   width: 90%;
   margin: 0 auto;
-  height: calc(800px);
+  height: 700px;
 }
 
 .Pagination {

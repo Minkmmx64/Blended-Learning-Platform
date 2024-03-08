@@ -9,7 +9,7 @@
       :default-active="null"
       :unique-opened="!true"
       :collapse-transition="true"
-      :style="{ height: '100vh', padding: '0px 0px 0px 0px', width: '240px', zIndex: 100 }"
+      :style="{ height: '100vh', padding: '0px 0px 0px 0px', width: '240px', zIndex: 100, marginLeft: '-40px' }"
       @select="selectClass"
     >
       <MainSystemMenu :data="classList" />

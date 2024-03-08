@@ -119,6 +119,18 @@ const routes: Array<RouteRecordRaw> = [
         name: "SignManager",
         meta: { isAuth: true, key: "SignManager" },
         component: () => import("@/views/SignManager.vue")
+      },
+      {
+        path: "/SubjectUpload",
+        name: "SubjectUpload",
+        meta: { isAuth: true, key: "SubjectUpload" },
+        component: () => import("@/views/SubjectUpload.vue")
+      },
+      {
+        path: "/SubjectPager",
+        name: "SubjectPager",
+        meta: { isAuth: true, key: "SubjectPager" },
+        component: () => import("@/views/SubjectPager.vue")
       }
     ]
   },

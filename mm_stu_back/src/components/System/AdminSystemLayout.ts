@@ -136,6 +136,12 @@ const SystemMenus: ISystemMenus[] = [
         key: "SignManager",
         icon: "shou",
         route: "SignManager"
+      },
+      {
+        name: "发布作业",
+        key: "SendAssignment",
+        icon: "code",
+        route: "SendAssignment"
       }
     ]
   },
@@ -164,6 +170,26 @@ const SystemMenus: ISystemMenus[] = [
     icon: "ssun",
     route: "ApplyAuth"
   },
+  {
+    name: "题库",
+    key: "SubjectManager",
+    icon: "",
+    subMenu: [
+      {
+        name: "题库上传",
+        key: "SubjectUpload",
+        icon: "history",
+        route: "SubjectUpload"
+      },
+      {
+        name: "生成试卷",
+        key: "SubjectPager",
+        icon: "file-add",
+        route: "SubjectPager"
+      }
+    ]
+  }
+  
 ];
 
 export { SystemMenus , config }

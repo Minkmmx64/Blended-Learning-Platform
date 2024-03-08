@@ -44,7 +44,7 @@ export class DataModules {
       } else if(this.clientKey[serviceKey].type === "JSON") {
         try {
           const data = JSON.parse(serviceData[serviceKey]);
-          console.log(data);
+          //console.log(data);
           return data;
         } catch (error) {
 
@@ -57,12 +57,19 @@ export class DataModules {
   public transformClientDataDataToServer(clientKey: string,  clientData: Record<string, any>) {
     if(this.serviceKey[clientKey]) {
       //判断 this.serviceKey[clientKey] 将 clientData[clientKey] 转换成 this.serviceKey[clientKey] 的类型
-      if(typeof this.serviceKey[clientKey].type === "string") {
+      if(this.serviceKey[clientKey].type === "string") {
         if(typeof clientData[clientKey]["toString"] === "function") {
           return clientData[clientKey].toString();
         } else {
           throw "该对象不包含 toString不能转化成字符串";
         }
+      }
+      if(this.serviceKey[clientKey].type === "JSON") {
+          try {
+            return JSON.stringify(clientData[clientKey]);
+          } catch (error) {
+            throw "该对象不包含 toString不能转化成字符串";
+          }
       }
     }
 

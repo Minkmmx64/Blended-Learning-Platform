@@ -14,8 +14,30 @@ export class SubjectDAO {
     const Order = ToOrder(SubjectQuery);
     const SelectQueryBuilder: SelectQueryBuilder<StuSubject> = this.SubjectRepository.createQueryBuilder().select();
 
+    if(SubjectQuery.prop) {
+      SelectQueryBuilder
+                        .orderBy(SubjectQuery.prop, Order)
+    }
+
+    if(SubjectQuery.classify) {
+      SelectQueryBuilder
+                        .andWhere("classify LIKE :classify")
+                        .setParameter("classify", `%${SubjectQuery.classify}%`);
+    }
+
+    if(SubjectQuery.describe) {
+      SelectQueryBuilder
+                        .andWhere("describe LIKE :describe")
+                        .setParameter("describe", `%${SubjectQuery.describe}%`);
+    }
+
+    if(SubjectQuery.type) {
+      SelectQueryBuilder
+                        .andWhere("type = :type")
+                        .setParameter("type", SubjectQuery.type);
+    }
+
     return await SelectQueryBuilder
-                                   .orderBy(SubjectQuery.prop, Order)
                                    .skip(SubjectQuery.limit * (SubjectQuery.offset - 1))
                                    .take(SubjectQuery.limit)
                                    .getMany();
@@ -28,7 +50,12 @@ export class SubjectDAO {
                              .insert()
                              .into(StuSubject)
                              .values({
-                                
+                                remark: CreateSubject.remark,
+                                classify: CreateSubject.classify,
+                                options: JSON.stringify(CreateSubject.options),
+                                result: CreateSubject.result,
+                                type: CreateSubject.type,
+                                describe: CreateSubject.describe
                              }).execute();
     return result;
   }
@@ -39,7 +66,12 @@ export class SubjectDAO {
                              .createQueryBuilder()
                              .update()
                              .set({
-                            
+                                remark: UpdateSubject.data.remark,
+                                classify: UpdateSubject.data.classify,
+                                options: JSON.stringify(UpdateSubject.data.options),
+                                result: UpdateSubject.data.result,
+                                type: UpdateSubject.data.type,
+                                describe: UpdateSubject.data.describe
                              })
                              .where("id = :id")
                              .setParameter("id", UpdateSubject.id)

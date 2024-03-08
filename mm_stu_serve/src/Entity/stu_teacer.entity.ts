@@ -3,6 +3,7 @@ import { StuCourse } from "./stu_course.entity";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { ClassCourseTeacher } from "./teacher_course_class.entity";
 import { StuSign } from "./stu_sign.entity";
+import { StuPaper } from "./stu_paper.entity";
 
 @Entity("mm_stu_stu_teacher")
 export class StuTeacher extends BaseAttrColumn {
@@ -45,4 +46,7 @@ export class StuTeacher extends BaseAttrColumn {
 
   @OneToMany(() => ClassCourseTeacher, (ClassCourseTeacher) => ClassCourseTeacher.teacher)
   classCourseTeachers: ClassCourseTeacher[];
+
+  @OneToMany(() => StuPaper, StuPaper => StuPaper.id)
+  papers: StuPaper[];
 }

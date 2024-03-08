@@ -33,13 +33,13 @@
       </div>
       
     </div>
-    <div class="Bread-Nav-history font-12 h-full hidden w-full flex-row flex-alg">
+    <div ref="BreadNav" class="Bread-Nav-history select-none hidden font-12 h-full w-full flex-row flex-alg scroll-y">
       <template
         v-for="(item,index) in HistoryPath"
         :key="index"
       >
         <div 
-          :class="`flex-row relative flex-alg border-box Bread-Nav-item point pl-3 pr-3 ml-4 ${active === BreadMenu(item).key ? 'Bread-Nav-Menu-Select' : ''}`" 
+          :class="`flex-row relative flex-alg border-box Bread-Nav-item point pl-3 pr-3  ml-4 ${active === BreadMenu(item).key ? 'Bread-Nav-Menu-Select' : ''}`" 
           @click="MenuClick(BreadMenu(item))"
         >
           <div
@@ -91,13 +91,17 @@ const active = ref<string>("");
 const emit = defineEmits<IEmit>();
 const BreadMenu = (MenuEle: string): ISystemMenus =>  JSON.parse(MenuEle);
 const HistoryPath = ref<Set<string>>(new Set());
-const MenuClick = (item: ISystemMenus) =>  emit('togglemenu', item.key);
+const MenuClick = (item: ISystemMenus) => {
+  console.log(BreadNav.value.scrollLeft);
+  console.log(BreadNav.value.scrollWidth);
+  emit('togglemenu', item.key)
+};
 const CloseMenu = (item: string) =>  {
   const MenuItem : ISystemMenus = JSON.parse(item);
   const SetArr = [...HistoryPath.value];
   if(HistoryPath.value.size === 1) return;
   const Index = SetArr.findIndex( e =>  BreadMenu(e).key === MenuItem.key );
-  const Key = BreadMenu(SetArr[Index]).key
+  const Key = BreadMenu(SetArr[Index]).key;
   SetArr.splice(Index,1);
   if(Index >= SetArr.length) {
     active.value = BreadMenu(SetArr[Index - 1]).key;
@@ -110,10 +114,15 @@ const CloseMenu = (item: string) =>  {
   emit('togglemenu', active.value);
 };
 
+const BreadNav = ref<HTMLDivElement>(null);
+
 onMounted(() => {
   HistoryPath.value.add(JSON.stringify(Props.path.at(-1)));
   active.value = Props.active;
 })
+
+
+
 </script>
   
 <style lang="scss" scoped>
@@ -134,6 +143,7 @@ onMounted(() => {
     transition: 500ms all ease;
     height: 27px;
     line-height: 27px;
+    min-width: fit-content;
   }
   .Bread-Nav-Menu-Select{ background-color: rgb(64,158,255); color: #fff; }
   .Bread-Nav-close { width: 8px; height: 8px; }
