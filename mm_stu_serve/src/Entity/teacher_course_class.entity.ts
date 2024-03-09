@@ -20,18 +20,18 @@ export class ClassCourseTeacher extends BaseAttrColumn {
   @Column()
   course_id: number;
 
-  @OneToMany(() => StuSign, StuSign => StuSign.id)
+  @OneToMany(() => StuSign, StuSign => StuSign.id) // #ok
   signs: StuSign[];
 
-  @ManyToOne(() => StuClass, (StuClass) => StuClass.classCourseTeachers)
+  @ManyToOne(() => StuClass, (StuClass) => StuClass.classCourseTeachers) // #ok
   @JoinColumn({ name: 'class_id' })
   class: StuClass;
 
-  @ManyToOne(() => StuCourse, (StuCourse) => StuCourse.classCourseTeachers)
+  @ManyToOne(() => StuCourse, (StuCourse) => StuCourse.classCourseTeachers) // #ok
   @JoinColumn({ name: 'course_id' })
   course: StuCourse;
 
-  @ManyToOne(() => StuTeacher, (StuTeacher) => StuTeacher.classCourseTeachers)
+  @ManyToOne(() => StuTeacher, (StuTeacher) => StuTeacher.classCourseTeachers) // #ok
   @JoinColumn({ name: 'teacher_id' })
   teacher: StuTeacher;
 

@@ -3,6 +3,7 @@ import { PaginationQuery } from "../../index.type";
 import { PaperCreateDTO, PaperQueryDTO, PaperUpdateDTO } from "./paper.dto";
 import { ToOrder } from "src/common/common";
 import { StuPaper } from "src/Entity/stu_paper.entity";
+import { StuSubject } from "src/Entity/stu_subject.entity";
 
 export class PaperDAO {
   constructor(protected DataSource: DataSource){}
@@ -96,5 +97,57 @@ export class PaperDAO {
                                      .createQueryBuilder()
                                      .select()
                                      .getCount();
+  }
+
+
+  public async DeletePaperSubjectRelaById(paperId: number, subjectIdxs: number[]) {
+    const queryRunner = this.DataSource.createQueryRunner();
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+
+      const old_subjects = await this.PaperRepository
+                                 .createQueryBuilder("paper", queryRunner)
+                                 .relation(StuPaper, "subjects")
+                                 .of(paperId)
+                                 .loadMany<StuSubject>();
+      
+      await this.PaperRepository
+                .createQueryBuilder("paper", queryRunner)
+                .relation(StuPaper, "subjects")
+                .of(paperId)
+                .remove(old_subjects);
+      
+      await this.PaperRepository
+                .createQueryBuilder("paper", queryRunner)
+                .relation(StuPaper, "subjects")
+                .of(paperId)
+                .add(subjectIdxs)
+      
+      const new_subjects = await this.PaperRepository
+                                     .createQueryBuilder("paper", queryRunner)
+                                     .relation(StuPaper, "subjects")
+                                     .of(paperId)
+                                     .loadMany<StuSubject>();
+
+      await queryRunner.commitTransaction();
+      
+      return new_subjects;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new Error(error);
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  public async getRelaPaperSubjectsById(paperId: number) {
+
+    return await this.PaperRepository
+                     .createQueryBuilder("paper")
+                     .relation(StuPaper, "subjects")
+                     .of(paperId)
+                     .loadMany<StuSubject>();
+
   }
 }

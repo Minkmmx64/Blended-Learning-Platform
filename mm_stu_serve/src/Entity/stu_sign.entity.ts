@@ -1,9 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { StuTeacher } from "./stu_teacer.entity";
 import { UserSign } from "./relation_user_sign.entity";
 import { StuCourse } from "./stu_course.entity";
 import { StuClass } from "./stu_class.entity";
+import { ClassCourseTeacher } from "./teacher_course_class.entity";
 
 enum Sign {
   Gestures = "手势签到",
@@ -29,19 +30,22 @@ export class StuSign extends BaseAttrColumn {
   @Column({type: "char", length: 50, comment: "结束时间" })
   end: string;
 
-  @ManyToOne(type => StuClass, StuClass => StuClass.id)
+  @ManyToOne(type => StuClass, StuClass => StuClass.id) // #ok
   //@JoinColumn({ name: "class_id"})
   class: StuClass;
 
-  @ManyToOne(type => StuCourse, StuCourse => StuCourse.id)
+  @ManyToOne(type => StuCourse, StuCourse => StuCourse.id) // #ok
   //@JoinColumn({ name: "course_id"})
   course: StuCourse;
 
-  @ManyToOne(type => StuTeacher, StuTeacher => StuTeacher.id)
+  @ManyToOne(type => StuTeacher, StuTeacher => StuTeacher.id) // #ok
   //@JoinColumn({ name: "teacher_id"})
   teacher: StuTeacher;
 
-  @OneToMany(type => UserSign, UserSign => UserSign.id)
+  @OneToMany(type => UserSign, UserSign => UserSign.id) // #ok
   users: UserSign[];
+
+  @ManyToOne(type => ClassCourseTeacher, ClassCourseTeacher => ClassCourseTeacher.id) // #ok
+  cls: ClassCourseTeacher;
 
 }

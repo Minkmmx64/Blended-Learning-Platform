@@ -1,10 +1,7 @@
-import { Check, Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne } from "typeorm";
+import { Check, Column, Entity, JoinColumn, OneToOne } from "typeorm";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { StuInfo } from "./stu_info.entity";
 import { StuTeacher } from "./stu_teacer.entity";
-import { UserSign } from "./relation_user_sign.entity";
-import { StuExam } from "./stu_exam.entity";
-
 @Entity("mm_stu_app_user")
 @Check(
   `(
@@ -35,28 +32,11 @@ export class AppUser extends BaseAttrColumn {
   @Column({ type: 'enum', enum: ['student', 'teacher'], comment: "用户类型" })
   type: 'student' | 'teacher';
 
-  @OneToOne(type => StuInfo, { nullable: true })
+  @OneToOne(type => StuInfo, { nullable: true }) // #ok
   @JoinColumn({ name: "student_code", referencedColumnName: "student"})
   student: StuInfo;
 
-  @OneToOne(type => StuTeacher, { nullable: true })
+  @OneToOne(type => StuTeacher, { nullable: true }) // #ok
   @JoinColumn({ name:"teacher_code",  referencedColumnName: "code" })
   teacher: StuTeacher;
-
-  @OneToMany(type => UserSign, UserSign => UserSign.id)
-  signs: UserSign[];
-
-  @ManyToMany(type => StuExam, StuExam => StuExam.id)
-  @JoinTable({
-    name: "relation_mm_stu_user_exam",
-    joinColumn: {
-      name: "user_id",
-      referencedColumnName: "id"
-    },
-    inverseJoinColumn: {
-      name: "exam_id",
-      referencedColumnName: "id"
-    }
-  })
-  exames: StuExam[]
 }

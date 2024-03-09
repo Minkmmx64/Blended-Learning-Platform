@@ -9,14 +9,14 @@ export class UserSign extends BaseAttrColumn {
   @Column({ type:"bool", default: false, comment: "签到状态" })
   successful: boolean;
 
-  @ManyToOne(type => StuInfo, StuInfo => StuInfo.id)
+  @ManyToOne(type => StuInfo, StuInfo => StuInfo.id) // #ok
   @JoinColumn({
     name: "student",
     referencedColumnName: "id"
   })
   student: StuInfo;
 
-  @ManyToOne(type => StuSign, StuSign => StuSign.id)
+  @ManyToOne(type => StuSign, StuSign => StuSign.id) // #ok
   @JoinColumn({
     name: "sign_id",
     referencedColumnName: "id"

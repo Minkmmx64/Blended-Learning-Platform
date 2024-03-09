@@ -9,10 +9,10 @@ export class RootRole extends BaseAttrColumn {
   @Column({ type: "char", length: 20, comment: "角色名称"})
   name: string;
 
-  @OneToMany(() => RootUser, user => user.id)
+  @OneToMany(() => RootUser, user => user.id) // #ok
   users: RootUser[];
 
-  @ManyToMany(type => RootRouters, RootRouters => RootRouters.id)
+  @ManyToMany(type => RootRouters, RootRouters => RootRouters.id) // #ok
   @JoinTable({
     name: "relation_mm_stu_role_router",
     joinColumn: {

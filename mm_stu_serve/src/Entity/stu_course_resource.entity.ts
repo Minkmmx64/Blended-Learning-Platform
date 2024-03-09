@@ -17,7 +17,7 @@ export class StuCourseResource extends BaseAttrColumn {
   @Column({type: "char", length: 255, comment:"资源类型", nullable: true })
   type: string;
 
-  @ManyToOne( type => StuChapter, StuChapter => StuChapter.id)
+  @ManyToOne( type => StuChapter, StuChapter => StuChapter.id) // #ok
   @JoinColumn({
     name: "chapter_id"
   })

@@ -5,3 +5,10 @@ $primary: #2563EB;
 $success: #34D399;
 $danger : #f56c6c;
 $height-base: 40px;
+
+@mixin center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

@@ -13,10 +13,10 @@ export class StuCollege extends BaseAttrColumn {
   code: string;
 
   //学院有哪些班级
-  @OneToMany( type => StuClass, StuClass => StuClass.id)  
+  @OneToMany( type => StuClass, StuClass => StuClass.id)  // #ok
   classes: StuClass[];
 
   //学院开设哪些课程
-  @OneToMany( type => StuCourse, StuCourse => StuCourse.id)
+  @OneToMany( type => StuCourse, StuCourse => StuCourse.id) // #ok
   courses: StuCourse[];
 }

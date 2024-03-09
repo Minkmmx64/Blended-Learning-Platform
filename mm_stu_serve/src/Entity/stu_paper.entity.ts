@@ -13,7 +13,7 @@ export class StuPaper extends BaseAttrColumn {
   @Column({type: "int", comment: "总分"})
   total: number;
 
-  @ManyToMany(type => StuSubject, StuSubject => StuSubject.id)
+  @ManyToMany(type => StuSubject, StuSubject => StuSubject.id) // #ok
   @JoinTable({
     name: "relation_mm_stu_paper_subject",
     joinColumn: {
@@ -31,10 +31,10 @@ export class StuPaper extends BaseAttrColumn {
   @Column({ type: "char", length: 255, comment: "试卷分类" })
   classify: string;
 
-  @OneToMany( type => StuExam, StuExam => StuExam.id)
+  @OneToMany( type => StuExam, StuExam => StuExam.id) // #ok
   exames: StuExam[];
 
-  @ManyToOne(type => StuTeacher, StuTeacher => StuTeacher.id)
+  @ManyToOne(type => StuTeacher, StuTeacher => StuTeacher.id) // #ok
   @JoinColumn({ name: "teacher_id" })
   teacher: StuTeacher;
 }

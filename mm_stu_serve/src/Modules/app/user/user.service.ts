@@ -38,6 +38,12 @@ export class AppUserService {
       if (findAuth === null) throw "学号/职工号不存在";
       regist.password = encryption(regist.password);
       const result = await this.AppUserDAO.insertAppUser(regist, findAuth);
+      if(regist.type === "student") {
+        const studentId = findAuth.id;
+        const userId = result.identifiers[0].id;
+        // 修改学生的app_user_id
+        await this.StuDAO.addAppUserInfoToStudentById(studentId, userId);
+      }
       return [null, result];
     } catch (error) {
       return [new Error(error), null];

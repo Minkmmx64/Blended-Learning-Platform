@@ -16,3 +16,9 @@ export class PaperUpdateDTO {
   id: number;
   data: PaperCreateDTO;
 }
+
+
+export class RelaPaperSubjectsDTO {
+  paperId: number;
+  subjects: number[];
+}

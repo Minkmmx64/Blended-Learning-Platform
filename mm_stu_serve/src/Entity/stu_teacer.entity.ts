@@ -1,9 +1,11 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne } from "typeorm";
 import { StuCourse } from "./stu_course.entity";
 import { BaseAttrColumn } from "./BaseAttrColumn";
 import { ClassCourseTeacher } from "./teacher_course_class.entity";
 import { StuSign } from "./stu_sign.entity";
 import { StuPaper } from "./stu_paper.entity";
+import { AppUser } from "./app_user.entity";
+import { RootUser } from "./root_user.entity";
 
 @Entity("mm_stu_stu_teacher")
 export class StuTeacher extends BaseAttrColumn {
@@ -27,10 +29,14 @@ export class StuTeacher extends BaseAttrColumn {
   @Column({ type: "int", width: 4, comment : "年龄" })
   age: number;
 
-  @OneToMany(type => StuSign, StuSign => StuSign.teacher)
+  // @OneToOne(type => AppUser, { nullable: true }) // #ok
+  // @JoinColumn({ name: "app_user_id" })
+  // user: AppUser;
+
+  @OneToMany(type => StuSign, StuSign => StuSign.teacher) // #ok
   signs: StuSign[];
 
-  @ManyToMany(type => StuCourse, StuCourse => StuCourse.teachers)
+  @ManyToMany(type => StuCourse, StuCourse => StuCourse.teachers) // #ok
   @JoinTable({
     name: "relation_mm_stu_teacher_course",
     joinColumn: {
@@ -44,9 +50,12 @@ export class StuTeacher extends BaseAttrColumn {
   })
   courses: StuCourse[]
 
-  @OneToMany(() => ClassCourseTeacher, (ClassCourseTeacher) => ClassCourseTeacher.teacher)
+  @OneToMany(() => ClassCourseTeacher, (ClassCourseTeacher) => ClassCourseTeacher.teacher) // #ok
   classCourseTeachers: ClassCourseTeacher[];
 
-  @OneToMany(() => StuPaper, StuPaper => StuPaper.id)
+  @OneToMany(() => StuPaper, StuPaper => StuPaper.id) // #ok
   papers: StuPaper[];
+
+  @OneToOne(type => RootUser, RootUser => RootUser.id, { nullable : true}) // #ok
+  root: RootUser;
 }

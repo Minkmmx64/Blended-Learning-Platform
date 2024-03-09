@@ -124,13 +124,19 @@ const routes: Array<RouteRecordRaw> = [
         path: "/SubjectUpload",
         name: "SubjectUpload",
         meta: { isAuth: true, key: "SubjectUpload" },
-        component: () => import("@/views/SubjectUpload.vue")
+        component: () => import("@/views/subject/SubjectUpload.vue")
       },
       {
         path: "/SubjectPager",
         name: "SubjectPager",
         meta: { isAuth: true, key: "SubjectPager" },
-        component: () => import("@/views/SubjectPager.vue")
+        component: () => import("@/views/subject/SubjectPager.vue")
+      },
+      {
+        path: "/SendAssignment",
+        name: "SendAssignment",
+        meta: { isAuth: true, key: "SendAssignment" },
+        component: () => import("@/views/teacher/SendAssignment.vue")
       }
     ]
   },

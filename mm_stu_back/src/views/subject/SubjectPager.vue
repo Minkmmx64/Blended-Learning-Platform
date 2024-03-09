@@ -46,6 +46,7 @@
       </el-row>
     </div>
 
+    <AddRealSubjectForPaper :paperId="currentSelectPaperId" v-model:showDialog="showAddRealSubjectForPaper" />
     <el-dialog
       v-model="isEdit"
       :title="`${EditTxt}-${TableProps.apiname}`"
@@ -202,9 +203,12 @@ import TableContent from "@/components/display/table/TableContent.vue";
 import { paper } from "@/Request/ApiModules/paper";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import { onMounted, ref } from "vue";
-import { useUserStore } from '@/store/index';
+import { useUserStore } from '@/store';
+import AddRealSubjectForPaper from "@/views/subject/component/AddRelaSubjectForPaper.vue";
 
 const teacher_user = useUserStore();
+
+const showAddRealSubjectForPaper = ref(false);
 
 const EditParams = ref({
   remark: "",
@@ -233,8 +237,11 @@ const TableProps = useTableFunction<paper>(
 
 const { DataSource, TableLoading, total, isEdit, EditTxt, EditLoading } = TableProps;
 
+const currentSelectPaperId = ref();
+
 const addRealSubject = (id: number) => {
-  console.log("试卷id:", id);
+  showAddRealSubjectForPaper.value = true;
+  currentSelectPaperId.value = id;
 }
 
 onMounted(() => {

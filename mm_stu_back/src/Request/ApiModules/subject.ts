@@ -8,6 +8,16 @@ export enum SubjectType {
   Judge = "判断题"
 }
 
+export interface ISubjectProps {
+  id: number;
+  remark?: string;
+  describe: string;
+  type: string;
+  result: string;
+  options: string; // JSON格式的数组
+  classify: string;
+}
+
 export class subjectdata extends DataModules {
 
   clientKey = {

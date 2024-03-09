@@ -12,6 +12,8 @@
       stripe
       :efault-expand-all="false"
       @sort-change="handleSortChange"
+      @select-all="handleMultipleSelectAll"
+      @select="handleMultipleSelect"
     >
       <slot />
     </el-table>
@@ -60,10 +62,18 @@ interface IProps {
 }
 
 interface Emit {
+  //表格刷新事件
   (event: "refresh") : void;
+  //表格修改分页大小事件
   (event: "handleSizeChange", limit: number) : void;
+  //表格分页事件
   (event: "handleCurrentChange", offset: number) : void;
+  //表格排序事件
   (event: "handleSortChange", sort: any): void;
+  //表格选中事件
+  (event: "handleMultipleSelect", selections: selection[], row: selection ) : void;
+  //表格全选事件
+  (event: "handleMultipleSelectAll", selections: selection[]) : void;
 }
 const emit = defineEmits<Emit>();
 
@@ -78,7 +88,6 @@ const Props = withDefaults(
 
 const handleSortChange = ({ column,  prop, order } : Sorted & { column : any } ) => {
   emit("handleSortChange", { prop, order });
-  // console.log(column);
 }
 
 const currentPage = ref(1);
@@ -95,7 +104,20 @@ const handleCurrentChange = (val: number) => {
   emit("handleCurrentChange", val);
 }
 
+interface selection {
+  [index: string] : any;
+}
+
+const handleMultipleSelectAll = (selections: selection[]) => {
+  emit("handleMultipleSelectAll", selections);
+}
+
+const handleMultipleSelect = (selections: selection[], row: selection) => {
+  emit("handleMultipleSelect", selections, row);
+}
+
 </script>
+
 <style lang="scss" scoped>
 .TableContent {
   width: 90%;

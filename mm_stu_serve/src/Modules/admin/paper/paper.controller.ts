@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Post, Put, Query, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
 import { ListMetaData, PaginationQuery } from "../../index.type";
 import { HttpResponse } from "src/response/response";
 import { DeleteResult, InsertResult, UpdateResult } from "typeorm";
@@ -6,9 +6,10 @@ import { AuthGuard } from "src/guard/auth.gurad";
 import { TokenExpireInterceptor } from "src/guard/token.interceptor";
 import { ValidationPipe } from "src/utils/pipes";
 import { PaperService } from "./paper.service";
-import { PaperCreateDTO, PaperUpdateDTO, PaperQueryDTO } from "./paper.dto";
+import { PaperCreateDTO, PaperUpdateDTO, PaperQueryDTO, RelaPaperSubjectsDTO } from "./paper.dto";
 import { PaperCreateValid, PaperUpdateValid } from "./paper.valid";
 import { StuPaper } from "src/Entity/stu_paper.entity";
+import { StuSubject } from "src/Entity/stu_subject.entity";
 @Controller("paper")
 export class PaperController {
   
@@ -62,5 +63,29 @@ export class PaperController {
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     } else return new HttpResponse<DeleteResult>(HttpStatus.ACCEPTED, DeleteResult).send();
+  }
+
+  @Post("/relation")
+  @UseGuards(new AuthGuard())
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async addRelaPaperSubjects(
+    @Body()  body: RelaPaperSubjectsDTO
+  ) {
+    const [ error, data ] = await this.PaperService.RelaPaperSubjects(body);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<number[]>(HttpStatus.ACCEPTED, data).send();
+  }
+
+  @Get("/relation")
+  @UseGuards(new AuthGuard())
+  @UseInterceptors(new TokenExpireInterceptor())
+  public async getRelaPaperSubjects(
+    @Query("paperId") paperId: number
+  ) {
+    const [ error, data ] = await this.PaperService.getRelaPaperSubjectsById(paperId);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    } else return new HttpResponse<StuSubject[]>(HttpStatus.ACCEPTED, data).send();
   }
 }

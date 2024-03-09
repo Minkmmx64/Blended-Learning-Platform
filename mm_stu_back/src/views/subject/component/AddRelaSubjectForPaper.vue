@@ -1,16 +1,18 @@
 <template>
   <el-dialog
+      destroy-on-close
       fullscreen
       v-model="showDialog"
       title="编辑试卷"
+      @open="handleDialogOpen"
       @close="Emits('update:showDialog', false)">
-    <div class="show-real-subject-content flex-column flex-around">
-        <div class="show-real-subject-content-idx pb-10 flex-row">
+    <div class="show-rela-subject-content flex-column flex-around">
+        <div class="show-rela-subject-content-idx pb-10 flex-row">
           <div @click="changeCurrentShowSubject(index)" class="idx select-none point" v-for="(item, index) in currentSelectSubjects" :key="index">
             {{ index + 1 }}
           </div>
         </div>
-        <div v-if="currentSelectSubjects.length" class="show-real-subject-content-subject pb-10">
+        <div v-if="currentSelectSubjects.length" class="show-rela-subject-content-subject pb-10">
           <ShowSubjectProp :number="currentSelectSubjectNumber ?? 1" :data="currentSelectSubject ?? currentSelectSubjects[0]" />
         </div>
     </div>
@@ -80,12 +82,15 @@
 <script setup lang="ts">
 import {onMounted, ref, toRefs} from "vue";
 import TableContent from "@/components/display/table/TableContent.vue";
-import { subject, subjectdata, SubjectType, ISubjectProps } from "@/Request/ApiModules/subject";
+import { subject, subjectdata, ISubjectProps } from "@/Request/ApiModules/subject";
 import { useTableFunction } from "@/components/TableFunction/useTableFunction";
 import ShowSubjectProp from "@/views/subject/component/ShowSubjectProp.vue";
+import paper from "@/Request/ApiModules/paper";
+import { ElMessage } from "element-plus";
 
 interface IProps {
   showDialog: boolean;
+
   paperId: number;
 }
 
@@ -149,12 +154,27 @@ const addSubjectTableContent = () => {
   ];
 }
 
-const saveSubjectTableContent = () => {
-  console.log(currentSelectSubjects.value.map( subject => subject.id));
-  console.log(Props.paperId);
+const saveSubjectTableContent = async () => {
+  const ids = currentSelectSubjects.value.map( subject => subject.id);
+  try {
+    await paper.addRelaPaperSubjects(Props.paperId, ids);
+    ElMessage.success("题目保存成功");
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 const currentSelectSubjectNumber = ref();
+
+const loadSubjects = async () => {
+  const { data } = await paper.getRelaPaperSubjects(Props.paperId);
+  currentSelectSubjects.value = data.data;
+}
+
+const handleDialogOpen = () => {
+  // 加载该试卷对应的题目
+  loadSubjects();
+}
 
 onMounted(() => {
   TableProps.loadTableDatas();
@@ -162,7 +182,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.show-real-subject-content-idx{
+.show-rela-subject-content-idx{
   gap: 20px;
   flex-wrap: wrap;
   flex: 1;
@@ -177,7 +197,7 @@ onMounted(() => {
   }
 }
 
-.show-real-subject-content-subject{
+.show-rela-subject-content-subject{
   flex: 1;
   border-bottom: 1px solid $info;
 }

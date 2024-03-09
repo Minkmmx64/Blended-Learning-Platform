@@ -21,12 +21,12 @@ export class RootUser extends BaseAttrColumn {
   @Column({ type: "char", length: 255, comment: "头像", nullable: true })
   avatar: string;
 
-  @OneToOne(type => StuTeacher, { nullable : true})
+  @OneToOne(type => StuTeacher, { nullable : true}) // #ok
   @JoinColumn({
     name: "teacher_id"
   })
   teacher: StuTeacher;
 
-  @ManyToOne( type => RootRole, role => role.users, { nullable : false }) // 管理员需要有权限
+  @ManyToOne( type => RootRole, role => role.users, { nullable : false }) // 管理员需要有权限 // #ok
   role: RootRole;
 }

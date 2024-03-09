@@ -13,16 +13,16 @@ export class StuChapter extends BaseAttrColumn {
   cover: string;
 
   @Column({type: "int", comment: "父章节id", nullable: true})
-  @ManyToOne( type => StuChapter, StuChapter => StuChapter.id)
+  @ManyToOne( type => StuChapter, StuChapter => StuChapter.id) // #ok
   @JoinColumn({
     name: "pid"
   })
   pid: number;
 
-  @OneToMany( type => StuCourseResource, StuCourseResource => StuCourseResource.id)
+  @OneToMany( type => StuCourseResource, StuCourseResource => StuCourseResource.id) // #ok
   resources: StuCourseResource[];
   
-  @Column({type: "int", comment: "课程id", nullable: true})
+  @Column({type: "int", comment: "课程id", nullable: true}) // #ok
   @ManyToOne( type => StuCourse, StuCourse => StuCourse.id)
   @JoinColumn({
     name: "course"

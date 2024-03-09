@@ -137,4 +137,18 @@ export class StuDAO {
                      .setParameter("student_id", student_id)
                      .getOne();
   }
+
+  public async addAppUserInfoToStudentById(studentId: number, AppUserId: number) {
+    return await this.StuRepository
+                     .createQueryBuilder("student")
+                     .update()
+                     .set({
+                      user: {
+                        id: AppUserId
+                      }
+                     })
+                     .where("id = :studentId")
+                     .setParameter("studentId", studentId)
+                     .execute();
+  }
 }
