@@ -174,6 +174,7 @@
           <!---->
           <el-button
             type="info"
+            @click="addRealSubject(row.id)"
           >
             添加关联题目
           </el-button>
@@ -232,8 +233,11 @@ const TableProps = useTableFunction<paper>(
 
 const { DataSource, TableLoading, total, isEdit, EditTxt, EditLoading } = TableProps;
 
-onMounted(() => {
+const addRealSubject = (id: number) => {
+  console.log("试卷id:", id);
+}
 
+onMounted(() => {
   TableProps.loadTableDatas();
 })
 </script>
