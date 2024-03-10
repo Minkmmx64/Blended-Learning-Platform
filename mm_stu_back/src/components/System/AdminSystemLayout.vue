@@ -38,7 +38,7 @@
         @togglemenu="togglemenu"
       />
       <!-- 主页面 -->
-      <div class="System-view pt-5 pl-20">
+      <div class="System-view hidden pt-5 pl-20">
         <router-view v-slot="{ Component }">
           <transition
             name="fade"

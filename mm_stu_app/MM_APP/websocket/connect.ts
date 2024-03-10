@@ -24,7 +24,7 @@ export class SocketManager {
 
   private baseUrl = `ws://${url}:8082`;
 
-  private SocketInstance: Socket;
+  public SocketInstance: Socket;
 
   constructor( data: SocketConnectData) {
 

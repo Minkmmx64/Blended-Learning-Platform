@@ -34,6 +34,13 @@ export type RootStackParamList = {
     studentId: number;
     classId: number;
   }
+  //我的作业
+  ExamScreen: undefined;
+
+  //进行考试
+  ToExamScreen: {
+    examId: number;
+  };
 }
 
 //定义首页底部选项卡注册的路由

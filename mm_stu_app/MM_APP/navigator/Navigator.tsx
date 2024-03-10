@@ -13,6 +13,8 @@ import { CameraScreen } from "../screen/CameraScreen";
 import { QRCodeScreen } from "../screen/QRCode/QRCodeScreen";
 import SignStatusScreen from "../screen/sign/SignStatusScreen";
 import GesturesScreen from "../screen/sign/GesturesScreen";
+import ExamScreen from "../screen/exam/ExamScreen";
+import ToExamScreen from "../screen/exam/ToExamScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -67,6 +69,8 @@ export const MainNavigator = forwardRef((Props, ref: React.ForwardedRef<IMainNav
         }} />
         <Stack.Screen name="SignStatusScreen" component={ SignStatusScreen } options={{ headerTitle: "签到状态" }} />
         <Stack.Screen name="GesturesScreen" component={ GesturesScreen } options={{ headerTitle: "绘制手势" }} />
+        <Stack.Screen name="ExamScreen" component={ ExamScreen } options={{ headerTitle: "我的作业" }}/>
+        <Stack.Screen name="ToExamScreen" component={ ToExamScreen } options={{ headerTitle: "作业详情" }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

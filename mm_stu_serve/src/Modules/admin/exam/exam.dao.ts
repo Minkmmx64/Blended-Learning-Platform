@@ -4,7 +4,9 @@ import { ExamCreateDTO, ExamQueryDTO, ExamUpdateDTO } from "./exam.dto";
 import { ToOrder } from "src/common/common";
 import { StuExam } from "src/Entity/stu_exam.entity";
 import { UserExam } from "src/Entity/relation_mm_stu_user_exam.entity";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class ExamDAO {
   constructor(protected DataSource: DataSource){}
 
@@ -106,5 +108,26 @@ export class ExamDAO {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  public async getExamByStudent(studentId: number, courseId?: number) {
+
+    const createQueryBuilder = this.ExamRecordRepository
+                                   .createQueryBuilder("record")
+                                   .leftJoinAndSelect("record.exam", "exam")
+                                   .leftJoinAndSelect("exam.course", "course")
+                                   .leftJoinAndSelect("exam.class", "class")
+                                   .leftJoinAndSelect("exam.teacher", "teacher")
+                                   .andWhere("record.student = :studentId")
+                                   .setParameter("studentId", studentId)
+    
+    if(courseId) {
+      createQueryBuilder
+                        .andWhere("course.id = :courseId")
+                        .setParameter("courseId", courseId)
+    }
+    
+    return await createQueryBuilder.getMany();
+                     
   }
 }

@@ -42,8 +42,13 @@ function MessageScreen({ navigation, useAppUserRedux } : MessageScreenProps) {
             data={[
               {
                 label: "签到消息",
-                icon: "http://124.220.176.205:8080/image/bf71a48c8c0b4daefd6b6abc99d377f8.png",
+                icon: "http://124.220.176.205:8080/image/408bcd8fc665613ea2ea4cc201f6b77e.png",
                 nav: "SignScreen"
+              },
+              {
+                label: "我的作业",
+                icon: "http://124.220.176.205:8080/image/27b256f8072ab9acead4a52ab2e29886.png",
+                nav: "ExamScreen"
               }
             ] as IMessageUtilTools[]}
             ItemOnPress={ value => { navigation.push(value.nav); }}

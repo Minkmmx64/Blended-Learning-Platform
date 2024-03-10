@@ -22,6 +22,7 @@ import { SignModule } from './Modules/admin/sign/sign.module';
 import { SubjectModule } from './Modules/admin/subject/subject.module';
 import { PaperModule } from './Modules/admin/paper/paper.module';
 import { ExamModule } from './Modules/admin/exam/exam.module';
+import { AppExamModule } from './Modules/app/exam/exam.module';
 
 dotenv.config();
 
@@ -62,7 +63,8 @@ dotenv.config();
     SignModule,
     SubjectModule,
     PaperModule,
-    ExamModule
+    ExamModule,
+    AppExamModule
   ],
   controllers: [AppController],
   providers: [AppService],

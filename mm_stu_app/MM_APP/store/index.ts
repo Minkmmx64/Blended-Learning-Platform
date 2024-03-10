@@ -46,7 +46,7 @@ const persistConfig: PersistConfig<any> = {
   ]
 }
 
-const persistedReducer = persistReducer(persistConfig, Store);
+const persistedReducer = persistReducer(persistConfig, Store as any);
 
 const store = legacy_createStore(persistedReducer);
 
