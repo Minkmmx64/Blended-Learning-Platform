@@ -12,7 +12,7 @@
         :value="item.id"
     >
       <el-row>
-        <div>试卷名称: {{ item.name }} </div>
+        <div> {{ item.name }} </div>
       </el-row>
     </el-option>
     <template #header>
@@ -80,7 +80,7 @@ interface IProps {
   //数据总数
   total: number;
   // 选择的数据
-  selectValue: number;
+  selectValue: string;
 }
 
 const Props = withDefaults(

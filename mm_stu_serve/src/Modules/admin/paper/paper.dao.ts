@@ -150,4 +150,16 @@ export class PaperDAO {
                      .loadMany<StuSubject>();
 
   }
+
+  public async UpdatePaperTotalsByPaperId(paperId: number, total: number): Promise<UpdateResult> {
+    return await this.PaperRepository
+                     .createQueryBuilder("paper")
+                     .update()
+                     .set({
+                      total: total
+                     })
+                     .where("id = :paperId")
+                     .setParameter("paperId", paperId)
+                     .execute();
+  }
 }

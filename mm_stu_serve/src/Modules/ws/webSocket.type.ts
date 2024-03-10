@@ -28,3 +28,12 @@ export interface StudentSign {
   studentId: number;
   classId: number;
 }
+
+export interface ExamCreate {
+  name: string;
+  paperId: string;
+  time: string;
+  courseId: string;
+  classId: string;
+  teacherId: number;
+}

@@ -255,19 +255,17 @@ const InitSign = (e: { signId : number, studentId: number }) => {
 onMounted(() => {
   if(!teacher_user.getUser.teacher) {
     ElMessage.error("您不是教师");
-    return;
+  } else {
+    loadTeacherClassGroup();
+
+    setInterval(() => {
+      if(currentSignDuration.value >= 1)
+        currentSignDuration.value = currentSignDuration.value - 1;
+      else {
+        currentIsSign.value = false;
+      }
+    }, 1000);
   }
-
-  loadTeacherClassGroup();
-
-  setInterval(() => {
-    if(currentSignDuration.value >= 1)
-      currentSignDuration.value = currentSignDuration.value - 1;
-    else {
-      currentIsSign.value = false;
-    }
-  }, 1000);
-  
 })
 
 </script>

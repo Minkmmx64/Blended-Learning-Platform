@@ -21,6 +21,7 @@ import { IndexModule } from './Modules/app/index/index.module';
 import { SignModule } from './Modules/admin/sign/sign.module';
 import { SubjectModule } from './Modules/admin/subject/subject.module';
 import { PaperModule } from './Modules/admin/paper/paper.module';
+import { ExamModule } from './Modules/admin/exam/exam.module';
 
 dotenv.config();
 
@@ -60,7 +61,8 @@ dotenv.config();
     TeacherModule,
     SignModule,
     SubjectModule,
-    PaperModule
+    PaperModule,
+    ExamModule
   ],
   controllers: [AppController],
   providers: [AppService],

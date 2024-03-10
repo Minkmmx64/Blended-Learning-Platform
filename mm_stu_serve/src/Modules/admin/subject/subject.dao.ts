@@ -55,7 +55,8 @@ export class SubjectDAO {
                                 options: JSON.stringify(CreateSubject.options),
                                 result: CreateSubject.result,
                                 type: CreateSubject.type,
-                                describe: CreateSubject.describe
+                                describe: CreateSubject.describe,
+                                points: CreateSubject.points ?? 2
                              }).execute();
     return result;
   }
@@ -71,7 +72,8 @@ export class SubjectDAO {
                                 options: JSON.stringify(UpdateSubject.data.options),
                                 result: UpdateSubject.data.result,
                                 type: UpdateSubject.data.type,
-                                describe: UpdateSubject.data.describe
+                                describe: UpdateSubject.data.describe,
+                                points: UpdateSubject.data.points
                              })
                              .where("id = :id")
                              .setParameter("id", UpdateSubject.id)

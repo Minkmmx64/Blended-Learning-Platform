@@ -20,6 +20,9 @@ export class StuSubject extends BaseAttrColumn {
   @ManyToMany(type => StuPaper, StuPaper => StuPaper.id) // #ok
   papers: StuPaper[];
 
+  @Column({ type: "int", comment: "分值", default: 2})
+  points: number;
+
   //题目分类
   @Column({ type: "char", length: 255, comment: "题目分类" })
   classify: string;

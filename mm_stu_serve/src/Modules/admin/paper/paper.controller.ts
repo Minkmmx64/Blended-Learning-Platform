@@ -71,10 +71,10 @@ export class PaperController {
   public async addRelaPaperSubjects(
     @Body()  body: RelaPaperSubjectsDTO
   ) {
-    const [ error, data ] = await this.PaperService.RelaPaperSubjects(body);
+    const [ error, UpdateResult ] = await this.PaperService.RelaPaperSubjects(body);
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
-    } else return new HttpResponse<number[]>(HttpStatus.ACCEPTED, data).send();
+    } else return new HttpResponse<UpdateResult>(HttpStatus.ACCEPTED, UpdateResult).send();
   }
 
   @Get("/relation")

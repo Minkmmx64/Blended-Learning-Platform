@@ -5,6 +5,7 @@ export class SubjectCreateDTO{
   result: string;
   classify: string;
   options: string[];
+  points: number;
 }
 
 export enum SubjectType {

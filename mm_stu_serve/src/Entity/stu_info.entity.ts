@@ -45,17 +45,6 @@ export class StuInfo extends BaseAttrColumn {
   @OneToMany( type => StuSign, StuSign => StuSign.id) // #ok
   signs: StuSign[];
 
-  @ManyToMany(type => StuExam, StuExam => StuExam.id) // #ok
-  @JoinTable({
-    name: "relation_mm_stu_user_exam",
-    joinColumn: {
-      name: "student_id",
-      referencedColumnName: "id"
-    },
-    inverseJoinColumn: {
-      name: "exam_id",
-      referencedColumnName: "id"
-    }
-  })
-  exames: StuExam[]
+  @OneToMany(type => StuExam, StuExam => StuExam.id) // #ok
+  exames: StuExam[];
 }

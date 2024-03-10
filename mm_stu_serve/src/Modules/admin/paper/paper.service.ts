@@ -54,12 +54,17 @@ export class PaperService{
     }
   }
 
-  public async RelaPaperSubjects( { paperId, subjects } : RelaPaperSubjectsDTO) : ServiceData<number[]> {
+  public async RelaPaperSubjects( { paperId, subjects } : RelaPaperSubjectsDTO) : ServiceData<UpdateResult> {
     try {
-     // 删除该试卷关联的题目, 并添加
+      let sum = 0;
+     // 删除该试卷关联的题目, 并添加  // 统计该试卷的总分
      const res = (await this.PaperDAO.DeletePaperSubjectRelaById(paperId, subjects))
-                                                                                    .map( res => res.id);
-     return [ null, res ]
+                                                                                    .map( res => {
+                                                                                      sum += res.points;
+                                                                                      return res.id;
+                                                                                    });
+     const UpdateResult = await this.PaperDAO.UpdatePaperTotalsByPaperId(paperId, sum);
+     return [ null, UpdateResult ]
     } catch (error) {
       return [new Error(error), null];
     }

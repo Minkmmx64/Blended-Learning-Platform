@@ -1,10 +1,12 @@
 import { SignCreate } from "@/Request/ApiModules/sign";
 import { Socket, io } from "socket.io-client";
+import {IExam} from "@/Request/ApiModules/exam";
 
 //socket emit事件
 export interface EmitEvent {
   SEND_SIGN: SignCreate & { SignId: number }
   TEST: null;
+  SEND_EXAM: IExam;
 }
 
 //socket on事件

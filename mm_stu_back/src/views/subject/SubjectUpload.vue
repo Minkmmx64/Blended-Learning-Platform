@@ -154,6 +154,19 @@
       <el-row class="mb-5 text-center">
         <el-col :span="6">
           <div class="h-full flex-row flex-center">
+            <span>题目分值:</span>
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <el-input-number
+              v-model="EditParams.points"
+              placeholder="subject points"
+          />
+        </el-col>
+      </el-row>
+      <el-row class="mb-5 text-center">
+        <el-col :span="6">
+          <div class="h-full flex-row flex-center">
             <span>题目备注:</span>
           </div>
         </el-col>
@@ -233,6 +246,13 @@
         width="150"
       />
       <el-table-column
+        prop="points"
+        label="题目分值"
+        header-align="center"
+        align="center"
+        width="300"
+      />
+      <el-table-column
         prop="create_time"
         label="创建时间"
         header-align="center"
@@ -295,7 +315,8 @@ const EditParams = ref({
   classify: "",
   options: [
 
-  ]
+  ],
+  points: undefined
 });
 
 const QueryParams = ref({

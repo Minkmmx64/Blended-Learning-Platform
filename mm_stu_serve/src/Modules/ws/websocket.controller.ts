@@ -1,12 +1,13 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect, MessageBody } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { MapProps, SignCreate, SocketConnectData, StudentSign } from './webSocket.type';
+import { ExamCreate, MapProps, SignCreate, SocketConnectData, StudentSign } from './webSocket.type';
 import { Injectable } from '@nestjs/common';
 import { StuDAO } from '../admin/stu/stu.dao';
 import { TeacherDAO } from '../admin/teacher/teacher.dao';
 import { RedisService } from '../redis/RedisService';
 import { broadCastForAlias } from 'src/utils/JPush';
 import { ClassDAO } from '../admin/class/class.dao';
+
 
 @Injectable()
 @WebSocketGateway(8082, { cors: { origin: "*" } })
@@ -74,6 +75,7 @@ export class WebSocket implements OnGatewayInit, OnGatewayConnection, OnGatewayD
     return "Test";
   }
 
+  //教师发起签到
   @SubscribeMessage("SEND_SIGN")
   async handleSendSign(@MessageBody() payload: SignCreate) {
     //console.log(" === 收到一条发起签到通知 ===", payload);
@@ -100,6 +102,29 @@ export class WebSocket implements OnGatewayInit, OnGatewayConnection, OnGatewayD
     return;
   }
 
+  //教师发起测验
+  @SubscribeMessage("SEND_EXAM")
+  async handSendExam(@MessageBody() payload: ExamCreate) {
+    try {
+      const { teacherId, classId } = payload;
+      const devs = [...new Set((this.AliasLists.get(this.getClassRoom(parseInt(classId))) || []).map(v => v.id))];
+      const teacher = await this.TeacherDAO.getTeacherById(teacherId);
+      if (devs.length > 0){
+        await broadCastForAlias(
+          `${teacher.name}发来一条作业通知`, 
+          `${payload.name}`, 
+          devs,
+          { navigator: "SignScreen" } // 点击跳转到作业页面
+        );
+      }
+    } catch (error) {
+      console.log("意外错误", error);
+    }
+    return;
+  }
+
+
+  //学生签到完成
   @SubscribeMessage("APP_STUDENT_SIGN")
   async handleStudentSign(@MessageBody() payload: StudentSign) {
     //console.log(payload);
