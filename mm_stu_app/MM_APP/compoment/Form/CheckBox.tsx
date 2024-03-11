@@ -17,7 +17,14 @@ export function CheckBoxGroup<T>(Props: ICheckBoxGroup<T>) {
   return (
     <Row style={{ width: "100%", marginTop: rpx(15), justifyContent: "flex-start" }}>
       {Props.checks.map( (check, index ) => {
-        return <CheckBox onChange={ val => { setV(val), Props.onChange(check.value)} } isCheck={v}  key={index} index={index}  name={check.name} value={check.value} />
+        return <CheckBox onChange={ val => { 
+          if(val === v) {
+            setV(-1)
+            Props.onChange(null as T);
+            return 
+          }
+          setV(val), Props.onChange(check.value)
+        } } isCheck={v}  key={index} index={index}  name={check.name} value={check.value} />
       })}
     </Row>
   )
@@ -57,7 +64,7 @@ export function CheckBox<T>(Props: ICheckBoxProps & ICheckBox<T>) {
 
   return (
     <>
-      <Row style={{ height: rpx(100), width:"25%" }}>
+      <Row style={{ height: rpx(100), width:"100%" }}>
         <TouchableOpacity style={{ width: "100%" }} activeOpacity={1} onPress={() => Props.onChange(Props.index)}>
           <Row style={{ height: rpx(100), width:"100%" }}>
             {Props.isCheck === Props.index ? 

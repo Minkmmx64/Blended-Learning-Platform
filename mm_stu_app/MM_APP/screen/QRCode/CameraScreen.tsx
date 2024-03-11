@@ -1,10 +1,10 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { ContainerBox } from "../compoment/ContainerBox"
+import { ContainerBox } from "../../compoment/ContainerBox"
 import { BarCodeReadEvent, RNCamera, TakePictureOptions } from "react-native-camera";
 import { useRef, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { Row } from "../compoment/flex-box/Row";
-import { rpx } from "../utils/common";
+import { Row } from "../../compoment/flex-box/Row";
+import { rpx } from "../../utils/common";
 export const CameraScreen = (): JSX.Element => {
   const Style = StyleSheet.create({
     Capture: {

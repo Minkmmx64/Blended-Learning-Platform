@@ -130,4 +130,13 @@ export class ExamDAO {
     return await createQueryBuilder.getMany();
                      
   }
+
+  public async getExamById(examId: number) : Promise<StuExam> {
+    return await this.ExamRepository
+                     .createQueryBuilder("exam")
+                     .leftJoinAndSelect("exam.paper", "paper")
+                     .andWhere("exam.id = :examId")
+                     .setParameter("examId", examId)
+                     .getOne();
+  }
 }

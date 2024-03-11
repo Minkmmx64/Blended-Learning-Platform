@@ -4,7 +4,9 @@ import { PaperCreateDTO, PaperQueryDTO, PaperUpdateDTO } from "./paper.dto";
 import { ToOrder } from "src/common/common";
 import { StuPaper } from "src/Entity/stu_paper.entity";
 import { StuSubject } from "src/Entity/stu_subject.entity";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class PaperDAO {
   constructor(protected DataSource: DataSource){}
 
@@ -148,7 +150,6 @@ export class PaperDAO {
                      .relation(StuPaper, "subjects")
                      .of(paperId)
                      .loadMany<StuSubject>();
-
   }
 
   public async UpdatePaperTotalsByPaperId(paperId: number, total: number): Promise<UpdateResult> {

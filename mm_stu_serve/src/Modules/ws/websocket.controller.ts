@@ -114,7 +114,7 @@ export class WebSocket implements OnGatewayInit, OnGatewayConnection, OnGatewayD
           `${teacher.name}发来一条作业通知`, 
           `${payload.name}`, 
           devs,
-          { navigator: "SignScreen" } // 点击跳转到作业页面
+          { navigator: "ExamScreen" } // 点击跳转到作业页面
         );
       }
     } catch (error) {

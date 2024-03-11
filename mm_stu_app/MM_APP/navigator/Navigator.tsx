@@ -9,12 +9,13 @@ import { RegistScreen } from "../screen/RegistScreen";
 import { CourseScreen } from "../screen/course/CourseScreen";
 import { ChapterDetailScreen } from "../screen/course/ChapterDetailScreen";
 import SignScreen from "../screen/sign/SignScreen";
-import { CameraScreen } from "../screen/CameraScreen";
+import { CameraScreen } from "../screen/QRCode/CameraScreen";
 import { QRCodeScreen } from "../screen/QRCode/QRCodeScreen";
 import SignStatusScreen from "../screen/sign/SignStatusScreen";
 import GesturesScreen from "../screen/sign/GesturesScreen";
 import ExamScreen from "../screen/exam/ExamScreen";
 import ToExamScreen from "../screen/exam/ToExamScreen";
+import AccessExamScreen from "../screen/exam/AccessExamScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -71,6 +72,7 @@ export const MainNavigator = forwardRef((Props, ref: React.ForwardedRef<IMainNav
         <Stack.Screen name="GesturesScreen" component={ GesturesScreen } options={{ headerTitle: "绘制手势" }} />
         <Stack.Screen name="ExamScreen" component={ ExamScreen } options={{ headerTitle: "我的作业" }}/>
         <Stack.Screen name="ToExamScreen" component={ ToExamScreen } options={{ headerTitle: "作业详情" }}/>
+        <Stack.Screen name="AccessExamScreen" component={ AccessExamScreen } options={{ headerTitle: "考试详情" }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
