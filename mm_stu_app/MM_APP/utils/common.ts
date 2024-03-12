@@ -78,9 +78,9 @@ export const sleep = (timeout: number = 1000) => {
 export function debounce<A extends any[], R> (fn: (...args : A) => R, timeout: number = 1000) {
   let time: NodeJS.Timeout | null = null;
   return function(...args: A) {
+    if(time)
+      clearTimeout(time);
     time = setTimeout(() => {
-      if(time)
-        clearTimeout(time);
       fn(...args);
     }, timeout);
   }

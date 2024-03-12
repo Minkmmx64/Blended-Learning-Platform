@@ -1,9 +1,10 @@
-import { BadRequestException, Controller, Get, HttpStatus, Param, ParseIntPipe, Query } from "@nestjs/common";
+import { BadRequestException, Controller, Get, HttpStatus, Param, Query, Post, Body } from "@nestjs/common";
 import { AppExamService } from "./exam.service";
 import { HttpResponse } from "src/response/response";
 import { UserExam } from "src/Entity/relation_mm_stu_user_exam.entity";
 import { StuExam } from "src/Entity/stu_exam.entity";
 import { StuSubject } from "src/Entity/stu_subject.entity";
+import { ExamResultDTO } from "./exam.dto";
 
 @Controller("/app/exam")
 export class AppExamController {
@@ -42,5 +43,16 @@ export class AppExamController {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     }
     return new HttpResponse<StuSubject[]>(HttpStatus.RESET_CONTENT, subjects).send();
+  }
+
+  @Post("/submit")
+  public async submitSubjectsResult(
+    @Body() body: ExamResultDTO
+  ) {
+    const [error, subjects ] = [ null , 1];
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    }
+    return new HttpResponse(HttpStatus.RESET_CONTENT, body).send();
   }
 }

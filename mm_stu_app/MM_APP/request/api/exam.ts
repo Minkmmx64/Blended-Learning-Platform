@@ -67,6 +67,21 @@ export class exam extends Request {
   public async getPaperSubjectsByPaperId(paperId: number) : Promise<RequestData<StuSubjectProps[]>> {
     return this.get(`/paper/${paperId}`);
   }
+
+  //上传题目
+  public async submitSubjectsResult( 
+    dataId: {
+      studentId: number,
+      paperId: number,
+      examId: number
+    },
+    dataRes: {
+      id: number,
+      value: string | number[] | undefined
+    }[]
+  ) {
+    return this.post("/submit", { dataId, dataRes })
+  }
 }
 
 export default new exam();
