@@ -11,6 +11,7 @@ import { Color } from "../../utils/style";
 import { CheckBox, CheckBoxGroup } from "../../compoment/Form/CheckBox";
 import { Toast } from "../../compoment/display/toast/Toast";
 import { Row } from "../../compoment/flex-box/Row";
+import { ExamStatus } from "../../request/api/exam";
 
 interface ReduxProps {
   useAppUserRedux: AppUserReduxProps
@@ -39,6 +40,12 @@ const Style = StyleSheet.create({
 
 const ToExamScreen = ({ route, navigation }: IToExamScreenProps): JSX.Element => {
 
+  //查看当前考试状态
+
+  useEffect(() => {
+    console.log(route.params);
+  }, []);
+
   const taskMsg = useRef([
     "作业提交时间：作业需在截止日期前完成并提交，逾期将扣分。",
     "提交格式：请按要求使用规定格式提交作业，确保文件清晰可读。",
@@ -53,35 +60,43 @@ const ToExamScreen = ({ route, navigation }: IToExamScreenProps): JSX.Element =>
   const ToExam = () => {
     if(!read) return Toast.show("请确认");
     const { examId } = route.params;
-    navigation.navigate("AccessExamScreen", { examId: examId });
+    navigation.replace("AccessExamScreen", { examId: examId });
   }
+
+  const uncommitted = () => 
+    <Column style={{ flex: 1, position: "relative" }}>
+      <Column style={Style.Msg}>
+        <ScrollView style={{ width: "100%"}}>
+          <Text style={{ textAlign: "center", color: Color.Primary, fontSize: rpx(40), marginBottom: rpx(15), marginTop: rpx(20) }}>
+            请阅读作业须知
+          </Text>
+          { taskMsg.map( (msg, _) => <Text key={ _ } style={{ fontSize: rpx(31), marginTop: rpx(5)}}>    { msg }</Text>)}
+        </ScrollView>
+      </Column>
+      <Row>
+        <CheckBoxGroup
+          isChecked={ read ?? -1 }
+          checks={[{ name: "我已阅读", value: 1 } ]} 
+          onChange={ setRead }
+        />
+      </Row>
+      <TouchableOpacity 
+        onPress={ ToExam }
+        activeOpacity={0.9} style={{ position: "absolute", bottom: rpx(200) }}>
+        <Column style={Style.start}>
+          <Text style={{ color: "#ffffff" }}>开始考试</Text>
+        </Column>
+      </TouchableOpacity>
+    </Column>
+  
+  const waiting = () => 
+    <Column>
+      <Text>等待阅卷</Text>
+    </Column>
 
   return (
     <ContainerBox>
-      <Column style={{ flex: 1, position: "relative" }}>
-        <Column style={Style.Msg}>
-          <ScrollView style={{ width: "100%"}}>
-            <Text style={{ textAlign: "center", color: Color.Primary, fontSize: rpx(40), marginBottom: rpx(15), marginTop: rpx(20) }}>
-              请阅读作业须知
-            </Text>
-            { taskMsg.map( (msg, _) => <Text key={ _ } style={{ fontSize: rpx(31), marginTop: rpx(5)}}>    { msg }</Text>)}
-          </ScrollView>
-        </Column>
-        <Row>
-          <CheckBoxGroup
-            isChecked={ read ?? -1 }
-            checks={[{ name: "我已阅读", value: 1 } ]} 
-            onChange={ setRead }
-          />
-        </Row>
-        <TouchableOpacity 
-          onPress={ ToExam }
-          activeOpacity={0.9} style={{ position: "absolute", bottom: rpx(200) }}>
-          <Column style={Style.start}>
-            <Text style={{ color: "#ffffff" }}>开始考试</Text>
-          </Column>
-        </TouchableOpacity>
-      </Column>
+      { route.params.status === ExamStatus.uncommitted ? uncommitted() : waiting()}
     </ContainerBox>
   )
 

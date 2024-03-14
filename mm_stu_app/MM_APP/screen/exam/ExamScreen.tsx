@@ -57,9 +57,10 @@ const ExamScreen = ({ useAppUserRedux, navigation } : IExamScreenProps) => {
     return colors[status];
   }, []);
 
-  const toExam = (examId: number) => {
+  const toExam = (examId: number, exam_status: ExamStatus) => {
     navigation.navigate("ToExamScreen", {
-      examId: examId
+      examId: examId,
+      status: exam_status
     });
   }
 
@@ -83,7 +84,7 @@ const ExamScreen = ({ useAppUserRedux, navigation } : IExamScreenProps) => {
       <Column style={ ExamStyle.Item }>
         <TouchableOpacity
           style={{ width: "100%"}}
-          onPress={ () => toExam(data.exam.id) }
+          onPress={ () => toExam(data.exam.id, data.exam_status) }
           activeOpacity = { 0.8 }
         >
           <Row style={{ width: "100%", alignItems: "flex-start"}}>

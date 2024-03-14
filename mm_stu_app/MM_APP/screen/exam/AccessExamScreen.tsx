@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { RootStoreRedux } from "../../store";
 import { AppUserReduxProps } from "../../store/useAppUserRedux";
 import { Column } from "../../compoment/flex-box/Column";
-import { Animated, Button, FlatList, Modal, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { Animated, Button, FlatList, Modal, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity } from "react-native";
 import { Row } from "../../compoment/flex-box/Row";
 import { debounce, rpx } from "../../utils/common";
 import { Color } from "../../utils/style";
@@ -182,10 +182,16 @@ const AccessExamScreen = ({ route, navigation, useAppUserRedux }: IAccessExamScr
     });
 
     try {
-      // 上传学生答题情况
-      const data = await exam.submitSubjectsResult(idProps.current, res);
-      console.log(data);
-      //提交成功返回
+
+      //上传学生答题情况
+      const { data } = await exam.submitSubjectsResult(idProps.current, res);
+      if(typeof data === "string") {
+        ToastAndroid.show("请勿重复提交", ToastAndroid.CENTER)
+      } else {
+        //提交成功返回
+        ToastAndroid.show("提交成功", ToastAndroid.CENTER)
+        navigation.pop();
+      }
     } catch (error) {
      console.error(error);
     }

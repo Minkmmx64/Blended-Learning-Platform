@@ -79,7 +79,7 @@ export class exam extends Request {
       id: number,
       value: string | number[] | undefined
     }[]
-  ) {
+  ) : Promise<RequestData<string | object>> {
     return this.post("/submit", { dataId, dataRes })
   }
 }

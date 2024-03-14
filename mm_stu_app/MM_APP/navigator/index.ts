@@ -1,6 +1,7 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { ExamStatus } from "../request/api/exam";
 
 //定义 APP Stack 注册的路由
 export type RootStackParamList = {
@@ -40,6 +41,7 @@ export type RootStackParamList = {
   //考试须知
   ToExamScreen: {
     examId: number;
+    status: ExamStatus;
   };
 
   //进行作业

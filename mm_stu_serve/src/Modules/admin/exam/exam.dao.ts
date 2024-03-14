@@ -3,16 +3,23 @@ import { PaginationQuery } from "../../index.type";
 import { ExamCreateDTO, ExamQueryDTO, ExamUpdateDTO } from "./exam.dto";
 import { ToOrder } from "src/common/common";
 import { StuExam } from "src/Entity/stu_exam.entity";
-import { UserExam } from "src/Entity/relation_mm_stu_user_exam.entity";
+import { ExamStatus, UserExam } from "src/Entity/relation_mm_stu_user_exam.entity";
 import { Injectable } from "@nestjs/common";
+import { StuExamResult } from "src/Entity/stu_exam_result.entity";
+import { SubjectAnswer } from "src/Modules/app/exam/exam.dto";
 
 @Injectable()
 export class ExamDAO {
   constructor(protected DataSource: DataSource){}
 
+  //试卷实体
   public ExamRepository = this.DataSource.getRepository(StuExam);
 
+  //学生提交试卷实体
   public ExamRecordRepository = this.DataSource.getRepository(UserExam);
+
+  //学生答题实体
+  public StudentSubjectResRepository = this.DataSource.getRepository(StuExamResult);
 
   public async ExamListsPagination(ExamQuery: PaginationQuery<ExamQueryDTO>): Promise<StuExam[]> {
 
@@ -138,5 +145,59 @@ export class ExamDAO {
                      .andWhere("exam.id = :examId")
                      .setParameter("examId", examId)
                      .getOne();
+  }
+
+  public async getStudentExamStatus(studentId: number, examId: number) {
+    return await this.ExamRecordRepository
+                     .createQueryBuilder()
+                     .select()
+                     .andWhere("student = :studentId")
+                     .setParameter("studentId", studentId)
+                     .andWhere("exam = :examId")
+                     .setParameter("examId", examId)
+                     .getOne();
+  }
+
+  public async toggleStudentExamStatus(studentId: number, examId: number, exam_status: ExamStatus) {
+    return await this.ExamRecordRepository
+                     .createQueryBuilder()
+                     .update()
+                     .set({ exam_status: exam_status })
+                     .where("student = :studentId")
+                     .setParameter("studentId", studentId)
+                     .andWhere("exam = :examId")
+                     .setParameter("examId", examId)
+                     .execute();   
+  }
+
+  public async InsertStudentExamResult(studentId: number, examId: number, datas: SubjectAnswer[]) {
+    const queryRunner = this.DataSource.createQueryRunner();
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+
+      const task = await Promise.all( datas.map( ({ id, value }) => {
+                                                                  return this.StudentSubjectResRepository
+                                                                             .createQueryBuilder()
+                                                                             .insert()
+                                                                             .values({ 
+                                                                                subject: { id: id }, 
+                                                                                result: value,
+                                                                                exam: { id: examId },
+                                                                                student: { id: studentId }
+                                                                              })
+                                                                             .execute();
+                                                                  })
+      );
+
+      await queryRunner.commitTransaction();
+
+      return task;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new Error(error);
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

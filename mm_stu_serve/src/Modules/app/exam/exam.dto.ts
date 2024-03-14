@@ -4,8 +4,10 @@ export interface ExamResultDTO {
     paperId: number,
     examId: number
   },
-  dataRes: {
-    id: number,
-    value: string
-  }[]
+  dataRes: SubjectAnswer[]
+}
+
+export interface SubjectAnswer {
+  id: number,
+  value: string
 }

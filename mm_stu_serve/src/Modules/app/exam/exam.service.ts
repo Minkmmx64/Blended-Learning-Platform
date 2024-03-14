@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common";
-import { UserExam } from "src/Entity/relation_mm_stu_user_exam.entity";
+import { ExamStatus, UserExam } from "src/Entity/relation_mm_stu_user_exam.entity";
 import { StuExam } from "src/Entity/stu_exam.entity";
 import { StuSubject } from "src/Entity/stu_subject.entity";
 import { ExamDAO } from "src/Modules/admin/exam/exam.dao";
 import { PaperDAO } from "src/Modules/admin/paper/paper.dao";
 import { ServiceData } from "src/Modules/index.type";
+import { ExamResultDTO } from "./exam.dto";
 
 @Injectable()
 export class AppExamService {
@@ -36,6 +37,27 @@ export class AppExamService {
     try {
       const subjects = await this.PaperDAO.getRelaPaperSubjectsById(paperId);
       return [ null, subjects ];
+    } catch (error) {
+      return [ new Error(error), null];
+    }
+  }
+
+  public async submitSubjectsResult(ExamResult: ExamResultDTO) : ServiceData<any> {
+    try {
+      // 获取该学生作业提交情况
+      const studentExamRes = await this.ExamDAO.getStudentExamStatus(ExamResult.dataId.studentId, ExamResult.dataId.examId);
+
+      if(studentExamRes && studentExamRes.exam_status === ExamStatus.uncommitted) {
+        // 未提交
+        // 将学生答题结果存入数据库
+        await this.ExamDAO.InsertStudentExamResult(ExamResult.dataId.studentId, ExamResult.dataId.examId, ExamResult.dataRes);
+        // 修改该学生改作业状态为待批阅
+        const ok = await this.ExamDAO.toggleStudentExamStatus(ExamResult.dataId.studentId, ExamResult.dataId.examId, ExamStatus.waiting);
+
+        return [ null , ok ];
+      } else {
+        return [ null , "请勿重复提交" ];
+      }
     } catch (error) {
       return [ new Error(error), null];
     }

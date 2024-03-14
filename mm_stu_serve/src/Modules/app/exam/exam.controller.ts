@@ -49,10 +49,10 @@ export class AppExamController {
   public async submitSubjectsResult(
     @Body() body: ExamResultDTO
   ) {
-    const [error, subjects ] = [ null , 1];
+    const [error, ok ] = await this.AppExamService.submitSubjectsResult(body);
     if(error) {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     }
-    return new HttpResponse(HttpStatus.RESET_CONTENT, body).send();
+    return new HttpResponse(HttpStatus.RESET_CONTENT, ok).send();
   }
 }
