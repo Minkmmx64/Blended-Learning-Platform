@@ -90,9 +90,9 @@ const ToExamScreen = ({ route, navigation }: IToExamScreenProps): JSX.Element =>
     </Column>
   
   const waiting = () => 
-    <Column>
-      <Text>等待阅卷</Text>
-    </Column>
+    <Text style={{ textAlign: "center", color: Color.Primary, fontSize: rpx(40), marginBottom: rpx(15), marginTop: rpx(20) }}>
+      等待阅卷
+    </Text>
 
   return (
     <ContainerBox>

@@ -137,6 +137,12 @@ const routes: Array<RouteRecordRaw> = [
         name: "SendAssignment",
         meta: { isAuth: true, key: "SendAssignment" },
         component: () => import("@/views/teacher/SendAssignment.vue")
+      },
+      {
+        path: "/AssignmentList",
+        name: "AssignmentList",
+        meta: { isAuth: true, key: "AssignmentList" },
+        component: () => import("@/views/teacher/AssignmentList.vue")
       }
     ]
   },

@@ -23,17 +23,6 @@ export class AppExamController {
     return new HttpResponse<UserExam[]>(HttpStatus.RESET_CONTENT, exams).send();
   }
 
-  @Get("/:examId")
-  public async getExamById(
-    @Param("examId") examId: number
-  ) {
-    const [error, exam ] = await this.AppExamService.getExamById(examId);
-    if(error) {
-      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
-    }
-    return new HttpResponse<StuExam>(HttpStatus.RESET_CONTENT, exam).send();
-  }
-
   @Get("/paper/:paperId")
   public async getPaperSubjectsByPaperId(
     @Param("paperId") paperId: number
@@ -54,5 +43,28 @@ export class AppExamController {
       throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
     }
     return new HttpResponse(HttpStatus.RESET_CONTENT, ok).send();
+  }
+
+  @Get("/grades")
+  public async getSum(
+    @Query("studentId") studentId: number,
+    @Query("examId") examId: number
+  ) {
+    const [error, ok ] = await this.AppExamService.getSum(studentId, examId);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    }
+    return new HttpResponse(HttpStatus.RESET_CONTENT, ok).send();
+  }
+
+  @Get("/:examId")
+  public async getExamById(
+    @Param("examId") examId: number
+  ) {
+    const [error, exam ] = await this.AppExamService.getExamById(examId);
+    if(error) {
+      throw new BadRequestException(new HttpResponse(HttpStatus.BAD_REQUEST, null,  error.message).send());
+    }
+    return new HttpResponse<StuExam>(HttpStatus.RESET_CONTENT, exam).send();
   }
 }

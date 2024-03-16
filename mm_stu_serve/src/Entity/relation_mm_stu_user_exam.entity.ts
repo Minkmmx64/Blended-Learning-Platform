@@ -25,7 +25,7 @@ export class UserExam extends BaseAttrColumn {
   })
   student: StuInfo;
 
-  @ManyToOne(type => StuExam, StuExam => StuExam.id)
+  @ManyToOne(type => StuExam, StuExam => StuExam.userexams)
   @JoinColumn({
     name: "exam",
     referencedColumnName: "id"

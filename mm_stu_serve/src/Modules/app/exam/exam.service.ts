@@ -6,6 +6,7 @@ import { ExamDAO } from "src/Modules/admin/exam/exam.dao";
 import { PaperDAO } from "src/Modules/admin/paper/paper.dao";
 import { ServiceData } from "src/Modules/index.type";
 import { ExamResultDTO } from "./exam.dto";
+import { UpdateResult } from "typeorm";
 
 @Injectable()
 export class AppExamService {
@@ -42,7 +43,7 @@ export class AppExamService {
     }
   }
 
-  public async submitSubjectsResult(ExamResult: ExamResultDTO) : ServiceData<any> {
+  public async submitSubjectsResult(ExamResult: ExamResultDTO) : ServiceData<UpdateResult | string> {
     try {
       // 获取该学生作业提交情况
       const studentExamRes = await this.ExamDAO.getStudentExamStatus(ExamResult.dataId.studentId, ExamResult.dataId.examId);
@@ -58,6 +59,15 @@ export class AppExamService {
       } else {
         return [ null , "请勿重复提交" ];
       }
+    } catch (error) {
+      return [ new Error(error), null];
+    }
+  }
+
+  public async getSum(studentId: number, examId: number) : ServiceData<any> {
+    try {
+      const { sum } = await this.ExamDAO.getStudentGrades(studentId, examId);
+      return [ null, parseFloat(sum ?? 0) ];
     } catch (error) {
       return [ new Error(error), null];
     }

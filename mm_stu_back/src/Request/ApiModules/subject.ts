@@ -16,6 +16,7 @@ export interface ISubjectProps {
   result: string;
   options: string; // JSON格式的数组
   classify: string;
+  points: number;
 }
 
 export class subjectdata extends DataModules {

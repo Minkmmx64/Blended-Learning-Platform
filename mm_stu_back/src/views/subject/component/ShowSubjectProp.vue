@@ -1,7 +1,7 @@
 <template>
   <div class="subject-content pl-10">
     <div class="describe pl-5 select-none">
-      {{ Props.number }}&nbsp;&nbsp;&nbsp;&nbsp;、 {{ data.describe }} ({{ data.type }})
+      {{ Props.number }}&nbsp;&nbsp;&nbsp;&nbsp;、 {{ data.describe }} ({{ data.type }}) ({{ data.points }})分
     </div>
     <div v-if="data.type === SubjectType.Signal" class="type-signal pl-10">
       <el-radio-group v-model="result.signal" class="ml-4 flex-column">

@@ -6,6 +6,7 @@ import { StuExamResult } from "./stu_exam_result.entity";
 import { StuCourse } from "./stu_course.entity";
 import { StuClass } from "./stu_class.entity";
 import { StuTeacher } from "./stu_teacer.entity";
+import { UserExam } from "./relation_mm_stu_user_exam.entity";
 
 @Entity("mm_stu_stu_exam")
 export class StuExam extends BaseAttrColumn {
@@ -39,4 +40,8 @@ export class StuExam extends BaseAttrColumn {
   @ManyToOne(type => StuTeacher, StuTeacher => StuTeacher.id)
   @JoinColumn({ name: "teacherId"})
   teacher: StuTeacher;
+
+  //哪些同学参加了考试
+  @OneToMany(type => UserExam, UserExam => UserExam.exam)
+  userexams: UserExam[];
 }
