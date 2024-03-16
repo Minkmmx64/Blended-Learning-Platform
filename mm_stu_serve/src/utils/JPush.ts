@@ -1,6 +1,8 @@
 import * as JPush from "jpush-async/lib/JPush/JPushAsync.js";
+import * as dotenv from "dotenv";
+dotenv.config();
 
-const client = JPush.buildClient('f6fed4a0c36a707509baab3d', '85efce9a80e2374c54168850');
+const client = JPush.buildClient(process.env.JPUSH_APP_KEY, process.env.JPUSH_MASTER_SECRET);
 
 export const broadCastForDevices = (broadTitle: string, broadContent: string,  devices: string[]) => {
   return new Promise((resolve, reject) => {

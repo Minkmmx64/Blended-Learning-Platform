@@ -1,39 +1,69 @@
-# 毕设
-
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+学生可以在App端注册，教师发送在线签到，发布作业，并使用websocket 和 JPush 完成的一个简单的crud毕业设计项目，后台管理使用RBAC权限控制划分分配角色。
+其中App端封装了一些实用组件：瀑布流，手势绘制。
+服务端使用redis实现大文件分片上传，断点续传，秒传
+客户端使用WebWorker + spark-md5 实现文件存储的唯一性
+本项目还有许多可以完善的，但是用于毕业应该够了。。。
 
 #### 软件架构
-软件架构说明
 
+本项目分为一个基于Nodejs的Nestjs框架的服务端
+一个Vue3后台管理系统
+一个RN的App端(仅能运行在Android端)
 
+1、后台管理系统技术栈
+Vue3 + pinia + composition Api + TypeScript + WebSocket + element-plus + Axios
+2、后端服务
+nodejs + nestjs + typeorm + mysql + redis + joi + jpush-async
+3、app端
+react native >= 0.73.0 + react 18 + react-navigation/native-stack + JPush + redux
 #### 安装教程
+#   web 管理系统
+1.  cd mm_stu_back (建议使用 node v14.18.3 安装依赖)
+2.  npm install
+3.  npm run serve 或者 直接 运行 run.bat
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#   服务端
+1. cd mm_stu_serve (建议使用 node v20+)
+2. npm install
+3. npm run start 或者 直接 运行 run.bat
+
+#   App端
+1. cd mm_stu_app
+2. npm install
+3. npm run start
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. 需要在 mm_stu_serve 新建一个 .env 文件
+![env-example](./env-example.png)
 
-#### 参与贡献
+#### 项目展示
+1、管理系统 配置菜单
+![alt text](image.png)
+2、分配角色
+![alt text](image-1.png)
+3、上传文件 支持断点续传，秒传
+![alt text](image-2.png)
+![alt text](image-3.png)
+4、教师用户登录
+![alt text](image-4.png)
+5、教师发布签到
+![alt text](image-5.png)
+设置手势签到
+![alt text](image-6.png)
+![alt text](image-7.png)
+6、教师发布作业 题库由管理员上传
+![alt text](image-8.png)
+7、app端登录
+<img src='27b5371d5d03b60c1bc11fa3a049df1.jpg' width=300 />
+主页面
+<img src='953827007288071932ee7cef8e8a0e9.jpg' width=300 />
+收到签到通知
+<img src='267e850bc763d44b12b4b1a703dba4b.jpg' width=300 />
+进行签到
+![alt text](example.gif)
+在线测验
+![alt text](example-2.gif)
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
 
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
